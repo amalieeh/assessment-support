@@ -40,13 +40,11 @@ const Assessment: NextPage = () => {
           </a> 
         </div>
         <div className={styles.next}>
-          PIL NEXT
         </div>
         </div>
       </main>
-      {/* hvordan kan man gjøre footer ikke scrollbar */}
       <footer className={styles.footer}> 
-         <h1> > </h1>
+         <h1> . </h1>
       </footer>
     </div>
   )
