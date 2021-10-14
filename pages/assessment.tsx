@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import styles from '../styles/assessment.module.css'
 
 
+
 const Assessment: NextPage = () => {
   return (
     <div className={styles.container}>
@@ -11,10 +12,11 @@ const Assessment: NextPage = () => {
       <main className={styles.main}>
         <div className={styles.wrapper}>
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
+          < div className={styles.card}>
             <h2>Card 1 </h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-          </a>
+          </div>
+        
 
           <a href="https://nextjs.org/learn" className={styles.card}>
             <h2>Learn &rarr;</h2>
