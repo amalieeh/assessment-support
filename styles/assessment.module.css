@@ -6,6 +6,11 @@
   height: 100vh;
 }
 
+.alignTitlePoints {
+  display: flex;
+  justify-content: space-between;
+}
+
 
 .main { 
   flex: 1;  
