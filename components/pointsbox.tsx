@@ -7,29 +7,26 @@ interface Option {
   label: string;
 }
 
-//maxPoints: number
+interface Pointsboxprop {
+  maxPoints: number
+}
 
-const Pointsbox = () => {
 
-  // const start = 1
+const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
+  const options: Option[] = [];
 
-  // function range(start, end) {
-  //   return Array(end - start + 1).fill().map((_, idx) => start + idx)
-  // }
-
-  const options: Option[] = [
-    { value: 1, label: '1 p' },
-    { value: 2, label: '2 p' },
-    { value: 3, label: '3 p' },
-  ];
+  // add option objects to option list
+  for (let i=1 ; i<props.maxPoints + 1 ; i++) {
+    options.push({value: i, label: i.toString() + ' p'})
+  }
   
   const [selectedOption, setSelectedOption] = useState<Option | null>();
-  console.log(selectedOption);
 
   return (
     <div className="App">
       <div className={styles.container}>
       <Select
+        instanceId='long-value-select' //react select component needs an id 
         defaultValue={selectedOption}
         onChange={setSelectedOption}
         options={options}
@@ -40,13 +37,6 @@ const Pointsbox = () => {
     </div>
   );
 }
-
-
-
-
-
- 
-
 
 export default Pointsbox;
 
