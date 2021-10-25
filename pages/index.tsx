@@ -3,8 +3,10 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Textbox from "../components/textbox";
 import styles from '../styles/Home.module.css'
+import * as t from '../data/supertest.json'
 
 const Home: NextPage = () => {
+  console.log(t.exam);
   return (
     <div className={styles.container}>
       <Head>
@@ -24,7 +26,7 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.grid}>
-          <Textbox text='Find in-depth information about Next.js features and API.'/>
+          <Textbox text={t.exam}/>
 
           <a href="https://nextjs.org/learn" className={styles.card}>
             <h2>Learn &rarr;</h2>
