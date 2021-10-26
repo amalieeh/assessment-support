@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from "../styles/Textbox.module.css";
+import Pointsbox from "./pointsbox";
 
 interface textboxprop {
     text: string
@@ -7,10 +8,19 @@ interface textboxprop {
 
 const Textbox = (text:textboxprop) => {
     return (
-        <p className={styles.card}>
+        <div className={styles.card}>
+            <div className={styles.alignTitlePoints}>
+                <Pointsbox maxPoints={8}/>
+            </div>
             {text.text}
-        </p>
-    )
+        </div>
+
+
+
+
+
+
+)
 }
 
 export default Textbox;
