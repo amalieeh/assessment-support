@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import styles from '../styles/assessment.module.css'
 
-
 const Assessment: NextPage = () => {
   return (
     <div className={styles.container}>

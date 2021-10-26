@@ -1,0 +1,48 @@
+{
+  "exam": "webutvikling",
+  "year": "2021",
+  "candidates": [
+    {
+      "results": {
+        "sourceId": 18977,
+        "attendance": true,
+        "student": {
+          "sourcedId":26570726,
+          "type":"user"
+        },
+        "questions": [
+          {
+            "maxscore": 1,
+            "questionId": 903729,
+            "questionNumber": "1",
+            "questionTitle": "Variabler deklarert med var og let",
+            "candidateResponces": [{
+              "response": "jeg tror det stemmer fordi det er lurt"
+            }]
+          }
+        ]
+      }
+    },
+    {
+      "results": {
+        "sourceId": 18978,
+        "attendance": true,
+        "student": {
+          "sourcedId":26570727,
+          "type":"user"
+        },
+        "questions": [
+          {
+            "maxscore": 1,
+            "questionId": 903730,
+            "questionNumber": "2",
+            "questionTitle": "CSS-grid og Flexbox",
+            "candidateResponces": [{
+              "response": "Flexboks er best til dynamiske ting, grid er nice til oppsett."
+            }]
+          }
+        ]
+      }
+    }
+  ]
+}
