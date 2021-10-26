@@ -6,6 +6,7 @@
   height: 100vh;
 }
 
+
 .alignTitlePoints {
   display: flex;
   justify-content: space-between;
@@ -58,13 +59,6 @@
   transition: color 0.15s ease, border-color 0.15s ease;
   width: 47%; 
   height: 45%;
-}
-
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-  border-color: #0070f3;
 }
 
 .card h2 {

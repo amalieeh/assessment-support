@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import styles from '../styles/pointsbox.module.css'
 
 interface Option {
   value: number;
@@ -22,19 +21,18 @@ const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
   
   const [selectedOption, setSelectedOption] = useState<Option | null>();
 
+
   return (
-    <div className="App">
-      <div className={styles.container}>
-      <Select
-        instanceId='long-value-select' //react select component needs an id 
-        defaultValue={selectedOption}
-        onChange={setSelectedOption}
-        options={options}
-        isClearable={true}
-        isSearchable={false} 
-      />
+      <div>
+        <Select
+          instanceId='long-value-select' //react select component needs an id 
+          defaultValue={selectedOption}
+          onChange={setSelectedOption}
+          options={options}
+          isClearable={true}
+          isSearchable={false} 
+        />
       </div>
-    </div>
   );
 }
 
