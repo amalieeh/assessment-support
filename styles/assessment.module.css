@@ -7,6 +7,12 @@
 }
 
 
+.alignTitlePoints {
+  display: flex;
+  justify-content: space-between;
+}
+
+
 .main { 
   flex: 1;  
   display: flex;
