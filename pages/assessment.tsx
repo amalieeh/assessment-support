@@ -5,7 +5,7 @@ import Textbox from "../components/textbox";
 
 const Assessment: NextPage = () => {
 
-  let answers: string[] = ['hallo', 'hei', 'hade']
+  let answers: string[] = ['hallo', 'hei', 'hade','a', 'b', 'c', 'd', 'e', 'f', 'hallo', 'hei', 'hade','a', 'b', 'c', 'd', 'e', 'f','hallo', 'hei', 'hade','a', 'b', 'c', 'd', 'e', 'f']
 
   return (
     <div className={styles.container}>
@@ -14,12 +14,10 @@ const Assessment: NextPage = () => {
         </h1>
       <main className={styles.main}>
         <div className={styles.wrapper}>
-        <div className={styles.grid}>
-          {answers.map((answer: string) => <Textbox text={answer}/>)}          
-
-        </div>
-        <div className={styles.next}>
-        </div>
+          <div className={styles.grid}>
+            {answers.map((answer: string) => <Textbox text={answer}/>)}          
+          </div>
+          <div className={styles.next}/>
         </div>
       </main>
       <footer className={styles.footer}> 
