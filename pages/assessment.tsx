@@ -5,7 +5,7 @@ import Textbox from "../components/textbox";
 
 const Assessment: NextPage = () => {
 
-  let answers: string[] = ['hallo', 'hei', 'hade','a', 'b', 'c', 'd', 'e', 'f', 'hallo', 'hei', 'hade','a', 'b', 'c', 'd', 'e', 'f','hallo', 'hei', 'hade','a', 'b', 'c', 'd', 'e', 'f']
+  let answers: string[] = ['hallo', 'hei', 'hade','a', 'b', 'c', 'd', 'e', 'f', 'hallo', 'hei', 'hade']
 
   return (
     <div className={styles.container}>
