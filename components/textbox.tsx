@@ -1,16 +1,20 @@
 import * as React from 'react';
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Textbox.module.css";
+import Pointsbox from "./pointsbox";
 
 interface textboxprop {
-    text: string
+    text: string,
+    maxPoints: number
 }
-
-const Textbox = (text:textboxprop) => {
+const Textbox = (props: textboxprop) => {
     return (
-        <p className={styles.card}>
-            {text.text}
-        </p>
+        <div className={styles.card}>
+            <div className={styles.alignTitlePoints}>
+                <Pointsbox maxPoints={props.maxPoints}/>
+            </div>
+            {props.text}
+        </div>
     )
-}
+};
 
 export default Textbox;

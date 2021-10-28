@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Pointsbox from '../components/pointsbox'
 import styles from '../styles/assessment.module.css'
 import Textbox from "../components/textbox";
 import { useState } from 'react';
