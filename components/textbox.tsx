@@ -3,24 +3,18 @@ import styles from "../styles/Textbox.module.css";
 import Pointsbox from "./pointsbox";
 
 interface textboxprop {
-    text: string
+    text: string,
+    maxPoints: number
 }
-
-const Textbox = (text:textboxprop) => {
+const Textbox = (props: textboxprop) => {
     return (
         <div className={styles.card}>
             <div className={styles.alignTitlePoints}>
-                <Pointsbox maxPoints={8}/>
+                <Pointsbox maxPoints={props.maxPoints}/>
             </div>
-            {text.text}
+            {props.text}
         </div>
-
-
-
-
-
-
-)
-}
+    )
+};
 
 export default Textbox;
