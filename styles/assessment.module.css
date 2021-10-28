@@ -11,7 +11,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: greenyellow;
 }
 
 .footer {
@@ -21,7 +20,6 @@
   display: flex; 
   justify-content: center;
   align-items: center;
-  background-color: orange;
 }
 
 .next {
@@ -29,12 +27,10 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  background-color: pink;
 }
 
 .wrapper {
   display: flex;
-  background-color: rgb(165, 181, 224);
 }
 
 .grid {
