@@ -19,7 +19,6 @@ const Assessment: NextPage = () => {
     }
   }
 
-
   return (
     <div className={styles.container}>
         <h1>
@@ -28,6 +27,7 @@ const Assessment: NextPage = () => {
       <main className={styles.main}>
         <div className={styles.wrapper}>
           <div className={styles.grid}>
+            {/* slice(start, end) */}
             {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map((answer: string) => <Textbox text={answer}/>)}          
           </div>
           <div className={styles.next}/>
