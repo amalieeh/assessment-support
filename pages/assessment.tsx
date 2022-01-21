@@ -21,7 +21,7 @@ const Assessment: NextPage = () => {
   const answers: string[] = [answer_0, answer_1, answer_2, answer_3, answer_4, answer_5, answer_6]
   
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4);
+  const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
 
 
   const changePage = (direction: string) : void => {
