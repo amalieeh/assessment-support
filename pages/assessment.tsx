@@ -8,6 +8,7 @@ import cleanHtmlText from "../functions/helpFunctions";
 
 const Assessment: NextPage = () => {
 
+  //fw: create new logic to get data
   const answer_0: string = cleanHtmlText(data.ext_inspera_candidates[0].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
   const answer_1: string = cleanHtmlText(data.ext_inspera_candidates[1].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
   const answer_2: string = cleanHtmlText(data.ext_inspera_candidates[2].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
