@@ -1,55 +1,58 @@
 import type { NextPage } from 'next'
-import Pointsbox from '../components/pointsbox'
 import styles from '../styles/assessment.module.css'
+import Textbox from "../components/textbox";
+import { useState } from 'react';
+import data from '../data/IT2810Høst2018.json'
+import cleanHtmlText from "../functions/helpFunctions";
+
 
 const Assessment: NextPage = () => {
+
+  //fw: create new logic to get data
+  const answer_0: string = cleanHtmlText(data.ext_inspera_candidates[0].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
+  const answer_1: string = cleanHtmlText(data.ext_inspera_candidates[1].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
+  const answer_2: string = cleanHtmlText(data.ext_inspera_candidates[2].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
+  const answer_3: string = cleanHtmlText(data.ext_inspera_candidates[3].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
+  const answer_4: string = cleanHtmlText(data.ext_inspera_candidates[4].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
+  const answer_5: string = cleanHtmlText(data.ext_inspera_candidates[5].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
+  const answer_6: string = cleanHtmlText(data.ext_inspera_candidates[6].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
+  
+  
+
+  const answers: string[] = [answer_0, answer_1, answer_2, answer_3, answer_4, answer_5, answer_6]
+  
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
+
+
+  const changePage = (direction: string) : void => {
+    if (direction == 'back') {
+      setCurrentPage(currentPage - 1) 
+    } else if (direction == 'next') {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
   return (
     <div className={styles.container}>
         <h1>
-            Eksamen TDT100
+            {data.ext_inspera_assessmentRunTitle}
         </h1>
       <main className={styles.main}>
-        <div className={styles.wrapper}>
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <div className={styles.alignTitlePoints}>
-              <h2>Card 1 </h2>
-              <Pointsbox maxPoints={4}/>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+          <div className={styles.grid}>
+            {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map((answer: string) => <Textbox text={answer} maxPoints={5}/>)}          
           </div>
-        
-
-          <div className={styles.card}>
-            <div className={styles.alignTitlePoints}>
-              <h2>Learn &rarr;</h2>
-              <Pointsbox maxPoints={8}/>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-          </div>
-
-          <div className={styles.card}>
-          <div className={styles.alignTitlePoints}>
-            <h2>Examples &rarr;</h2>
-            <Pointsbox maxPoints={5}/>    
-          </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>    
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.alignTitlePoints}>
-                <h2>Deploy &rarr;</h2>
-                <Pointsbox maxPoints={2}/>
-            </div>    
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-          </div> 
-        </div>
-        <div className={styles.next}>
-        </div>
-        </div>
+          <div className={styles.next}/>
       </main>
       <footer className={styles.footer}> 
-         <h1> . </h1>
+        <div>
+            {currentPage > 1? 
+              <button onClick={() => changePage('back')}>Back</button>
+            : null}
+            {answers.length - 1 >= currentPage * maxItemsPerPage ? 
+              <button onClick={() => changePage('next')}>Next</button>
+            : null}
+        </div>
       </footer>
     </div>
   )
