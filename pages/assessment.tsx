@@ -17,6 +17,7 @@ const Assessment: NextPage = () => {
   const answer_5: string = cleanHtmlText(data.ext_inspera_candidates[5].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
   const answer_6: string = cleanHtmlText(data.ext_inspera_candidates[6].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
   
+  
 
   const answers: string[] = [answer_0, answer_1, answer_2, answer_3, answer_4, answer_5, answer_6]
   
@@ -39,7 +40,6 @@ const Assessment: NextPage = () => {
         </h1>
       <main className={styles.main}>
           <div className={styles.grid}>
-            {/* slice(start, end) */}
             {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map((answer: string) => <Textbox text={answer} maxPoints={5}/>)}          
           </div>
           <div className={styles.next}/>
