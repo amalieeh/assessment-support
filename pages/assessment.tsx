@@ -31,7 +31,7 @@ const Assessment: NextPage = () => {
     } else if (direction == 'next') {
       setCurrentPage(currentPage + 1)
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -40,7 +40,8 @@ const Assessment: NextPage = () => {
         </h1>
       <main className={styles.main}>
           <div className={styles.grid}>
-            {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map((answer: string) => <Textbox text={answer} maxPoints={5}/>)}          
+            {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map(
+                (answer: string) => <Textbox key={answer} text={answer} maxPoints={5}/>)}
           </div>
           <div className={styles.next}/>
       </main>
@@ -56,6 +57,6 @@ const Assessment: NextPage = () => {
       </footer>
     </div>
   )
-}
+};
 
 export default Assessment
