@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
+import type { Option } from './textbox'
 
-interface Option {
-  value: number;
-  label: string;
-}
 
 interface Pointsboxprop {
-  maxPoints: number
+    maxPoints: number;
+    selectedOption: Option | null | undefined;
+    setSelectedOption: any;
 }
-
 
 const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
   const options: Option[] = [];
@@ -19,22 +17,21 @@ const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
     options.push({value: i, label: i.toString() + ' p'})
   }
   
-  const [selectedOption, setSelectedOption] = useState<Option | null>();
 
 
   return (
       <div>
         <Select
           instanceId='long-value-select' //react select component needs an id 
-          defaultValue={selectedOption}
-          onChange={setSelectedOption}
+          defaultValue={props.selectedOption}
+          onChange={props.setSelectedOption}
           options={options}
           isClearable={true}
           isSearchable={false} 
         />
       </div>
   );
-}
+};
 
 export default Pointsbox;
 

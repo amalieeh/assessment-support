@@ -1,16 +1,28 @@
 import * as React from 'react';
 import styles from "../styles/Textbox.module.css";
 import Pointsbox from "./pointsbox";
+import {useState} from "react";
 
-interface textboxprop {
-    text: string,
-    maxPoints: number
+
+export interface Option {
+    value: number;
+    label: string;
 }
-const Textbox = (props: textboxprop) => {
+interface textboxprop {
+    text: string;
+    maxPoints: number;
+}
+
+const Textbox: React.FC<textboxprop> = (props: textboxprop) => {
+    const [selectedOption, setSelectedOption] = useState<Option | null | undefined>();
     return (
         <div className={styles.card}>
             <div className={styles.alignTitlePoints}>
-                <Pointsbox maxPoints={props.maxPoints}/>
+                <Pointsbox
+                    maxPoints={props.maxPoints}
+                    selectedOption={selectedOption}
+                    setSelectedOption={setSelectedOption}
+                />
             </div>
             {props.text}
         </div>
