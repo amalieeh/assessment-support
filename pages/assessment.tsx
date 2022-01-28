@@ -32,8 +32,7 @@ const Assessment: NextPage = () => {
       setCurrentPage(currentPage + 1)
     }
   };
-
-  console.log(currentPage)
+  
 
   return (
     <div className={styles.container}>
