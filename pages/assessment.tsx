@@ -1,9 +1,12 @@
 import type { NextPage } from 'next'
 import styles from '../styles/assessment.module.css'
 import Textbox from "../components/textbox";
-import { useState } from 'react';
+import { useState} from 'react';
 import data from '../data/IT2810Høst2018.json'
 import cleanHtmlText from "../functions/helpFunctions";
+import Expand from '../components/expand';
+
+
 
 
 const Assessment: NextPage = () => {
@@ -24,6 +27,7 @@ const Assessment: NextPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
 
+  const taskDescription: string = 'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.'  
 
   const changePage = (direction: string) : void => {
     if (direction == 'back') {
@@ -36,26 +40,28 @@ const Assessment: NextPage = () => {
 
   return (
     <div className={styles.container}>
-        <h1>
-            {data.ext_inspera_assessmentRunTitle}
-        </h1>
+      <h1>
+          {data.ext_inspera_assessmentRunTitle}
+      </h1>
+      
       <main className={styles.main}>
+        <Expand 
+          taskDescriptionTitle='User interfaces' 
+          taskDescription={taskDescription}>
+        </Expand>
           <div className={styles.grid}>
             {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map(
                 (answer: string) => <Textbox key={answer} text={answer} maxPoints={5}/>)}
           </div>
-          <div className={styles.next}/>
       </main>
-      <footer className={styles.footer}> 
-        <div>
-            {currentPage > 1? 
-              <div className={styles.leftArrow} onClick={() => changePage('back')}></div>
-            : null}
-            {answers.length - 1 >= currentPage * maxItemsPerPage ? 
-               <div className={styles.rightArrow} onClick={() => changePage('next')}></div>
-            : null}
-        </div>
-      </footer>
+      <div className={styles.footer}> 
+        {currentPage > 1? 
+          <div className={styles.leftArrow} onClick={() => changePage('back')}></div>
+        : null}
+        {answers.length - 1 >= currentPage * maxItemsPerPage ? 
+            <div className={styles.rightArrow} onClick={() => changePage('next')}></div>
+        : null}
+      </div>
     </div>
   )
 };
