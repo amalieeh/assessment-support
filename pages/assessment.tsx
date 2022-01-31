@@ -32,6 +32,7 @@ const Assessment: NextPage = () => {
       setCurrentPage(currentPage + 1)
     }
   };
+  
 
   return (
     <div className={styles.container}>
@@ -48,10 +49,10 @@ const Assessment: NextPage = () => {
       <footer className={styles.footer}> 
         <div>
             {currentPage > 1? 
-              <button onClick={() => changePage('back')}>Back</button>
+              <div className={styles.leftArrow} onClick={() => changePage('back')}></div>
             : null}
             {answers.length - 1 >= currentPage * maxItemsPerPage ? 
-              <button onClick={() => changePage('next')}>Next</button>
+               <div className={styles.rightArrow} onClick={() => changePage('next')}></div>
             : null}
         </div>
       </footer>

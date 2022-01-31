@@ -43,3 +43,33 @@
   max-width: 95%;
 }
 
+.rightArrow {
+  border: solid #7E9AA3;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  padding: 12px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  cursor: pointer;
+
+}
+.rightArrow:hover {
+  border: solid #A7C4CD;
+  border-width: 0 5px 5px 0;
+}
+
+.leftArrow {
+  border: solid #7E9AA3;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  padding: 12px;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+  cursor: pointer;
+
+}
+.leftArrow:hover {
+  border: solid #A7C4CD;
+  border-width: 0 5px 5px 0;
+}
+
