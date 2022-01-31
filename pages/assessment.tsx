@@ -1,33 +1,20 @@
-import type { NextPage } from 'next'
+import { NextPage } from 'next'
 import styles from '../styles/assessment.module.css'
 import Textbox from "../components/textbox";
 import { useState} from 'react';
 import data from '../data/IT2810Høst2018.json'
-import cleanHtmlText from "../functions/helpFunctions";
 import Expand from '../components/expand';
-
-
+import {insperaDataToTextboxObject} from "../functions/helpFunctions";
+import {TextboxDataType} from "../types/Types";
 
 
 const Assessment: NextPage = () => {
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
 
-  //fw: create new logic to get data
-  const answer_0: string = cleanHtmlText(data.ext_inspera_candidates[0].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
-  const answer_1: string = cleanHtmlText(data.ext_inspera_candidates[1].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
-  const answer_2: string = cleanHtmlText(data.ext_inspera_candidates[2].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
-  const answer_3: string = cleanHtmlText(data.ext_inspera_candidates[3].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
-  const answer_4: string = cleanHtmlText(data.ext_inspera_candidates[4].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
-  const answer_5: string = cleanHtmlText(data.ext_inspera_candidates[5].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
-  const answer_6: string = cleanHtmlText(data.ext_inspera_candidates[6].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response!)
-  
-  
-
-  const answers: string[] = [answer_0, answer_1, answer_2, answer_3, answer_4, answer_5, answer_6]
-  
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
-
-  const taskDescription: string = 'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.'  
+  const answers: TextboxDataType[] = insperaDataToTextboxObject(data);
+  console.log(typeof(data.ext_inspera_candidates[0].result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response));
+  const taskDescription: string = 'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.'
 
   const changePage = (direction: string) : void => {
     if (direction == 'back') {
@@ -51,7 +38,8 @@ const Assessment: NextPage = () => {
         </Expand>
           <div className={styles.grid}>
             {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map(
-                (answer: string) => <Textbox key={answer} text={answer} maxPoints={5}/>)}
+                (answer: TextboxDataType) => <Textbox key={answer.answer} text={answer.answer} maxPoints={5}/>
+                )}
           </div>
       </main>
       <div className={styles.footer}> 
