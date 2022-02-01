@@ -6,6 +6,8 @@ import data from '../data/IT2810Høst2018.json'
 import Expand from '../components/expand';
 import {insperaDataToTextboxObject} from "../functions/helpFunctions";
 import {TextboxDataType} from "../types/Types";
+import Link from "next/link";
+import {Button} from "@mui/material";
 
 
 const Assessment: NextPage = () => {
@@ -48,6 +50,13 @@ const Assessment: NextPage = () => {
         : null}
         {answers_1.length - 1 >= currentPage * maxItemsPerPage ?
             <div className={styles.rightArrow} onClick={() => changePage('next')}></div>
+        : null}
+        {currentPage * maxItemsPerPage >= answers_1.length-1 ?
+          <Link href="/approval">
+            <Button variant="contained">
+              Finish
+            </Button>
+          </Link>
         : null}
       </div>
     </div>
