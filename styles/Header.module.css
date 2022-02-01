@@ -1,0 +1,16 @@
+.headerstyle {
+    width: 1230px;
+    margin: 1rem;
+    color: #191c24;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #A7C4CD;
+}
+
+@media (max-width: 1263px) {
+    .headerstyle {
+        width: 600px;
+    }
+}
