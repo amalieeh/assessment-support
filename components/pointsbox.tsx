@@ -1,7 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import type { Option } from './textbox'
-
+import { Option } from './textbox'
 
 interface Pointsboxprop {
     maxPoints: number;
@@ -10,13 +9,12 @@ interface Pointsboxprop {
 }
 
 const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
-  const options: Option[] = [];
+  const options: Option[] = [{value: 0, label: '0 p'}];
 
   // add option objects to option list
   for (let i=1 ; i<props.maxPoints + 1 ; i++) {
     options.push({value: i, label: i.toString() + ' p'})
   }
-  
 
 
   return (

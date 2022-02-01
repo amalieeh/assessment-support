@@ -9,7 +9,7 @@ export interface Option {
     label: string;
 }
 interface textboxprop {
-    text: string;
+    text: string |undefined;
     maxPoints: number;
 }
 

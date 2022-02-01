@@ -1,6 +1,6 @@
-import type { TextboxDataType } from '../types/Types';
+import { TextboxDataType } from '../types/Types';
 
-export default function cleanHtmlText(content:string) {
+function cleanHtmlText(content:string) {
     if (content == undefined) {
         return
     }
@@ -14,7 +14,6 @@ export default function cleanHtmlText(content:string) {
     var cleanHtml = cleanHtml.replace(/&#39;/g, "'");
     var cleanHtml = cleanHtml.replace(/&#34;/g, '"');
     var cleanHtml = cleanHtml.replace(/&#10;/g, '\n');
-
     return cleanHtml;
 }
 
@@ -28,15 +27,16 @@ function removeHtmlTags(htmlString: string) {
     return stripedHtml;
 }
 
-export function insperaDataToTextboxObject( insperaData: any ) {
+export function insperaDataToTextboxObject( insperaData: any, questionNumber: number) {
     const textboxData: TextboxDataType[] = [];
+    if (questionNumber < 1 || questionNumber > insperaData.ext_inspera_candidates[0].result.ext_inspera_questions.length) {
+        return textboxData
+    }
     insperaData.ext_inspera_candidates.map((candidate: any) => {
         textboxData.push({
-        answerId: candidate.result,
-        answer: cleanHtmlText(candidate.result.ext_inspera_questions[0].ext_inspera_candidateResponses[0].ext_inspera_response),
-        maxPoints: 3,
+        answerId: candidate.result.ext_inspera_candidateId+"_"+candidate.result.ext_inspera_questions[0].ext_inspera_questionId,
+        answer: cleanHtmlText(candidate.result.ext_inspera_questions[questionNumber-1].ext_inspera_candidateResponses[0].ext_inspera_response),
     })});
-    console.log(insperaData);
     return textboxData;
 }
 
