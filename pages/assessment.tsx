@@ -11,15 +11,18 @@ import {Button} from "@mui/material";
 import Header from "../components/header";
 
 
+
 const Assessment: NextPage = () => {
   const taskNumber: number = 2; // Later will get it another way. And then make sure tasknumber doesn't get too high.
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
 
-  const taskDescription: string = 'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.'
+
   const answers: TextboxDataType[] = insperaDataToTextboxObject(data, taskNumber);
   const maxPoints: number = data.ext_inspera_candidates[0].result.ext_inspera_questions[0].ext_inspera_maxQuestionScore;
+  const taskDescription: string = 'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.'  
+  const markersGuideDescription: string = 'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.'
 
   const changePage = (direction: string) : void => {
     if (direction == 'back') {
@@ -34,17 +37,33 @@ const Assessment: NextPage = () => {
     <div className={styles.container}>
       <Header data={data} taskNumber={taskNumber}/>
       <main className={styles.main}>
-        <Expand 
-          taskDescriptionTitle='User interfaces' 
-          taskDescription={taskDescription}>
-        </Expand>
-          <div className={styles.grid}>
+        <div className={styles.grid}>
+          <Expand 
+            DescriptionTitle='User interfaces' 
+            Description={taskDescription}>
+          </Expand>
+          <Expand 
+            DescriptionTitle="Marker's guide" 
+            Description={markersGuideDescription}>
+          </Expand>
+        </div>
+
+        {/* Display two answers next to eachother when max items is four or less  */}
+        {maxItemsPerPage<=4 ? 
+          <div className={styles.grid4answers}>
             {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map(
-                (answer: TextboxDataType) => <Textbox key={answer.answerId} text={answer.answer} maxPoints={maxPoints}/>
+              (answer: TextboxDataType) => <Textbox key={answer.answerId} text={answer.answer} maxPoints={maxPoints}/>
                 )}
+            </div>
+        :  <div className={styles.grid}>
+            {answers.slice((currentPage * maxItemsPerPage) - maxItemsPerPage, currentPage * maxItemsPerPage ).map(
+              (answer: TextboxDataType) => <Textbox key={answer.answerId} text={answer.answer} maxPoints={maxPoints}/>
+              )}
           </div>
+        }
       </main>
-      <div className={styles.footer}>
+
+      <div className={styles.footer}> 
         {currentPage > 1? 
           <div className={styles.leftArrow} onClick={() => changePage('back')}></div>
         : null}
