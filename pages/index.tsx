@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import { NextPage } from 'next'
 import * as React from "react";
 import styles from '../styles/Home.module.css'
 
