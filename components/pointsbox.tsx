@@ -17,6 +17,7 @@ const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
   }
 
 
+
   return (
       <div>
         <Select
