@@ -9,6 +9,10 @@
     border-bottom: 1px solid #A7C4CD;
 }
 
+.makeClickable {
+    cursor: pointer;
+}
+
 @media (max-width: 1263px) {
     .headerstyle {
         width: 600px;
