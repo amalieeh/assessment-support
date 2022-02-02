@@ -7,13 +7,14 @@
 }
 
 
-
 .main { 
   flex: 1;  
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
+
 
 .footer {
   width: 100%;
@@ -24,13 +25,18 @@
 }
 
 
-.grid {
+.grid,
+.grid4answers {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
+  
+}
+.grid4answers{
   max-width: 115em;
 }
+
 
 .rightArrow {
   border: solid #7E9AA3;
@@ -40,8 +46,8 @@
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
   cursor: pointer;
-
 }
+
 .rightArrow:hover {
   border: solid #A7C4CD;
   border-width: 0 5px 5px 0;
@@ -55,8 +61,8 @@
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
   cursor: pointer;
-
 }
+
 .leftArrow:hover {
   border: solid #A7C4CD;
   border-width: 0 5px 5px 0;

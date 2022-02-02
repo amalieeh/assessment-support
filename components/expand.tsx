@@ -5,18 +5,18 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import {ExpandMore as ExpandMoreIcon} from '@material-ui/icons';
 
 interface Expandprop {
-  taskDescriptionTitle: string;
-  taskDescription: string;
+  DescriptionTitle: string;
+  Description: string;
 }
 
 
 const Expand: React.FC<Expandprop> = (props: Expandprop) => {
    
     return (
-        <div>
+        <div style={{ margin: "1rem"}}>
       <Accordion
         sx={{
-          width: 400,
+          width: 600,
           boxShadow: "none",
         }}>
         <AccordionSummary
@@ -24,10 +24,10 @@ const Expand: React.FC<Expandprop> = (props: Expandprop) => {
           aria-controls="task-content" // For optimal accessibility it is recommended setting id and aria-controls on the AccordionSummary. 
           id="task-header"// The Accordion will derive the necessary aria-labelledby and id for the content region of the accordion.
         >
-          <strong>{props.taskDescriptionTitle}</strong>
+          <strong>{props.DescriptionTitle}</strong>
         </AccordionSummary>
         <AccordionDetails>
-          {props.taskDescription}  
+          {props.Description}  
         </AccordionDetails>
       </Accordion>
     </div>
