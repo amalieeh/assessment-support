@@ -34,8 +34,9 @@ export function insperaDataToTextboxObject( insperaData: any, questionNumber: nu
     }
     insperaData.ext_inspera_candidates.map((candidate: any) => {
         textboxData.push({
-        answerId: candidate.result.ext_inspera_candidateId+"_"+candidate.result.ext_inspera_questions[0].ext_inspera_questionId,
+        answerId: candidate.result.ext_inspera_questions[0].ext_inspera_questionId+"_"+candidate.result.ext_inspera_candidateId,
         answer: cleanHtmlText(candidate.result.ext_inspera_questions[questionNumber-1].ext_inspera_candidateResponses[0].ext_inspera_response),
+        candidateId: candidate.result.ext_inspera_candidateId
     })});
     return textboxData;
 }
