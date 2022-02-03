@@ -25,7 +25,8 @@ const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
           onChange={props.setSelectedOption}
           options={options}
           isClearable={true}
-          isSearchable={false} 
+          isSearchable={false}
+          placeholder="Sett poeng"
         />
       </div>
   );
