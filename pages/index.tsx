@@ -8,9 +8,9 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <h1>Hello and welcome to this assessment support software!</h1>
-      <Link href="/assessment">
+      <Link href="/task">
         <Button variant="contained">
-          Assessment Page
+          View tasks
         </Button>
       </Link>
     </div>
