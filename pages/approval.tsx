@@ -39,7 +39,7 @@ const Approval: NextPage = () => {
         {data.ext_inspera_assessmentRunTitle}
       </h1>
       <main className={styles.main}>
-        <Grid container gap={2} xs={5}>
+        <Grid container gap={2} xs={5} item={true}>
         {answers.map((answer: approvaltextboxprop) => <ApprovalTextbox
           key={answer.answerId}
           candidateId={answer.candidateId}
