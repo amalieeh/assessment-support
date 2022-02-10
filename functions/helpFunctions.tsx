@@ -1,8 +1,8 @@
-import { TextboxDataType } from '../types/Types';
+import {v4 as uuidv4} from "uuid";
 
 function cleanHtmlText(content:string) {
     if (content == undefined) {
-        return
+        return ""
     }
     var cleanHtml = removeHtmlTags(content);
     var cleanHtml = cleanHtml.replace(/&#160;/g, ' ');
@@ -27,16 +27,26 @@ function removeHtmlTags(htmlString: string) {
     return stripedHtml;
 }
 
+export interface AnswerType {
+    assessmentId: string;
+    answer: string;
+    candidateId: number;
+    maxPoints:number;
+    taskNumber:number;
+}
+
 export function insperaDataToTextboxObject( insperaData: any, questionNumber: number) {
-    const textboxData: TextboxDataType[] = [];
+    const textboxData: AnswerType[] = [];
     if (questionNumber < 1 || questionNumber > insperaData.ext_inspera_candidates[0].result.ext_inspera_questions.length) {
         return textboxData
     }
     insperaData.ext_inspera_candidates.map((candidate: any) => {
         textboxData.push({
-        answerId: candidate.result.ext_inspera_questions[0].ext_inspera_questionId+"_"+candidate.result.ext_inspera_candidateId,
-        answer: cleanHtmlText(candidate.result.ext_inspera_questions[questionNumber-1].ext_inspera_candidateResponses[0].ext_inspera_response),
-        candidateId: candidate.result.ext_inspera_candidateId
+            assessmentId: uuidv4(),
+            answer: cleanHtmlText(candidate.result.ext_inspera_questions[questionNumber-1].ext_inspera_candidateResponses[0].ext_inspera_response),
+            candidateId: parseInt(candidate.result.ext_inspera_candidateId),
+            maxPoints: candidate.result.ext_inspera_questions[questionNumber-1].ext_inspera_maxQuestionScore,
+            taskNumber: questionNumber
     })});
     return textboxData;
 }
