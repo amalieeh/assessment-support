@@ -1,4 +1,5 @@
 import {v4 as uuidv4} from "uuid";
+import { AssessmentType } from "../types/Types";
 
 function cleanHtmlText(content:string) {
     if (content == undefined) {
@@ -49,5 +50,26 @@ export function insperaDataToTextboxObject( insperaData: any, questionNumber: nu
             taskNumber: questionNumber
     })});
     return textboxData;
+}
+
+export function saveAssessments (assessments: AssessmentType[], key: number) : void {
+    // local storage is a property of object window. Accessing localStroage is not possible until React component has mounted
+    if (typeof window !== 'undefined') { 
+        // retrieve data from localStorage and convert it to array
+        // let candidateAssessments:  AssessmentType[]  = JSON.parse(localStorage.getItem(key.toString()) as string ) || [];
+     
+       // create new object 
+       
+        
+        // store array as a string
+        localStorage.setItem(key.toString(), JSON.stringify(assessments))
+     
+       }
+}
+
+export function clearLocalStorage() : void {
+    if (typeof window !== 'undefined') { 
+        localStorage.clear();
+  }
 }
 

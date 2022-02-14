@@ -4,7 +4,7 @@ import Textbox from "../components/textbox";
 import { useState} from 'react';
 import data from '../data/IT2810Høst2018.json'
 import Expand from '../components/expand';
-import {AnswerType, insperaDataToTextboxObject} from "../functions/helpFunctions";
+import {AnswerType, insperaDataToTextboxObject, saveAssessments} from "../functions/helpFunctions";
 import {AssessmentType } from "../types/Types";
 import Link from "next/link";
 import {Button} from "@mui/material";
@@ -24,6 +24,8 @@ const Assessment: NextPage = () => {
   const answers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
   const p = answers.map((answer: AnswerType) => ({ score: null,  ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
+
+  console.log('ass', assessments)
 
   const changePage = (direction: string) : void => {
     if (direction == 'back') {
@@ -84,7 +86,7 @@ const Assessment: NextPage = () => {
         : null}
         {currentPage * maxItemsPerPage >= answers.length-1 ?
           <Link href="/approval">
-            <Button variant="contained">
+            <Button variant="contained" onClick={()=> saveAssessments(assessments, 0) }> {/*need to figure out a key*/} 
               Finish
             </Button>
           </Link>
