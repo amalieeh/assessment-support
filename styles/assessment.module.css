@@ -22,6 +22,7 @@
   display: flex; 
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 
@@ -64,6 +65,37 @@
 }
 
 .leftArrow:hover {
+  border: solid #A7C4CD;
+  border-width: 0 5px 5px 0;
+}
+
+.upArrow {
+  border: solid #7E9AA3;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  padding: 12px;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  cursor: pointer;
+}
+
+.upArrow:hover {
+  border: solid #A7C4CD;
+  border-width: 0 5px 5px 0;
+}
+
+
+.downArrow {
+  border: solid #7E9AA3;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  padding: 12px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  cursor: pointer;
+}
+
+.downArrow:hover {
   border: solid #A7C4CD;
   border-width: 0 5px 5px 0;
 }

@@ -65,10 +65,10 @@ const Assessment: NextPage = () => {
 
       <div className={styles.footer}> 
         {currentPage > 1? 
-          <div className={styles.leftArrow} onClick={() => changePage('back')}></div>
+          <div className={styles.upArrow} onClick={() => changePage('back')}></div>
         : null}
         {answers.length - 1 >= currentPage * maxItemsPerPage ?
-            <div className={styles.rightArrow} onClick={() => changePage('next')}></div>
+            <div className={styles.downArrow} onClick={() => changePage('next')}></div>
         : null}
         {currentPage * maxItemsPerPage >= answers.length-1 ?
           <Link href="/approval">
