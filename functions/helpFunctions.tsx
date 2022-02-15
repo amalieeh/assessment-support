@@ -55,11 +55,19 @@ export function insperaDataToTextboxObject( insperaData: any, questionNumber: nu
 export function saveAssessments (assessments: AssessmentType[], key: number) : void {
     // local storage is a property of object window. Accessing localStroage is not possible until React component has mounted
     if (typeof window !== 'undefined') { 
-        // retrieve data from localStorage and convert it to array
-        // let candidateAssessments:  AssessmentType[]  = JSON.parse(localStorage.getItem(key.toString()) as string ) || [];
+        {/*might need similiar code later, therefore kept but commented out*/} 
+
+        //  // retrieve data from localStorage and convert it to array
+        //  let candidateAssessments:  AssessmenType[]  = JSON.parse(localStorage.getItem(key.toString()) as string ) || [];
      
-       // create new object 
-       
+        //  // create new object 
+        //   let newAssessment: AssessmentType[] = {
+        //       'taskNumber': taskNumber,
+        //       'points': points
+        //   }
+          
+        //   // add new object to array of assessments locally
+        //   candidateAssessments.push(newAssessment)
         
         // store array as a string
         localStorage.setItem(key.toString(), JSON.stringify(assessments))
