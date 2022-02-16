@@ -1,16 +1,15 @@
-
 export interface approvaltextboxprop {
-    answerId: string;
-    candidateId: string;
-    answer: string;
-    points: string;
+  answerId: string;
+  candidateId: string;
+  answer: string;
+  points: string;
 }
 
 export interface AssessmentType {
-    assessmentId: string;
-    answer: string;
-    candidateId: number;
-    taskNumber: number;
-    maxPoints: number;
-    score: number | null;
+  assessmentId: string;
+  answer: string;
+  candidateId: number;
+  taskNumber: number;
+  maxPoints: number;
+  score: number | null;
 }

@@ -31,8 +31,6 @@ const Assessment: NextPage = () => {
   const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
-  console.log("ass", assessments);
-
   const changePage = (direction: string): void => {
     if (direction == "back") {
       setCurrentPage(currentPage - 1);
@@ -40,6 +38,13 @@ const Assessment: NextPage = () => {
       setCurrentPage(currentPage + 1);
     }
   };
+
+  const handleNext = (): void => {
+    saveAssessments(assessments, 0);
+    changePage("next");
+  };
+
+  // clearLocalStorage();
 
   const setAssessment = (assessment: AssessmentType, newScore: number) => {
     const newAssessment = {
