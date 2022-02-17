@@ -6,25 +6,21 @@
   background-color: rgb(240, 250, 255);
 }
 
-
-.main { 
-  flex: 1;  
+.main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-
-
 .footer {
   width: 100%;
-  height: 100px; 
-  display: flex; 
+  height: 100px;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-
 
 .grid,
 .grid4answers {
@@ -32,15 +28,13 @@
   align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
-  
 }
-.grid4answers{
+.grid4answers {
   max-width: 115em;
 }
 
-
 .rightArrow {
-  border: solid #7E9AA3;
+  border: solid #7e9aa3;
   border-width: 0 5px 5px 0;
   display: inline-block;
   padding: 12px;
@@ -50,12 +44,12 @@
 }
 
 .rightArrow:hover {
-  border: solid #A7C4CD;
+  border: solid #a7c4cd;
   border-width: 0 5px 5px 0;
 }
 
 .leftArrow {
-  border: solid #7E9AA3;
+  border: solid #7e9aa3;
   border-width: 0 5px 5px 0;
   display: inline-block;
   padding: 12px;
@@ -65,12 +59,12 @@
 }
 
 .leftArrow:hover {
-  border: solid #A7C4CD;
+  border: solid #a7c4cd;
   border-width: 0 5px 5px 0;
 }
 
 .upArrow {
-  border: solid #7E9AA3;
+  border: solid #7e9aa3;
   border-width: 0 5px 5px 0;
   display: inline-block;
   padding: 12px;
@@ -80,13 +74,12 @@
 }
 
 .upArrow:hover {
-  border: solid #A7C4CD;
+  border: solid #a7c4cd;
   border-width: 0 5px 5px 0;
 }
 
-
 .downArrow {
-  border: solid #7E9AA3;
+  border: solid #7e9aa3;
   border-width: 0 5px 5px 0;
   display: inline-block;
   padding: 12px;
@@ -96,7 +89,6 @@
 }
 
 .downArrow:hover {
-  border: solid #A7C4CD;
+  border: solid #a7c4cd;
   border-width: 0 5px 5px 0;
 }
-

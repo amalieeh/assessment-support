@@ -1,12 +1,15 @@
-export interface TextboxDataType {
-    answerId: string;
-    answer: string | undefined;
-    candidateId: number;
+export interface approvaltextboxprop {
+  answerId: string;
+  candidateId: string;
+  answer: string;
+  points: string;
 }
 
-export interface approvaltextboxprop {
-    answerId: string;
-    candidateId: string;
-    answer: string;
-    points: string;
+export interface AssessmentType {
+  assessmentId: string;
+  answer: string;
+  candidateId: number;
+  taskNumber: number;
+  maxPoints: number;
+  score: number | null;
 }
