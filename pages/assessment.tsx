@@ -15,12 +15,27 @@ import { Button } from "@mui/material";
 import Header from "../components/header";
 import findIndex from "lodash/findIndex";
 import cloneDeep from "lodash/cloneDeep";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Assessment: NextPage = () => {
-  const taskNumber: number = 2; // Later will get it another way. And then make sure tasknumber doesn't get too high.
-  const taskTitle: string =
-    data.ext_inspera_candidates[0].result.ext_inspera_questions[taskNumber - 1]
-      .ext_inspera_questionTitle;
+  // const router = useRouter();
+  // const {
+  //   query: { id },
+  // } = router;
+
+  const [param1, setParam1] = useState<any>("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router && router.query) {
+      console.log(router.query);
+      setParam1(router.query.param1);
+    }
+  }, [router]);
+
+  const taskNumber: any = param1; // Later will get it another way. And then make sure tasknumber doesn't get too high.
+  console.log(taskNumber);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
@@ -128,7 +143,7 @@ const Assessment: NextPage = () => {
               Finish
             </Button>
           </Link>
-        : null}
+        ) : null}
       </div>
     </div>
   );
