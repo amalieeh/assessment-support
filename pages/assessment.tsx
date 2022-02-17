@@ -18,6 +18,9 @@ import cloneDeep from "lodash/cloneDeep";
 
 const Assessment: NextPage = () => {
   const taskNumber: number = 2; // Later will get it another way. And then make sure tasknumber doesn't get too high.
+  const taskTitle: string =
+    data.ext_inspera_candidates[0].result.ext_inspera_questions[taskNumber - 1]
+      .ext_inspera_questionTitle;
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
@@ -39,13 +42,6 @@ const Assessment: NextPage = () => {
     }
   };
 
-  const handleNext = (): void => {
-    saveAssessments(assessments, 0);
-    changePage("next");
-  };
-
-  // clearLocalStorage();
-
   const setAssessment = (assessment: AssessmentType, newScore: number) => {
     const newAssessment = {
       ...assessment,
@@ -66,7 +62,7 @@ const Assessment: NextPage = () => {
         <div className={styles.grid}>
           <Expand
             PreDescription={"Oppgave " + taskNumber}
-            DescriptionTitle="User interfaces"
+            DescriptionTitle={taskTitle}
             Description={taskDescription}
           ></Expand>
           <Expand
@@ -129,7 +125,7 @@ const Assessment: NextPage = () => {
               onClick={() => saveAssessments(assessments, 0)}
             >
               {" "}
-              {/*need to figure out a key*/}
+              {/*need to figure out a key, currently set to 0*/}
               Finish
             </Button>
           </Link>
