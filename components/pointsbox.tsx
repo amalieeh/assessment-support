@@ -1,6 +1,10 @@
 import React from "react";
-import Select from "react-select";
 import { AssessmentType } from "../types/Types";
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 interface Option {
   value: number;
@@ -13,29 +17,46 @@ interface Pointsboxprop {
 }
 
 const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
-  const options: Option[] = [{ value: 0, label: "0 p" }];
+  const [open, setOpen] = React.useState(false);
 
-  // add option objects to option list
-  for (let i = 1; i < props.assessment.maxPoints + 1; i++) {
+  const options: Option[] = [{ value: 0, label: "0 p" }];
+  for (let i = 1; i < props.assessment.maxPoints + 1; i++) { // add option objects to option list
     options.push({ value: i, label: i.toString() + " p" });
   }
 
-  const handleChange = (selectedOption: Option) => {
-    props.setAssessment(props.assessment, selectedOption.value);
+  const handleChange = (selectedOption: any) => {
+    props.setAssessment(props.assessment, selectedOption.target.value)
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   return (
-    <div>
-      <Select
-        instanceId="long-value-select"
-        defaultValue={props.assessment.score}
-        onChange={handleChange}
-        options={options}
-        isClearable={true}
-        isSearchable={false}
-        placeholder="Sett poeng"
-      />
-    </div>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl sx={{ m: 1, minWidth: 130 }}>
+          <InputLabel id="demo-simple-select-label">Sett poeng</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            open={open}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            value={props.assessment.score}
+            label="Sett poeng"
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>Sett poeng</em>
+            </MenuItem>
+            {options.map((option: Option) => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)}
+          </Select>
+        </FormControl>
+      </Box>
   );
 };
 

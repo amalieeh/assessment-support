@@ -11,7 +11,7 @@ export interface AssessmentType {
   candidateId: number;
   taskNumber: number;
   maxPoints: number;
-  score: number | null;
+  score: number | string;
 }
 
 export interface AnswerType {
