@@ -19,24 +19,16 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const Assessment: NextPage = () => {
-  // const router = useRouter();
-  // const {
-  //   query: { id },
-  // } = router;
-
-  const [param1, setParam1] = useState<any>("");
+  // create router object
   const router = useRouter();
 
+  // isReady: boolean - checks whether the router fields are updated client-side and ready for use.
   useEffect(() => {
-    if (router && router.query) {
-      console.log(router.query);
-      setParam1(router.query.param1);
-    }
-  }, [router]);
+    if (!router.isReady) return;
+    setTaskNumber(router.query.id);
+  }, [router.isReady]);
 
-  const taskNumber: any = param1; // Later will get it another way. And then make sure tasknumber doesn't get too high.
-  console.log(taskNumber);
-
+  const [taskNumber, setTaskNumber] = useState<any>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
 
