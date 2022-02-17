@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { SingleValue } from "react-select";
+import Select from "react-select";
 import { AssessmentType } from "../types/Types";
 
 interface Option {

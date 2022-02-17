@@ -64,11 +64,11 @@ const Assessment: NextPage = () => {
             PreDescription={"Oppgave " + taskNumber}
             DescriptionTitle={taskTitle}
             Description={taskDescription}
-          ></Expand>
+          />
           <Expand
             DescriptionTitle="Marker's guide"
             Description={markersGuideDescription}
-          ></Expand>
+          />
         </div>
 
         {/* Display two answers next to eachother when max items is four or less  */}
@@ -110,26 +110,25 @@ const Assessment: NextPage = () => {
           <div
             className={styles.upArrow}
             onClick={() => changePage("back")}
-          ></div>
+          />
         ) : null}
         {answers.length - 1 >= currentPage * maxItemsPerPage ? (
           <div
             className={styles.downArrow}
             onClick={() => changePage("next")}
-          ></div>
+          />
         ) : null}
-        {currentPage * maxItemsPerPage >= answers.length - 1 ? (
-          <Link href="/approval">
+        {currentPage * maxItemsPerPage >= answers.length - 1 ?
+          <Link href="/approval" passHref>
             <Button
               variant="contained"
               onClick={() => saveAssessments(assessments, 0)}
             >
-              {" "}
               {/*need to figure out a key, currently set to 0*/}
               Finish
             </Button>
           </Link>
-        ) : null}
+        : null}
       </div>
     </div>
   );

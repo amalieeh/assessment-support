@@ -53,7 +53,7 @@ const Approval: NextPage = () => {
           ))}
         </Grid>
         <div style={{ padding: 20 }}>
-          <Link href="/assessment">
+          <Link href="/assessment" passHref>
             <Button variant="contained">Back</Button>
           </Link>
         </div>

@@ -22,8 +22,7 @@ const Task: NextPage = () => {
                 variant="contained"
                 sx={{ width: 73, height: 73, fontSize: 25 }}
               >
-                {" "}
-                {taskNum + 1}{" "}
+                {taskNum + 1}
               </Button>
             </Link>
           ))}
