@@ -33,6 +33,13 @@ const Assessment: NextPage = () => {
     );
   }, [router.isReady]);
 
+  // to make sure setAssessments is being set, otherwise it is empty
+  useEffect(() => {
+    if (assessments.length == 0) {
+      setAssessments(p);
+    }
+  });
+
   const [taskNumber, setTaskNumber] = useState<any>("");
   const [taskTitle, setTaskTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -74,10 +81,7 @@ const Assessment: NextPage = () => {
       <main className={styles.main}>
         <div className={styles.grid}>
           <Expand
-<<<<<<< HEAD
             PreDescription={"Oppgave " + taskNumber}
-=======
->>>>>>> bbd093b (add taskTitle)
             DescriptionTitle={taskTitle}
             Description={taskDescription}
           />
@@ -123,10 +127,7 @@ const Assessment: NextPage = () => {
 
       <div className={styles.footer}>
         {currentPage > 1 ? (
-          <div
-            className={styles.upArrow}
-            onClick={() => changePage("back")}
-          />
+          <div className={styles.upArrow} onClick={() => changePage("back")} />
         ) : null}
         {answers.length - 1 >= currentPage * maxItemsPerPage ? (
           <div
@@ -134,7 +135,7 @@ const Assessment: NextPage = () => {
             onClick={() => changePage("next")}
           />
         ) : null}
-        {currentPage * maxItemsPerPage >= answers.length - 1 ?
+        {currentPage * maxItemsPerPage >= answers.length - 1 ? (
           <Link href="/approval" passHref>
             <Button
               variant="contained"

@@ -16,9 +16,6 @@ const Task: NextPage = () => {
       <main style={{ display: "flex", justifyContent: "center" }}>
         <Grid container gap={4} sx={{ maxWidth: 1230 }}>
           {taskNumbers.map((taskNum: number) => (
-<<<<<<< HEAD
-            <Link key={taskNum + 1} href={"/assessment"} passHref>
-=======
             <Link
               key={taskNum + 1}
               href={{
@@ -27,18 +24,12 @@ const Task: NextPage = () => {
               }}
               passHref
             >
->>>>>>> 16fd370 (wip: pass param on routing from task to assessment)
               <Button
                 key={taskNum + 1}
                 variant="contained"
                 sx={{ width: 73, height: 73, fontSize: 25 }}
               >
-<<<<<<< HEAD
                 {taskNum + 1}
-=======
-                {" "}
-                {taskNum + 1}{" "}
->>>>>>> 16fd370 (wip: pass param on routing from task to assessment)
               </Button>
             </Link>
           ))}
