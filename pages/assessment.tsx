@@ -25,7 +25,7 @@ const Assessment: NextPage = () => {
   // isReady: boolean - checks whether the router fields are updated client-side and ready for use.
   useEffect(() => {
     if (!router.isReady) return;
-    setTaskNumber(router.query.id);
+    setTaskNumber(router.query.task);
   }, [router.isReady]);
 
   const [taskNumber, setTaskNumber] = useState<any>("");

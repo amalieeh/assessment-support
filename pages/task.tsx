@@ -23,7 +23,7 @@ const Task: NextPage = () => {
               key={taskNum + 1}
               href={{
                 pathname: "/assessment",
-                query: { id: taskNum + 1 },
+                query: { task: taskNum + 1 },
               }}
               passHref
             >
