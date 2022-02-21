@@ -26,9 +26,15 @@ const Assessment: NextPage = () => {
   useEffect(() => {
     if (!router.isReady) return;
     setTaskNumber(router.query.task);
+    setTaskTitle(
+      data.ext_inspera_candidates[0].result.ext_inspera_questions[
+        router.query.task - 1
+      ].ext_inspera_questionTitle
+    );
   }, [router.isReady]);
 
   const [taskNumber, setTaskNumber] = useState<any>("");
+  const [taskTitle, setTaskTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
 
@@ -68,7 +74,10 @@ const Assessment: NextPage = () => {
       <main className={styles.main}>
         <div className={styles.grid}>
           <Expand
+<<<<<<< HEAD
             PreDescription={"Oppgave " + taskNumber}
+=======
+>>>>>>> bbd093b (add taskTitle)
             DescriptionTitle={taskTitle}
             Description={taskDescription}
           />
