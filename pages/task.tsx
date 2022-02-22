@@ -16,7 +16,14 @@ const Task: NextPage = () => {
       <main style={{ display: "flex", justifyContent: "center" }}>
         <Grid container gap={4} sx={{ maxWidth: 1230 }}>
           {taskNumbers.map((taskNum: number) => (
-            <Link key={taskNum + 1} href={"/assessment"} passHref>
+            <Link
+              key={taskNum + 1}
+              href={{
+                pathname: "/assessment",
+                query: { task: taskNum + 1 },
+              }}
+              passHref
+            >
               <Button
                 key={taskNum + 1}
                 variant="contained"

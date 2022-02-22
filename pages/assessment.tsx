@@ -15,13 +15,28 @@ import { Button } from "@mui/material";
 import Header from "../components/header";
 import findIndex from "lodash/findIndex";
 import cloneDeep from "lodash/cloneDeep";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Assessment: NextPage = () => {
-  const taskNumber: number = 2; // Later will get it another way. And then make sure tasknumber doesn't get too high.
-  const taskTitle: string =
-    data.ext_inspera_candidates[0].result.ext_inspera_questions[taskNumber - 1]
-      .ext_inspera_questionTitle;
+  // create router object
+  const router = useRouter();
 
+  // isReady: boolean - checks whether the router fields are updated client-side and ready for use.
+  useEffect(() => {
+    if (!router.isReady) return;
+    setTaskNumber(router.query.task);
+    setTaskTitle(
+      data.ext_inspera_candidates[0].result.ext_inspera_questions[
+        router.query.task - 1
+      ].ext_inspera_questionTitle
+    );
+  }, [router.isReady, router.query.task]);
+
+ 
+
+  const [taskNumber, setTaskNumber] = useState<any>("");
+  const [taskTitle, setTaskTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
 
@@ -33,6 +48,13 @@ const Assessment: NextPage = () => {
   const answers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
   const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
+
+   // to make sure setAssessments is being set, otherwise it is empty
+   useEffect(() => {
+    if (assessments.length == 0) {
+      setAssessments(p);
+    }
+  }, [assessments.length, p]);
 
   const changePage = (direction: string): void => {
     if (direction == "back") {
@@ -107,10 +129,7 @@ const Assessment: NextPage = () => {
 
       <div className={styles.footer}>
         {currentPage > 1 ? (
-          <div
-            className={styles.upArrow}
-            onClick={() => changePage("back")}
-          />
+          <div className={styles.upArrow} onClick={() => changePage("back")} />
         ) : null}
         {answers.length - 1 >= currentPage * maxItemsPerPage ? (
           <div
@@ -118,7 +137,7 @@ const Assessment: NextPage = () => {
             onClick={() => changePage("next")}
           />
         ) : null}
-        {currentPage * maxItemsPerPage >= answers.length - 1 ?
+        {currentPage * maxItemsPerPage >= answers.length - 1 ? (
           <Link href="/approval" passHref>
             <Button
               variant="contained"
@@ -128,7 +147,7 @@ const Assessment: NextPage = () => {
               Finish
             </Button>
           </Link>
-        : null}
+        ) : null}
       </div>
     </div>
   );
