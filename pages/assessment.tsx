@@ -139,7 +139,10 @@ const Assessment: NextPage = () => {
           />
         ) : null}
         {currentPage * maxItemsPerPage >= answers.length - 1 ? (
-          <Link href="/approval" passHref>
+          <Link href={{
+            pathname: "/approval",
+            query: { task: taskNumber},
+          }} passHref>
             <Button
               variant="contained"
               onClick={() => saveAssessments(assessments, 0)}

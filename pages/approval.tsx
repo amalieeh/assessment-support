@@ -7,8 +7,21 @@ import Grid from "@mui/material/Grid";
 import ApprovalTextbox from "../components/approvalTextbox";
 import { approvaltextboxprop } from "../types/Types";
 import * as React from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const Approval: NextPage = () => {
+  // create router object
+  const router = useRouter();
+
+  // isReady: boolean - checks whether the router fields are updated client-side and ready for use.
+  useEffect(() => {
+    if (!router.isReady) return;
+    setTaskNumber(router.query.task);
+  }, [router.isReady, router.query.task]);
+
+  const [taskNumber, setTaskNumber]  = useState<any>("");
+
   const answers: approvaltextboxprop[] = [
     {
       answerId: "1006_23424",
@@ -53,7 +66,10 @@ const Approval: NextPage = () => {
           ))}
         </Grid>
         <div style={{ padding: 20 }}>
-          <Link href="/assessment" passHref>
+          <Link href={{
+            pathname: "/assessment",
+            query: { task: taskNumber},
+          }} passHref>
             <Button variant="contained">Back</Button>
           </Link>
         </div>
