@@ -5,11 +5,11 @@ import { useState } from "react";
 import data from "../data/IT2810Høst2018.json";
 import Expand from "../components/expand";
 import {
-  AnswerType,
   insperaDataToTextboxObject,
   saveAssessments,
 } from "../functions/helpFunctions";
-import { AssessmentType } from "../types/Types";
+import { sortAnswers } from "../functions/sortAlgorithms";
+import { AssessmentType, AnswerType } from "../types/Types";
 import Link from "next/link";
 import { Button } from "@mui/material";
 import Header from "../components/header";
@@ -46,6 +46,7 @@ const Assessment: NextPage = () => {
     "let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.";
 
   const answers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
+  sortAnswers(answers, "length_hl");
   const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
