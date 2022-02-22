@@ -31,14 +31,9 @@ const Assessment: NextPage = () => {
         router.query.task - 1
       ].ext_inspera_questionTitle
     );
-  }, [router.isReady]);
+  }, [router.isReady, router.query.task]);
 
-  // to make sure setAssessments is being set, otherwise it is empty
-  useEffect(() => {
-    if (assessments.length == 0) {
-      setAssessments(p);
-    }
-  });
+ 
 
   const [taskNumber, setTaskNumber] = useState<any>("");
   const [taskTitle, setTaskTitle] = useState<string>("");
@@ -53,6 +48,13 @@ const Assessment: NextPage = () => {
   const answers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
   const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
+
+   // to make sure setAssessments is being set, otherwise it is empty
+   useEffect(() => {
+    if (assessments.length == 0) {
+      setAssessments(p);
+    }
+  }, [assessments.length, p]);
 
   const changePage = (direction: string): void => {
     if (direction == "back") {
