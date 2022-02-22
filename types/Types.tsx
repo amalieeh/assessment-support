@@ -13,3 +13,11 @@ export interface AssessmentType {
   maxPoints: number;
   score: number | null;
 }
+
+export interface AnswerType {
+  assessmentId: string;
+  answer: string;
+  candidateId: number;
+  maxPoints: number;
+  taskNumber: number;
+}
