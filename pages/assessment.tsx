@@ -51,7 +51,7 @@ const Assessment: NextPage = () => {
   const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
-  //reAlgorithm(assessments);
+  reAlgorithm(assessments);
 
    // to make sure setAssessments is being set, otherwise it is empty
    useEffect(() => {

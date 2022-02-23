@@ -101,11 +101,12 @@ export function clearLocalStorage(): void {
 }
 
 export function reAlgorithm(assessments : AssessmentType[]) {
-  chooseFrequentAssessmentBasedOnScore(ass, false)
+  //chooseFrequentAssessmentBasedOnScore(ass, false)
+  chooseCorrelatedAssessment(ass)
 }
 
 function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentType[], b : boolean) {
-  const numberOfAGivenScore = Array.from({length: 5}, () => 0); // number of times x points are given, points = index
+  const numberOfAGivenScore = Array.from({length: assessments[0].maxPoints+1 }, () => 0); // number of times x points are given, points = index
   var hasNullScore = false;
   assessments.map((assessment) => {
     assessment.score == null ? hasNullScore = true :
@@ -116,7 +117,7 @@ function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentType[], b 
   if (b) {
     n = Math.max(...numberOfAGivenScore);
   } else {
-    const reducedNumberOfAGivenScore = numberOfAGivenScore.filter(n => n != 0);
+    const reducedNumberOfAGivenScore = numberOfAGivenScore.filter(n => n <= 0);
     n = Math.min(...reducedNumberOfAGivenScore);
   }
     const res : number[] = [];
@@ -125,6 +126,40 @@ function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentType[], b 
     const score = res[Math.floor(Math.random() * res.length)];
     const assessmentsWithMostFrequentScore =  assessments.filter(assessment => assessment.score == score);
 }
+
+// Returns only 1 answer so it is not overwhelming
+// To unveil bias towards longer answers
+function chooseCorrelatedAssessment(assessments: AssessmentType[]) {
+  const maxPoints = assessments[0].maxPoints
+  const allScores = Array.from({length: maxPoints+1}, (v, i) => i)   // if len=5, gives [0, 1, 2, 3, 4]
+  
+  // Get the top scores ranging from 0.75*maxpoints to maxpoints
+  const topScores: number[] = allScores.slice(-(Math.floor((maxPoints*0.25))+1)) // +1 to get the number on the right index
+  const noNullScoreAssessments = assessments.filter(a => a.score != null);
+  const topScoreAssessments = noNullScoreAssessments.filter(assessment =>  topScores.includes(assessment.score));
+
+
+  var lengthLongestAnswer = 0;
+  assessments.map(a => a.answer.length > lengthLongestAnswer ? lengthLongestAnswer = a.answer.length : null); // tror man kan bruke reduce elns i stedet
+  var longAnswerAssessments: AssessmentType[] = assessments.filter((v) => v.answer.length >= 0.75*lengthLongestAnswer)
+
+
+  // Get the answers that are longest and has a top score
+ const correlatedAnswers: AssessmentType[] = longAnswerAssessments.filter(a => topScoreAssessments.includes(a))
+
+ var correlatedAssessment : AssessmentType;
+
+ // Choose one answer to return
+ if (correlatedAnswers.length > 1) {
+   correlatedAssessment = correlatedAnswers[Math.floor(Math.random() * (correlatedAnswers.length))]
+ } else {
+   correlatedAssessment = correlatedAnswers[0]
+ }
+}
+
+
+
+
 
 
 const ass: AssessmentType[] = [
@@ -153,6 +188,14 @@ const ass: AssessmentType[] = [
     score: 1,
   },
   {
+    assessmentId: "20001",
+    answer: "This is mylong answer as an example for this since we need to check how it works with lots of text",
+    candidateId: 1003,
+    taskNumber: 1,
+    maxPoints: 2,
+    score: 2,
+  },
+  {
     assessmentId: "1004_23424",
     answer: "This is my answer",
     candidateId: 1018,
@@ -161,4 +204,3 @@ const ass: AssessmentType[] = [
     score: 2,
   },
 ];
-
