@@ -99,3 +99,66 @@ export function clearLocalStorage(): void {
     localStorage.clear();
   }
 }
+
+export function reAlgorithm(assessments : AssessmentType[]) {
+  chooseFrequentAssessmentBasedOnScore(ass, false)
+}
+
+function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentType[], b : boolean) {
+  const numberOfAGivenScore = Array.from({length: 5}, () => 0); // number of times x points are given, points = index
+  var hasNullScore = false;
+  assessments.map((assessment) => {
+    assessment.score == null ? hasNullScore = true :
+    numberOfAGivenScore[assessment.score] += 1
+  });
+
+  var n : number;
+  if (b) {
+    n = Math.max(...numberOfAGivenScore);
+  } else {
+    const reducedNumberOfAGivenScore = numberOfAGivenScore.filter(n => n != 0);
+    n = Math.min(...reducedNumberOfAGivenScore);
+  }
+    const res : number[] = [];
+    numberOfAGivenScore.forEach((item, index) => item === n ? res.push(index): null);
+
+    const score = res[Math.floor(Math.random() * res.length)];
+    const assessmentsWithMostFrequentScore =  assessments.filter(assessment => assessment.score == score);
+}
+
+
+const ass: AssessmentType[] = [
+  {
+    assessmentId: "100",
+    answer: "This is my greatest answer",
+    candidateId: 100,
+    taskNumber: 1,
+    maxPoints: 2,
+    score: 1,
+  },
+  {
+    assessmentId: "1007_23424",
+    answer: "This is my answer",
+    candidateId: 101,
+    taskNumber: 1,
+    maxPoints: 2,
+    score: 1,
+  },
+  {
+    assessmentId: "20000",
+    answer: "This is my very very long answer as an example for this since we need to check how it works with lots of text",
+    candidateId: 1001,
+    taskNumber: 1,
+    maxPoints: 2,
+    score: 1,
+  },
+  {
+    assessmentId: "1004_23424",
+    answer: "This is my answer",
+    candidateId: 1018,
+    taskNumber: 1,
+    maxPoints: 2,
+    score: 2,
+  },
+];
+

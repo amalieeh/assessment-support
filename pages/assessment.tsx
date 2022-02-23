@@ -6,6 +6,7 @@ import data from "../data/IT2810Høst2018.json";
 import Expand from "../components/expand";
 import {
   insperaDataToTextboxObject,
+  reAlgorithm,
   saveAssessments,
 } from "../functions/helpFunctions";
 import { sortAnswers } from "../functions/sortAlgorithms";
@@ -50,6 +51,8 @@ const Assessment: NextPage = () => {
   const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
+  //reAlgorithm(assessments);
+
    // to make sure setAssessments is being set, otherwise it is empty
    useEffect(() => {
     if (assessments.length == 0) {
@@ -58,7 +61,7 @@ const Assessment: NextPage = () => {
   }, [assessments.length, p]);
 
   const changePage = (direction: string): void => {
-    if (direction == "back") {
+      if (direction == "back") {
       setCurrentPage(currentPage - 1);
     } else if (direction == "next") {
       setCurrentPage(currentPage + 1);
