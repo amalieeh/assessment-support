@@ -6,7 +6,7 @@ import data from "../data/IT2810Høst2018.json";
 import Expand from "../components/expand";
 import {
   insperaDataToTextboxObject,
-  reAlgorithm,
+  chooseCorrelatedAssessment,
   saveAssessments,
 } from "../functions/helpFunctions";
 import { sortAnswers } from "../functions/sortAlgorithms";
@@ -50,9 +50,11 @@ const Assessment: NextPage = () => {
   sortAnswers(answers, "length_hl");
   const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
+  const [reAssessments, setReAssessments] = useState<AssessmentType[]>([]);
 
-  reAlgorithm(assessments);
-
+  const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
+  const endIndexBatch = currentPage * maxItemsPerPage;
+  
    // to make sure setAssessments is being set, otherwise it is empty
    useEffect(() => {
     if (assessments.length == 0) {
@@ -64,7 +66,19 @@ const Assessment: NextPage = () => {
       if (direction == "back") {
       setCurrentPage(currentPage - 1);
     } else if (direction == "next") {
+      appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch));
       setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const appendReAssessments = (batch: AssessmentType[]) =>{
+    const ass = chooseCorrelatedAssessment(batch);
+    if (ass!= null && reAssessments.length < Math.floor(assessments.length*0.2)) {
+        if (!reAssessments?.includes(ass) ) {
+        const newArr: AssessmentType[] = cloneDeep(reAssessments);
+        newArr.push(ass);
+        setReAssessments(newArr);
+      }
     }
   };
 
@@ -92,7 +106,7 @@ const Assessment: NextPage = () => {
             Description={taskDescription}
           />
           <Expand
-            DescriptionTitle="Marker's guide"
+            DescriptionTitle="Sensorveiledning"
             Description={markersGuideDescription}
           />
         </div>
@@ -101,10 +115,7 @@ const Assessment: NextPage = () => {
         {maxItemsPerPage <= 4 ? (
           <div className={styles.grid4answers}>
             {assessments
-              .slice(
-                currentPage * maxItemsPerPage - maxItemsPerPage,
-                currentPage * maxItemsPerPage
-              )
+              .slice(startIndexBatch, endIndexBatch)
               .map((assessment: AssessmentType) => (
                 <Textbox
                   key={assessment.assessmentId}
