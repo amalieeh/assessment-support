@@ -15,7 +15,7 @@ const Expand: React.FC<Expandprop> = (props: Expandprop) => {
     <div style={{ margin: "1rem" }}>
       <Accordion
         sx={{
-          width: 600,
+          width: 400,
           boxShadow: "none",
         }}
       >

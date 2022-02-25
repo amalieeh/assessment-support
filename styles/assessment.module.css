@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* background-color: aquamarine; */
 }
 
 .footer {
@@ -20,17 +21,32 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  /* background-color: bisque; */
 }
 
 .grid,
 .grid4answers {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
+  /* justify-content: center; */
   flex-wrap: wrap;
+  padding-left: 3em;
+  /* background-color: pink; */
 }
 .grid4answers {
   max-width: 115em;
+}
+
+.alignInfo {
+  display: flex;
+  /* background-color: orange; */
+}
+
+.expandInfo {
+  display: flex;
+  flex-direction: column;
+  padding-left: 2em;
+  /* background-color: rgb(241, 196, 255); */
 }
 
 .rightArrow {
