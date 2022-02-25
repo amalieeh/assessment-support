@@ -105,13 +105,12 @@ const Assessment: NextPage = () => {
 
   return (
     <div className={styles.container}>
-      <Header data={data} />
+      <Header data={data} taskNumber={taskNumber} description={taskTitle} />
       <main className={styles.main}>
         <div className={styles.alignInfo}>
           <div className={styles.expandInfo}>
             <Expand
-              PreDescription={"Oppgave " + taskNumber}
-              DescriptionTitle={taskTitle}
+              DescriptionTitle="Oppgavebeskrivelse"
               Description={taskDescription}
             />
             <Expand

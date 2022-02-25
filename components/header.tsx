@@ -4,18 +4,23 @@ import Link from "next/link";
 
 interface Headerprops {
   data: any;
+  taskNumber: number;
   description?: string;
 }
 
 const Header: React.FC<Headerprops> = (props: Headerprops) => {
   return (
     <div className={styles.headerstyle}>
-      <Link href="/">
-        <h1 className={styles.makeClickable}>
-          {props.data.ext_inspera_assessmentRunTitle}
+      {props.description ? (
+        <h1>
+          Oppgave {props.taskNumber}: {props.description}
         </h1>
+      ) : null}
+      <Link href="/">
+        <h2 className={styles.makeClickable}>
+          {props.data.ext_inspera_assessmentRunTitle}
+        </h2>
       </Link>
-      {props.description ? <h2>{props.description}</h2> : null}
     </div>
   );
 };
