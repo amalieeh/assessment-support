@@ -99,3 +99,52 @@ export function clearLocalStorage(): void {
     localStorage.clear();
   }
 }
+
+// b = true will return outliers among those score with a high freq
+export function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentType[], isHighFrequency : boolean) {
+  const numberOfAGivenScore = Array.from({length: assessments[0].maxPoints+1}, () => 0); // number of times x points are given, points = index
+  var hasNullScore = false;                      
+  assessments.map((assessment) => {
+    assessment.score == null ? hasNullScore = true :
+    numberOfAGivenScore[assessment.score] += 1
+  });
+
+  var n : number;
+  if (isHighFrequency) {
+    n = Math.max(...numberOfAGivenScore); 
+  } else {
+    const reducedNumberOfAGivenScore = numberOfAGivenScore.filter(n => n <= 0);
+    n = Math.min(...reducedNumberOfAGivenScore);
+  }
+    const res : number[] = [];
+    numberOfAGivenScore.forEach((item, index) => item === n ? res.push(index): null);
+
+    const score = res[Math.floor(Math.random() * res.length)];
+    const outlierAssessments =  assessments.filter(assessment => assessment.score == score);
+}
+
+// Returns only 1 answer so it is not overwhelming
+// To unveil bias towards longer answers
+export function chooseCorrelatedAssessment(assessments: AssessmentType[]) : AssessmentType | null {
+  const maxPoints = assessments[0].maxPoints
+  const allScores = Array.from({length: maxPoints+1}, (v, i) => i)   // if len=5, gives [0, 1, 2, 3, 4]
+  // Get the top scores ranging from 0.75*maxpoints to maxpoints
+  const topScores: number[] = allScores.slice(-(Math.floor((maxPoints*0.25))+1)) // The +1 is to get the number on the right index 
+  
+  const noNullScoreAssessments = assessments.filter(a => a.score != null);
+  const topScoreAssessments = noNullScoreAssessments.filter(assessment =>  topScores.includes(assessment.score));
+
+  var lengthLongestAnswer = 0;
+  assessments.map(a => a.answer.length > lengthLongestAnswer ? lengthLongestAnswer = a.answer.length : null); // tror man kan bruke reduce elns i stedet
+  var longAnswerAssessments: AssessmentType[] = assessments.filter((v) => v.answer.length >= 0.75*lengthLongestAnswer)
+
+  // Get the answers that are longest and has a top score
+  const correlatedAssessments: AssessmentType[] = longAnswerAssessments.filter(a => topScoreAssessments.includes(a))
+
+ // Choose one answer to return
+  if (correlatedAssessments.length >= 1) {
+    const index = Math.floor(Math.random() * (correlatedAssessments.length))
+    return correlatedAssessments[index]
+  }  
+  return null
+}

@@ -6,6 +6,7 @@ import data from "../data/IT2810Høst2018.json";
 import Expand from "../components/expand";
 import {
   insperaDataToTextboxObject,
+  chooseCorrelatedAssessment,
   saveAssessments,
 } from "../functions/helpFunctions";
 import { sortAnswers } from "../functions/sortAlgorithms";
@@ -49,7 +50,11 @@ const Assessment: NextPage = () => {
   sortAnswers(answers, "length_hl");
   const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
+  const [reAssessments, setReAssessments] = useState<AssessmentType[]>([]);
 
+  const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
+  const endIndexBatch = currentPage * maxItemsPerPage;
+  
    // to make sure setAssessments is being set, otherwise it is empty
    useEffect(() => {
     if (assessments.length == 0) {
@@ -58,10 +63,23 @@ const Assessment: NextPage = () => {
   }, [assessments.length, p]);
 
   const changePage = (direction: string): void => {
-    if (direction == "back") {
+      if (direction == "back") {
       setCurrentPage(currentPage - 1);
     } else if (direction == "next") {
+      appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch));
       setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const appendReAssessments = (batch: AssessmentType[]) =>{
+    const assessment = chooseCorrelatedAssessment(batch);
+    // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
+    if (assessment!= null && reAssessments.length < Math.floor(assessments.length*0.2)) {
+        if (reAssessments.filter(a => a.assessmentId == assessment.assessmentId).length < 1 ) {
+        const newArr: AssessmentType[] = cloneDeep(reAssessments);
+        newArr.push(assessment);
+        setReAssessments(newArr);
+      }
     }
   };
 
@@ -89,7 +107,7 @@ const Assessment: NextPage = () => {
             Description={taskDescription}
           />
           <Expand
-            DescriptionTitle="Marker's guide"
+            DescriptionTitle="Sensorveiledning"
             Description={markersGuideDescription}
           />
         </div>
@@ -98,10 +116,7 @@ const Assessment: NextPage = () => {
         {maxItemsPerPage <= 4 ? (
           <div className={styles.grid4answers}>
             {assessments
-              .slice(
-                currentPage * maxItemsPerPage - maxItemsPerPage,
-                currentPage * maxItemsPerPage
-              )
+              .slice(startIndexBatch, endIndexBatch)
               .map((assessment: AssessmentType) => (
                 <Textbox
                   key={assessment.assessmentId}
