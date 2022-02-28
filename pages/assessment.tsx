@@ -5,6 +5,7 @@ import { useState } from "react";
 import data from "../data/IT2810Høst2018.json";
 import Expand from "../components/expand";
 import {
+  clearLocalStorage,
   insperaDataToTextboxObject,
   chooseCorrelatedAssessment,
   saveAssessments,
