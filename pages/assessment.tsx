@@ -72,11 +72,12 @@ const Assessment: NextPage = () => {
   };
 
   const appendReAssessments = (batch: AssessmentType[]) =>{
-    const ass = chooseCorrelatedAssessment(batch);
-    if (ass!= null && reAssessments.length < Math.floor(assessments.length*0.2)) {
-        if (!reAssessments?.includes(ass) ) {
+    const assessment = chooseCorrelatedAssessment(batch);
+    // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
+    if (assessment!= null && reAssessments.length < Math.floor(assessments.length*0.2)) {
+        if (reAssessments.filter(a => a.assessmentId == assessment.assessmentId).length < 1 ) {
         const newArr: AssessmentType[] = cloneDeep(reAssessments);
-        newArr.push(ass);
+        newArr.push(assessment);
         setReAssessments(newArr);
       }
     }
