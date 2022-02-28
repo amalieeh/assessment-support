@@ -84,7 +84,9 @@ export function saveBatch(batch: AssessmentType[], taskNumber: number) {
 
     // add assessments from batch to assessments list locally
     batch.map((assessment) => {
-      assessments.push(assessment);
+      if (assessment.score != null) {
+        assessments.push(assessment);
+      }
     });
 
     localStorage.setItem(key.toString(), JSON.stringify(assessments));
