@@ -71,25 +71,22 @@ export function saveAssessments(
 ): void {
   // local storage is a property of object window. Accessing localStroage is not possible until React component has mounted
   if (typeof window !== "undefined") {
-    {
-      /*might need similiar code later, therefore kept but commented out*/
-    }
-
-    //  // retrieve data from localStorage and convert it to array
-    // let candidateAssessments: AssessmentType[] =
-    //   JSON.parse(localStorage.getItem(key.toString()) as string) || [];
-    // console.log(candidateAssessments);
-
-    //  // create new object
-    //   let newAssessment: AssessmentType[] = {
-    //       'taskNumber': taskNumber,
-    //       'points': points
-    //   }
-
-    //   // add new object to array of assessments locally
-    //   candidateAssessments.push(assessments)
-
     // store array as a string
+    localStorage.setItem(key.toString(), JSON.stringify(assessments));
+  }
+}
+
+export function saveBatch(batch: AssessmentType[], taskNumber: number) {
+  const key = taskNumber.toString() + "_assessments";
+  if (typeof window !== "undefined") {
+    let assessments: AssessmentType[] =
+      JSON.parse(localStorage.getItem(key) as string) || [];
+
+    // add assessments from batch to assessments list locally
+    batch.map((assessment) => {
+      assessments.push(assessment);
+    });
+
     localStorage.setItem(key.toString(), JSON.stringify(assessments));
   }
 }
