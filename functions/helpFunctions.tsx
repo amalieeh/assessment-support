@@ -101,7 +101,7 @@ export function clearLocalStorage(): void {
 }
 
 // b = true will return outliers among those score with a high freq
-export function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentType[], b : boolean) {
+export function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentType[], isHighFrequency : boolean) {
   const numberOfAGivenScore = Array.from({length: assessments[0].maxPoints+1}, () => 0); // number of times x points are given, points = index
   var hasNullScore = false;                      
   assessments.map((assessment) => {
@@ -110,7 +110,7 @@ export function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentTyp
   });
 
   var n : number;
-  if (b) {
+  if (isHighFrequency) {
     n = Math.max(...numberOfAGivenScore); 
   } else {
     const reducedNumberOfAGivenScore = numberOfAGivenScore.filter(n => n <= 0);
@@ -120,7 +120,7 @@ export function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentTyp
     numberOfAGivenScore.forEach((item, index) => item === n ? res.push(index): null);
 
     const score = res[Math.floor(Math.random() * res.length)];
-    const assessmentWithMostFrequentScore =  assessments.filter(assessment => assessment.score == score);
+    const outlierAssessments =  assessments.filter(assessment => assessment.score == score);
 }
 
 // Returns only 1 answer so it is not overwhelming
@@ -139,12 +139,12 @@ export function chooseCorrelatedAssessment(assessments: AssessmentType[]) : Asse
   var longAnswerAssessments: AssessmentType[] = assessments.filter((v) => v.answer.length >= 0.75*lengthLongestAnswer)
 
   // Get the answers that are longest and has a top score
-  const correlatedAnswers: AssessmentType[] = longAnswerAssessments.filter(a => topScoreAssessments.includes(a))
+  const correlatedAssessments: AssessmentType[] = longAnswerAssessments.filter(a => topScoreAssessments.includes(a))
 
  // Choose one answer to return
-  if (correlatedAnswers.length >= 1) {
-    const index = Math.floor(Math.random() * (correlatedAnswers.length))
-    return correlatedAnswers[index]
+  if (correlatedAssessments.length >= 1) {
+    const index = Math.floor(Math.random() * (correlatedAssessments.length))
+    return correlatedAssessments[index]
   }  
   return null
 }
