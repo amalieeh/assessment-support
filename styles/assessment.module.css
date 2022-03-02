@@ -26,11 +26,21 @@
 .grid4answers {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
   flex-wrap: wrap;
+  padding-left: 3em;
 }
 .grid4answers {
   max-width: 115em;
+}
+
+.alignInfo {
+  display: flex;
+}
+
+.expandInfo {
+  display: flex;
+  flex-direction: column;
+  padding-left: 2em;
 }
 
 .rightArrow {

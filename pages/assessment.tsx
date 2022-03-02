@@ -34,8 +34,6 @@ const Assessment: NextPage = () => {
     );
   }, [router.isReady, router.query.task]);
 
- 
-
   const [taskNumber, setTaskNumber] = useState<any>("");
   const [taskTitle, setTaskTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -54,16 +52,16 @@ const Assessment: NextPage = () => {
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
-  
-   // to make sure setAssessments is being set, otherwise it is empty
-   useEffect(() => {
+
+  // to make sure setAssessments is being set, otherwise it is empty
+  useEffect(() => {
     if (assessments.length == 0) {
       setAssessments(p);
     }
   }, [assessments.length, p]);
 
   const changePage = (direction: string): void => {
-      if (direction == "back") {
+    if (direction == "back") {
       setCurrentPage(currentPage - 1);
     } else if (direction == "next") {
       appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch));
@@ -71,11 +69,17 @@ const Assessment: NextPage = () => {
     }
   };
 
-  const appendReAssessments = (batch: AssessmentType[]) =>{
+  const appendReAssessments = (batch: AssessmentType[]) => {
     const assessment = chooseCorrelatedAssessment(batch);
     // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
-    if (assessment!= null && reAssessments.length < Math.floor(assessments.length*0.2)) {
-        if (reAssessments.filter(a => a.assessmentId == assessment.assessmentId).length < 1 ) {
+    if (
+      assessment != null &&
+      reAssessments.length < Math.floor(assessments.length * 0.2)
+    ) {
+      if (
+        reAssessments.filter((a) => a.assessmentId == assessment.assessmentId)
+          .length < 1
+      ) {
         const newArr: AssessmentType[] = cloneDeep(reAssessments);
         newArr.push(assessment);
         setReAssessments(newArr);
@@ -83,7 +87,10 @@ const Assessment: NextPage = () => {
     }
   };
 
-  const setAssessment = (assessment: AssessmentType, newScore: number | string) => {
+  const setAssessment = (
+    assessment: AssessmentType,
+    newScore: number | string
+  ) => {
     const newAssessment = {
       ...assessment,
       score: newScore,
@@ -100,47 +107,51 @@ const Assessment: NextPage = () => {
     <div className={styles.container}>
       <Header data={data} />
       <main className={styles.main}>
-        <div className={styles.grid}>
-          <Expand
-            PreDescription={"Oppgave " + taskNumber}
-            DescriptionTitle={taskTitle}
-            Description={taskDescription}
-          />
-          <Expand
-            DescriptionTitle="Sensorveiledning"
-            Description={markersGuideDescription}
-          />
+        <div className={styles.alignInfo}>
+          <div className={styles.expandInfo}>
+            <Expand
+              PreDescription={"Oppgave " + taskNumber}
+              DescriptionTitle={taskTitle}
+              Description={taskDescription}
+            />
+            <Expand
+              DescriptionTitle="Sensorveiledning"
+              Description={markersGuideDescription}
+            />
+          </div>
+          {/* Display two answers next to eachother when max items is four or less  */}
+          {maxItemsPerPage <= 4 ? (
+            <div className={styles.grid4answers}>
+              {assessments
+                .slice(
+                  currentPage * maxItemsPerPage - maxItemsPerPage,
+                  currentPage * maxItemsPerPage
+                )
+                .map((assessment: AssessmentType) => (
+                  <Textbox
+                    key={assessment.assessmentId}
+                    assessment={assessment}
+                    setAssessment={setAssessment}
+                  />
+                ))}
+            </div>
+          ) : (
+            <div className={styles.grid}>
+              {assessments
+                .slice(
+                  currentPage * maxItemsPerPage - maxItemsPerPage,
+                  currentPage * maxItemsPerPage
+                )
+                .map((assessment: AssessmentType) => (
+                  <Textbox
+                    key={assessment.assessmentId}
+                    assessment={assessment}
+                    setAssessment={setAssessment}
+                  />
+                ))}
+            </div>
+          )}
         </div>
-
-        {/* Display two answers next to eachother when max items is four or less  */}
-        {maxItemsPerPage <= 4 ? (
-          <div className={styles.grid4answers}>
-            {assessments
-              .slice(startIndexBatch, endIndexBatch)
-              .map((assessment: AssessmentType) => (
-                <Textbox
-                  key={assessment.assessmentId}
-                  assessment={assessment}
-                  setAssessment={setAssessment}
-                />
-              ))}
-          </div>
-        ) : (
-          <div className={styles.grid}>
-            {assessments
-              .slice(
-                currentPage * maxItemsPerPage - maxItemsPerPage,
-                currentPage * maxItemsPerPage
-              )
-              .map((assessment: AssessmentType) => (
-                <Textbox
-                  key={assessment.assessmentId}
-                  assessment={assessment}
-                  setAssessment={setAssessment}
-                />
-              ))}
-          </div>
-        )}
       </main>
 
       <div className={styles.footer}>
@@ -154,10 +165,13 @@ const Assessment: NextPage = () => {
           />
         ) : null}
         {currentPage * maxItemsPerPage >= answers.length - 1 ? (
-          <Link href={{
-            pathname: "/approval",
-            query: { task: taskNumber},
-          }} passHref>
+          <Link
+            href={{
+              pathname: "/approval",
+              query: { task: taskNumber },
+            }}
+            passHref
+          >
             <Button
               variant="contained"
               onClick={() => saveAssessments(assessments, 0)}
