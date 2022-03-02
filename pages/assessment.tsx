@@ -48,7 +48,7 @@ const Assessment: NextPage = () => {
 
   const answers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
   sortAnswers(answers, "length_hl");
-  const p = answers.map((answer: AnswerType) => ({ score: null, ...answer }));
+  const p = answers.map((answer: AnswerType) => ({ score: "", ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
   const [reAssessments, setReAssessments] = useState<AssessmentType[]>([]);
 
@@ -83,7 +83,7 @@ const Assessment: NextPage = () => {
     }
   };
 
-  const setAssessment = (assessment: AssessmentType, newScore: number) => {
+  const setAssessment = (assessment: AssessmentType, newScore: number | string) => {
     const newAssessment = {
       ...assessment,
       score: newScore,
