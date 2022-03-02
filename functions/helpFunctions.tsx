@@ -84,7 +84,7 @@ export function saveBatch(batch: AssessmentType[], taskNumber: number) {
 
     // add assessments from batch to assessments list locally
     batch.map((assessment) => {
-      if (assessment.score != null) {
+      if (assessment.score != "") {
         // check if the assessment is already evaluated
         if (
           assessments.filter(function (a) {
