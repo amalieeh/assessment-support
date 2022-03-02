@@ -71,26 +71,40 @@ export function saveAssessments(
 ): void {
   // local storage is a property of object window. Accessing localStroage is not possible until React component has mounted
   if (typeof window !== "undefined") {
-    {
-      /*might need similiar code later, therefore kept but commented out*/
-    }
-
-    //  // retrieve data from localStorage and convert it to array
-    // let candidateAssessments: AssessmentType[] =
-    //   JSON.parse(localStorage.getItem(key.toString()) as string) || [];
-    // console.log(candidateAssessments);
-
-    //  // create new object
-    //   let newAssessment: AssessmentType[] = {
-    //       'taskNumber': taskNumber,
-    //       'points': points
-    //   }
-
-    //   // add new object to array of assessments locally
-    //   candidateAssessments.push(assessments)
-
     // store array as a string
     localStorage.setItem(key.toString(), JSON.stringify(assessments));
+  }
+}
+
+export function saveBatch(batch: AssessmentType[], taskNumber: number) {
+  const key = taskNumber.toString() + "_assessments";
+  if (typeof window !== "undefined") {
+    let assessments: AssessmentType[] =
+      JSON.parse(localStorage.getItem(key) as string) || [];
+
+    // add assessments from batch to assessments list locally
+    batch.map((assessment) => {
+      if (assessment.score !== "") {
+        // check if the assessment is already evaluated
+        if (
+          assessments.filter(function (a) {
+            return a.assessmentId === assessment.assessmentId;
+          }).length > 0
+        ) {
+          //remove existing assessment
+          assessments = assessments.filter(
+            (a) => a.assessmentId != assessment.assessmentId
+          );
+        }
+        assessments.push(assessment);
+      } else {
+        assessments = assessments.filter(
+          (a) => a.assessmentId != assessment.assessmentId
+        );
+      }
+    });
+
+    localStorage.setItem(key, JSON.stringify(assessments));
   }
 }
 
@@ -101,50 +115,77 @@ export function clearLocalStorage(): void {
 }
 
 // b = true will return outliers among those score with a high freq
-export function chooseFrequentAssessmentBasedOnScore(assessments : AssessmentType[], isHighFrequency : boolean) {
-  const numberOfAGivenScore = Array.from({length: assessments[0].maxPoints+1}, () => 0); // number of times x points are given, points = index
-  var hasNullScore = false;                      
+export function chooseFrequentAssessmentBasedOnScore(
+  assessments: AssessmentType[],
+  isHighFrequency: boolean
+) {
+  const numberOfAGivenScore = Array.from(
+    { length: assessments[0].maxPoints + 1 },
+    () => 0
+  ); // number of times x points are given, points = index
+  var hasNullScore = false;
   assessments.map((assessment) => {
-    assessment.score == null ? hasNullScore = true :
-    numberOfAGivenScore[assessment.score] += 1
+    assessment.score == null
+      ? (hasNullScore = true)
+      : (numberOfAGivenScore[assessment.score] += 1);
   });
 
-  var n : number;
+  var n: number;
   if (isHighFrequency) {
-    n = Math.max(...numberOfAGivenScore); 
+    n = Math.max(...numberOfAGivenScore);
   } else {
-    const reducedNumberOfAGivenScore = numberOfAGivenScore.filter(n => n <= 0);
+    const reducedNumberOfAGivenScore = numberOfAGivenScore.filter(
+      (n) => n <= 0
+    );
     n = Math.min(...reducedNumberOfAGivenScore);
   }
-    const res : number[] = [];
-    numberOfAGivenScore.forEach((item, index) => item === n ? res.push(index): null);
+  const res: number[] = [];
+  numberOfAGivenScore.forEach((item, index) =>
+    item === n ? res.push(index) : null
+  );
 
-    const score = res[Math.floor(Math.random() * res.length)];
-    const outlierAssessments =  assessments.filter(assessment => assessment.score == score);
+  const score = res[Math.floor(Math.random() * res.length)];
+  const outlierAssessments = assessments.filter(
+    (assessment) => assessment.score == score
+  );
 }
 
 // Returns only 1 answer so it is not overwhelming
 // To unveil bias towards longer answers
-export function chooseCorrelatedAssessment(assessments: AssessmentType[]) : AssessmentType | null {
-  const maxPoints = assessments[0].maxPoints
-  const allScores = Array.from({length: maxPoints+1}, (v, i) => i)   // if len=5, gives [0, 1, 2, 3, 4]
+export function chooseCorrelatedAssessment(
+  assessments: AssessmentType[]
+): AssessmentType | null {
+  const maxPoints = assessments[0].maxPoints;
+  const allScores = Array.from({ length: maxPoints + 1 }, (v, i) => i); // if len=5, gives [0, 1, 2, 3, 4]
   // Get the top scores ranging from 0.75*maxpoints to maxpoints
-  const topScores: number[] = allScores.slice(-(Math.floor((maxPoints*0.25))+1)) // The +1 is to get the number on the right index 
-  
-  const noNullScoreAssessments = assessments.filter(a => a.score != null);
-  const topScoreAssessments = noNullScoreAssessments.filter(assessment =>  topScores.includes(assessment.score));
+  const topScores: number[] = allScores.slice(
+    -(Math.floor(maxPoints * 0.25) + 1)
+  ); // The +1 is to get the number on the right index
+
+  const noNullScoreAssessments = assessments.filter((a) => a.score != null);
+  const topScoreAssessments = noNullScoreAssessments.filter((assessment) =>
+    topScores.includes(assessment.score)
+  );
 
   var lengthLongestAnswer = 0;
-  assessments.map(a => a.answer.length > lengthLongestAnswer ? lengthLongestAnswer = a.answer.length : null); // tror man kan bruke reduce elns i stedet
-  var longAnswerAssessments: AssessmentType[] = assessments.filter((v) => v.answer.length >= 0.75*lengthLongestAnswer)
+  assessments.map((a) =>
+    a.answer.length > lengthLongestAnswer
+      ? (lengthLongestAnswer = a.answer.length)
+      : null
+  ); // tror man kan bruke reduce elns i stedet
+  var longAnswerAssessments: AssessmentType[] = assessments.filter(
+    (v) => v.answer.length >= 0.75 * lengthLongestAnswer
+  );
 
   // Get the answers that are longest and has a top score
-  const correlatedAssessments: AssessmentType[] = longAnswerAssessments.filter(a => topScoreAssessments.includes(a))
+  const correlatedAssessments: AssessmentType[] = longAnswerAssessments.filter(
+    (a) => topScoreAssessments.includes(a)
+  );
 
- // Choose one answer to return
+  // Choose one answer to return
   if (correlatedAssessments.length >= 1) {
-    const index = Math.floor(Math.random() * (correlatedAssessments.length))
-    return correlatedAssessments[index]
-  }  
-  return null
+    const index = Math.floor(Math.random() * correlatedAssessments.length);
+    return correlatedAssessments[index];
+  }
+  return null;
 }

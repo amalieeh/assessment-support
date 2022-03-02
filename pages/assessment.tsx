@@ -8,6 +8,7 @@ import {
   insperaDataToTextboxObject,
   chooseCorrelatedAssessment,
   saveAssessments,
+  saveBatch,
 } from "../functions/helpFunctions";
 import { sortAnswers } from "../functions/sortAlgorithms";
 import { AssessmentType, AnswerType } from "../types/Types";
@@ -65,6 +66,7 @@ const Assessment: NextPage = () => {
       setCurrentPage(currentPage - 1);
     } else if (direction == "next") {
       appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch));
+      saveBatch(assessments.slice(startIndexBatch, endIndexBatch), taskNumber);
       setCurrentPage(currentPage + 1);
     }
   };
