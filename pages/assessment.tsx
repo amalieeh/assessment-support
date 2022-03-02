@@ -67,8 +67,8 @@ const Assessment: NextPage = () => {
       setCurrentPage(currentPage - 1);
     } else if (direction == "next") {
       appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch));
-      setCurrentPage(currentPage + 1);
       saveBatch(assessments.slice(startIndexBatch, endIndexBatch), taskNumber);
+      setCurrentPage(currentPage + 1);
     }
   };
 
