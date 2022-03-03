@@ -5,10 +5,26 @@ import Link from "next/link";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import ApprovalTextbox from "../components/approvalTextbox";
-import { approvaltextboxprop } from "../types/Types";
+import { approvaltextboxprop, AssessmentType } from "../types/Types";
 import * as React from "react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
+
+const getAssessments = (taskNumber: number) => {
+  const key = taskNumber.toString() + "_assessments";
+  if (typeof window !== "undefined") {
+    var assessments: AssessmentType[] =
+      JSON.parse(localStorage.getItem(key) as string) || [];
+    assessments.sort(function(a, b) {
+      return a.candidateId - b.candidateId;
+    })
+    return assessments
+  } else {
+    return [];
+  }
+
+}
 
 const Approval: NextPage = () => {
   // create router object
@@ -21,47 +37,22 @@ const Approval: NextPage = () => {
   }, [router.isReady, router.query.task]);
 
   const [taskNumber, setTaskNumber]  = useState<any>("");
-
-  const answers: approvaltextboxprop[] = [
-    {
-      answerId: "1006_23424",
-      candidateId: "1006",
-      answer: "This is my answer",
-      points: "1 p",
-    },
-    {
-      answerId: "1007_23424",
-      candidateId: "1007",
-      answer: "This is my answer",
-      points: "0 p",
-    },
-    {
-      answerId: "1016_23424",
-      candidateId: "1016",
-      answer:
-        "This is my very very long answer as an example for this since we need to check how it works with lots of text",
-      points: "2 p",
-    },
-    {
-      answerId: "1254_23424",
-      candidateId: "1254",
-      answer: "This is my answer",
-      points: "4 p",
-    },
-  ];
+  const assessments: AssessmentType[] = getAssessments(taskNumber);
 
   return (
     <div className={styles.container}>
       <h1>{data.ext_inspera_assessmentRunTitle}</h1>
       <main className={styles.main}>
         <Grid container gap={2} xs={5} item={true}>
-          {answers.map((answer: approvaltextboxprop) => (
+          {assessments.length <= 0 ? null : assessments.map((assessment: AssessmentType) => (
             <ApprovalTextbox
-              key={answer.answerId}
-              candidateId={answer.candidateId}
-              answer={answer.answer}
-              points={answer.points}
-              answerId={""}
+              key={assessment.assessmentId}
+              assessmentId={assessment.assessmentId}
+              answer={assessment.answer}
+              candidateId={assessment.candidateId}
+              taskNumber={assessment.taskNumber}
+              maxPoints={assessment.maxPoints}
+              score={assessment.score}
             />
           ))}
         </Grid>
