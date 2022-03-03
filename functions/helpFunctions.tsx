@@ -125,7 +125,7 @@ export function chooseFrequentAssessmentBasedOnScore(
   ); // number of times x points are given, points = index
   var hasNullScore = false;
   assessments.map((assessment) => {
-    assessment.score == null
+    assessment.score === ""
       ? (hasNullScore = true)
       : (numberOfAGivenScore[assessment.score] += 1);
   });
