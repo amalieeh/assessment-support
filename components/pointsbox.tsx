@@ -40,7 +40,7 @@ const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
 
   return (
     <Box>
-      <FormControl sx={{ marginBottom: 1, minWidth: 110 }} size="small">
+      <FormControl sx={{ minWidth: 110 }} size="small">
         <InputLabel id="demo-simple-select-label" sx={{ fontSize: 13.5 }}>
           Sett poeng
         </InputLabel>
@@ -70,29 +70,6 @@ const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
         </Select>
       </FormControl>
     </Box>
-
-    // <TextField
-    //   size="small"
-    //   label="Sett poeng"
-    //   sx={{ width: 110, marginBottom: 1 }}
-    //   InputLabelProps={{ style: { fontSize: 13.5 } }}
-    //   select
-    //   value={props.assessment.score}
-    //   onChange={handleChange}
-    // >
-    //   <MenuItem value="" sx={{ fontSize: 13.5 }}>
-    //     <em>Sett poeng</em>
-    //   </MenuItem>
-    //   {options.map((option: Option) => (
-    //     <MenuItem
-    //       key={option.value}
-    //       value={option.value}
-    //       sx={{ fontSize: 13.5 }}
-    //     >
-    //       {option.label}
-    //     </MenuItem>
-    //   ))}
-    // </TextField>
   );
 };
 

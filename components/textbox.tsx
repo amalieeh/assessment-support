@@ -11,7 +11,8 @@ interface textboxprop {
 const Textbox: React.FC<textboxprop> = (props: textboxprop) => {
   return (
     <div className={styles.card}>
-      <div className={styles.alignTitlePoints}>
+      <div className={styles.alignItems}>
+        Besvarelse fra kandidat: {props.assessment.candidateId}
         <Pointsbox
           assessment={props.assessment}
           setAssessment={props.setAssessment}
