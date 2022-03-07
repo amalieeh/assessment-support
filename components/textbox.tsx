@@ -2,6 +2,7 @@ import * as React from "react";
 import styles from "../styles/Textbox.module.css";
 import Pointsbox from "./pointsbox";
 import { AssessmentType } from "../types/Types";
+import parse from "html-react-parser";
 
 interface textboxprop {
   assessment: AssessmentType;
@@ -19,6 +20,7 @@ const Textbox: React.FC<textboxprop> = (props: textboxprop) => {
         />
       </div>
       <div className={styles.scrollable}>{props.assessment.answer}</div>
+      {parse(props.assessment.answer)}
     </div>
   );
 };
