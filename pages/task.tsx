@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import styles from "../styles/assessment.module.css";
+import mainStyles from "../styles/Main.module.css";
 import data from "../data/IT2810Høst2018.json";
 import Header from "../components/header";
 import { Button, Grid } from "@mui/material";
@@ -11,7 +11,7 @@ const Task: NextPage = () => {
   const taskNumbers: number[] = Array.from(Array(totalTasks).keys());
 
   return (
-    <div className={styles.container}>
+    <div className={mainStyles.container}>
       <Header data={data} description={"Oversikt over alle oppgavene"} />
       <main style={{ display: "flex", justifyContent: "center" }}>
         <Grid container gap={4} sx={{ maxWidth: 1230 }}>

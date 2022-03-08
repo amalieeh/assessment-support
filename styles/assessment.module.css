@@ -1,18 +1,3 @@
-.container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgb(240, 250, 255);
-}
-
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .footer {
   width: 100%;
   height: 100px;
@@ -44,7 +29,7 @@
 }
 
 .rightArrow {
-  border: solid #7e9aa3;
+  border: solid var(--dark-green);
   border-width: 0 5px 5px 0;
   display: inline-block;
   padding: 12px;
@@ -54,12 +39,12 @@
 }
 
 .rightArrow:hover {
-  border: solid #a7c4cd;
+  border: solid var(--light-green);
   border-width: 0 5px 5px 0;
 }
 
 .leftArrow {
-  border: solid #7e9aa3;
+  border: solid var(--dark-green);
   border-width: 0 5px 5px 0;
   display: inline-block;
   padding: 12px;
@@ -69,12 +54,12 @@
 }
 
 .leftArrow:hover {
-  border: solid #a7c4cd;
+  border: solid var(--light-green);
   border-width: 0 5px 5px 0;
 }
 
 .upArrow {
-  border: solid #7e9aa3;
+  border: solid var(--dark-green);
   border-width: 0 5px 5px 0;
   display: inline-block;
   padding: 12px;
@@ -84,12 +69,12 @@
 }
 
 .upArrow:hover {
-  border: solid #a7c4cd;
+  border: solid var(--light-green);
   border-width: 0 5px 5px 0;
 }
 
 .downArrow {
-  border: solid #7e9aa3;
+  border: solid var(--dark-green);
   border-width: 0 5px 5px 0;
   display: inline-block;
   padding: 12px;
@@ -99,6 +84,6 @@
 }
 
 .downArrow:hover {
-  border: solid #a7c4cd;
+  border: solid var(--light-green);
   border-width: 0 5px 5px 0;
 }

@@ -11,9 +11,13 @@ a {
   text-decoration: none;
 }
 
-
-
-
 * {
   box-sizing: border-box;
+}
+:root {
+  --main-color: #f0faff;
+  --dark-green: #7e9aa3;
+  --light-green: #a7c4cd;
+  --white: #ffffff;
+  --card-border: #eaeaea;
 }

@@ -1,5 +1,6 @@
 import { NextPage } from "next";
-import styles from "../styles/assessment.module.css";
+import styles from "../styles/Assessment.module.css";
+import mainStyles from "../styles/Main.module.css";
 import Textbox from "../components/textbox";
 import { useState } from "react";
 import data from "../data/IT2810Høst2018.json";
@@ -106,9 +107,9 @@ const Assessment: NextPage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
-      <main className={styles.main}>
+      <main className={mainStyles.main}>
         <div className={styles.alignInfo}>
           <div className={styles.expandInfo}>
             <Expand
