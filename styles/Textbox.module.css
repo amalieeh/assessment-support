@@ -7,8 +7,8 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  width: 600px;
-  height: 350px;
+  width: 630px;
+  height: 410px;
   background-color: white;
 }
 
@@ -21,4 +21,18 @@
   margin: 0;
   font-size: 1.25rem;
   line-height: 1.5;
+}
+
+.alignItems {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.scrollable {
+  overflow-y: scroll;
+  width: 595px;
+  height: 320px;
 }
