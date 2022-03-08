@@ -19,8 +19,7 @@ const Textbox: React.FC<textboxprop> = (props: textboxprop) => {
           setAssessment={props.setAssessment}
         />
       </div>
-      <div className={styles.scrollable}>{props.assessment.answer}</div>
-      {parse(props.assessment.answer)}
+      <div className={styles.scrollable}>{parse(props.assessment.answer)}</div>
     </div>
   );
 };
