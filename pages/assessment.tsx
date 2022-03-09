@@ -20,6 +20,15 @@ import findIndex from "lodash/findIndex";
 import cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { CgLayoutGrid } from "react-icons/cg";
+import { BiGridVertical } from "react-icons/bi";
+import { BsFillPauseFill } from "react-icons/bs";
+
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import ViewQuiltIcon from "@mui/icons-material/ViewQuilt";
 
 const Assessment: NextPage = () => {
   // create router object
@@ -106,6 +115,21 @@ const Assessment: NextPage = () => {
     setAssessments(newArr);
   };
 
+  const [view, setView] = useState("list");
+
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    nextView: string
+  ) => {
+    setView(nextView);
+  };
+
+  const handleSetMaxItems = (
+    event: React.MouseEvent<HTMLElement>,
+    value: number
+  ) => {
+    setMaxItemsPerPage(value);
+  };
   return (
     <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
