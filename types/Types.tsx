@@ -1,23 +1,15 @@
-export interface approvaltextboxprop {
-  answerId: string;
-  candidateId: string;
-  answer: string;
-  points: string;
-}
-
-export interface AssessmentType {
-  assessmentId: string;
-  answer: string;
-  candidateId: number;
-  taskNumber: number;
-  maxPoints: number;
-  score: number | string;
-}
-
 export interface AnswerType {
   assessmentId: string;
   answer: string;
   candidateId: number;
   maxPoints: number;
   taskNumber: number;
+}
+
+export interface AssessmentType extends AnswerType{
+  score: number | string;
+}
+
+export interface Approvaltextboxprop extends AssessmentType{
+  inconsistentScores?: number[];
 }

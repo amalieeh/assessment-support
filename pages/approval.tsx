@@ -2,13 +2,13 @@ import { NextPage } from "next";
 import styles from "../styles/Main.module.css";
 import data from "../data/IT2810Høst2018.json";
 import Link from "next/link";
-import { Button } from "@mui/material";
+import {Button} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import ApprovalTextbox from "../components/approvalTextbox";
-import { approvaltextboxprop, AssessmentType } from "../types/Types";
+import {AssessmentType} from "../types/Types";
 import * as React from "react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
 
 const getAssessments = (taskNumber: number) => {
   const key = taskNumber.toString() + "_assessments";
@@ -53,6 +53,7 @@ const Approval: NextPage = () => {
                   taskNumber={assessment.taskNumber}
                   maxPoints={assessment.maxPoints}
                   score={assessment.score}
+                  //inconsistentScores={[3, 4]}
                 />
               ))}
         </Grid>
