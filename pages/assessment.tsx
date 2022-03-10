@@ -29,6 +29,7 @@ import { BsFillPauseFill } from "react-icons/bs";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewQuiltIcon from "@mui/icons-material/ViewQuilt";
+import { max } from "lodash";
 
 const Assessment: NextPage = () => {
   // create router object
@@ -48,7 +49,7 @@ const Assessment: NextPage = () => {
   const [taskNumber, setTaskNumber] = useState<any>("");
   const [taskTitle, setTaskTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
+  const [max, setMaxItemsPerPage] = useState<string>("4"); //max items set to 4 as default
 
   const taskDescription: string =
     "Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.";
@@ -60,6 +61,8 @@ const Assessment: NextPage = () => {
   const p = answers.map((answer: AnswerType) => ({ score: "", ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
   const [reAssessments, setReAssessments] = useState<AssessmentType[]>([]);
+
+  const maxItemsPerPage = parseInt(max);
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
@@ -126,7 +129,7 @@ const Assessment: NextPage = () => {
 
   const handleSetMaxItems = (
     event: React.MouseEvent<HTMLElement>,
-    value: number
+    value: string
   ) => {
     setMaxItemsPerPage(value);
   };
@@ -134,6 +137,24 @@ const Assessment: NextPage = () => {
     <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
       <main className={mainStyles.main}>
+        <div className={styles.toggleButtonGroup}>
+          <ToggleButtonGroup
+            value={maxItemsPerPage.toString()}
+            exclusive
+            onChange={handleSetMaxItems}
+          >
+            <ToggleButton key="2" value="2" sx={{ padding: 1.8 }}>
+              <BsFillPauseFill size={15} />
+            </ToggleButton>
+            <ToggleButton key="4" value="4">
+              <CgLayoutGrid size={22} />
+            </ToggleButton>
+            <ToggleButton key="6" value="6">
+              <BiGridVertical size={22} />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+
         <div className={styles.alignInfo}>
           <div className={styles.expandInfo}>
             <Expand
@@ -146,7 +167,7 @@ const Assessment: NextPage = () => {
             />
           </div>
           {/* Display two answers next to eachother when max items is four or less  */}
-          {maxItemsPerPage <= 4 ? (
+          {maxItemsPerPage >= 4 ? (
             <div className={styles.grid4answers}>
               {assessments
                 .slice(
