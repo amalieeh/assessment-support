@@ -1,27 +1,9 @@
-<<<<<<< HEAD
-=======
-.container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgb(240, 250, 255);
-}
-
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .toggleButtonGroup {
   display: flex;
   align-self: flex-end;
   margin-right: 1.3rem;
 }
 
->>>>>>> fix togglebuttongroup
 .footer {
   width: 100%;
   height: 100px;
