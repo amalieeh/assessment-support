@@ -26,11 +26,6 @@ import { CgLayoutGrid } from "react-icons/cg";
 import { BiGridVertical } from "react-icons/bi";
 import { BsFillPauseFill } from "react-icons/bs";
 
-import ViewListIcon from "@mui/icons-material/ViewList";
-import ViewModuleIcon from "@mui/icons-material/ViewModule";
-import ViewQuiltIcon from "@mui/icons-material/ViewQuilt";
-import { max } from "lodash";
-
 const Assessment: NextPage = () => {
   // create router object
   const router = useRouter();
@@ -118,15 +113,6 @@ const Assessment: NextPage = () => {
     setAssessments(newArr);
   };
 
-  const [view, setView] = useState("list");
-
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    nextView: string
-  ) => {
-    setView(nextView);
-  };
-
   const handleSetMaxItems = (
     event: React.MouseEvent<HTMLElement>,
     value: string
@@ -166,38 +152,20 @@ const Assessment: NextPage = () => {
               Description={markersGuideDescription}
             />
           </div>
-          {/* Display two answers next to eachother when max items is four or less  */}
-          {maxItemsPerPage >= 4 ? (
-            <div className={styles.grid4answers}>
-              {assessments
-                .slice(
-                  currentPage * maxItemsPerPage - maxItemsPerPage,
-                  currentPage * maxItemsPerPage
-                )
-                .map((assessment: AssessmentType) => (
-                  <Textbox
-                    key={assessment.assessmentId}
-                    assessment={assessment}
-                    setAssessment={setAssessment}
-                  />
-                ))}
-            </div>
-          ) : (
-            <div className={styles.grid}>
-              {assessments
-                .slice(
-                  currentPage * maxItemsPerPage - maxItemsPerPage,
-                  currentPage * maxItemsPerPage
-                )
-                .map((assessment: AssessmentType) => (
-                  <Textbox
-                    key={assessment.assessmentId}
-                    assessment={assessment}
-                    setAssessment={setAssessment}
-                  />
-                ))}
-            </div>
-          )}
+          <div className={styles.grid}>
+            {assessments
+              .slice(
+                currentPage * maxItemsPerPage - maxItemsPerPage,
+                currentPage * maxItemsPerPage
+              )
+              .map((assessment: AssessmentType) => (
+                <Textbox
+                  key={assessment.assessmentId}
+                  assessment={assessment}
+                  setAssessment={setAssessment}
+                />
+              ))}
+          </div>
         </div>
       </main>
 

@@ -13,13 +13,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: orange;
 }
 
 .toggleButtonGroup {
   display: flex;
-  justify-content: flex-end;
-  background-color: pink;
+  align-self: flex-end;
+  margin-right: 1.3rem;
 }
 
 >>>>>>> fix togglebuttongroup
@@ -32,17 +31,12 @@
   flex-direction: column;
 }
 
-.grid,
-.grid4answers {
+.grid {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
   padding-left: 3em;
-  background-color: aquamarine;
-  width: 115em;
-}
-.grid4answers {
-  /* max-width: 90em; */
+  width: 86em;
 }
 
 .alignInfo {
@@ -53,7 +47,6 @@
   display: flex;
   flex-direction: column;
   padding-left: 2em;
-  background-color: beige;
 }
 
 .rightArrow {
