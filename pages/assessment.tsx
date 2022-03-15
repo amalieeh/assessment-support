@@ -157,7 +157,7 @@ const Assessment: NextPage = () => {
             />
             <Infobox
               title="Konsistenssjekk"
-              content="Velg om du vil bruke konsistenssjekken. Sjekken velger ut X antall besvarelser for revurdering."
+              content="Sjekken velger ut X antall besvarelser for revurdering."
             ></Infobox>
           </div>
           <div className={styles.grid}>
