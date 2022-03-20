@@ -2,24 +2,23 @@ import { NextPage } from "next";
 import styles from "../styles/Assessment.module.css";
 import mainStyles from "../styles/Main.module.css";
 import Textbox from "../components/textbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import data from "../data/IT2810Høst2018.json";
 import Expand from "../components/expand";
 import {
-  insperaDataToTextboxObject,
   chooseCorrelatedAssessment,
+  insperaDataToTextboxObject,
   saveAssessments,
   saveBatch,
 } from "../functions/helpFunctions";
 import { sortAnswers } from "../functions/sortAlgorithms";
-import { AssessmentType, AnswerType } from "../types/Types";
+import { AnswerType, AssessmentType } from "../types/Types";
 import Link from "next/link";
 import { Button } from "@mui/material";
 import Header from "../components/header";
 import findIndex from "lodash/findIndex";
 import cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { CgLayoutGrid } from "react-icons/cg";
@@ -36,8 +35,8 @@ const Assessment: NextPage = () => {
     setTaskNumber(router.query.task);
     setTaskTitle(
       data.ext_inspera_candidates[0].result.ext_inspera_questions[
-        router.query.task - 1
-      ].ext_inspera_questionTitle
+      router.query.task - 1
+        ].ext_inspera_questionTitle
     );
   }, [router.isReady, router.query.task]);
 
@@ -118,7 +117,11 @@ const Assessment: NextPage = () => {
     value: string
   ) => {
     setMaxItemsPerPage(value);
+    const numberOfAssessedAssessments = assessments.filter((assessment) => assessment.score !== "").length;
+    const newPageNumber = Math.ceil((numberOfAssessedAssessments / parseInt(value)) + 0.01);
+    setCurrentPage(newPageNumber);
   };
+
   return (
     <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
