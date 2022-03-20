@@ -2,24 +2,28 @@ import { NextPage } from "next";
 import styles from "../styles/Assessment.module.css";
 import mainStyles from "../styles/Main.module.css";
 import Textbox from "../components/textbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import data from "../data/IT2810Høst2018.json";
 import Expand from "../components/expand";
 import {
-  insperaDataToTextboxObject,
   chooseCorrelatedAssessment,
+  insperaDataToTextboxObject,
   saveAssessments,
   saveBatch,
 } from "../functions/helpFunctions";
 import { sortAnswers } from "../functions/sortAlgorithms";
-import { AssessmentType, AnswerType } from "../types/Types";
+import { AnswerType, AssessmentType } from "../types/Types";
 import Link from "next/link";
 import { Button } from "@mui/material";
 import Header from "../components/header";
 import findIndex from "lodash/findIndex";
 import cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { CgLayoutGrid } from "react-icons/cg";
+import { BiGridVertical } from "react-icons/bi";
+import { BsFillPauseFill } from "react-icons/bs";
 
 const Assessment: NextPage = () => {
   // create router object
@@ -31,15 +35,15 @@ const Assessment: NextPage = () => {
     setTaskNumber(router.query.task);
     setTaskTitle(
       data.ext_inspera_candidates[0].result.ext_inspera_questions[
-        router.query.task - 1
-      ].ext_inspera_questionTitle
+      router.query.task - 1
+        ].ext_inspera_questionTitle
     );
   }, [router.isReady, router.query.task]);
 
   const [taskNumber, setTaskNumber] = useState<any>("");
   const [taskTitle, setTaskTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [maxItemsPerPage, setMaxItemsPerPage] = useState<number>(4); //max items set to 4 as default
+  const [max, setMaxItemsPerPage] = useState<string>("4"); //max items set to 4 as default
 
   const taskDescription: string =
     "Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.";
@@ -51,6 +55,8 @@ const Assessment: NextPage = () => {
   const p = answers.map((answer: AnswerType) => ({ score: "", ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
   const [reAssessments, setReAssessments] = useState<AssessmentType[]>([]);
+
+  const maxItemsPerPage = parseInt(max);
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
@@ -106,10 +112,38 @@ const Assessment: NextPage = () => {
     setAssessments(newArr);
   };
 
+  const handleSetMaxItems = (
+    event: React.MouseEvent<HTMLElement>,
+    value: string
+  ) => {
+    setMaxItemsPerPage(value);
+    const numberOfAssessedAssessments = assessments.filter((assessment) => assessment.score !== "").length;
+    const newPageNumber = Math.ceil((numberOfAssessedAssessments / parseInt(value)) + 0.01);
+    setCurrentPage(newPageNumber);
+  };
+
   return (
     <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
       <main className={mainStyles.main}>
+        <div className={styles.toggleButtonGroup}>
+          <ToggleButtonGroup
+            value={maxItemsPerPage.toString()}
+            exclusive
+            onChange={handleSetMaxItems}
+          >
+            <ToggleButton key="2" value="2" sx={{ padding: 1.8 }}>
+              <BsFillPauseFill size={15} />
+            </ToggleButton>
+            <ToggleButton key="4" value="4">
+              <CgLayoutGrid size={22} />
+            </ToggleButton>
+            <ToggleButton key="6" value="6">
+              <BiGridVertical size={22} />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+
         <div className={styles.alignInfo}>
           <div className={styles.expandInfo}>
             <Expand
@@ -121,38 +155,20 @@ const Assessment: NextPage = () => {
               Description={markersGuideDescription}
             />
           </div>
-          {/* Display two answers next to eachother when max items is four or less  */}
-          {maxItemsPerPage <= 4 ? (
-            <div className={styles.grid4answers}>
-              {assessments
-                .slice(
-                  currentPage * maxItemsPerPage - maxItemsPerPage,
-                  currentPage * maxItemsPerPage
-                )
-                .map((assessment: AssessmentType) => (
-                  <Textbox
-                    key={assessment.assessmentId}
-                    assessment={assessment}
-                    setAssessment={setAssessment}
-                  />
-                ))}
-            </div>
-          ) : (
-            <div className={styles.grid}>
-              {assessments
-                .slice(
-                  currentPage * maxItemsPerPage - maxItemsPerPage,
-                  currentPage * maxItemsPerPage
-                )
-                .map((assessment: AssessmentType) => (
-                  <Textbox
-                    key={assessment.assessmentId}
-                    assessment={assessment}
-                    setAssessment={setAssessment}
-                  />
-                ))}
-            </div>
-          )}
+          <div className={styles.grid}>
+            {assessments
+              .slice(
+                currentPage * maxItemsPerPage - maxItemsPerPage,
+                currentPage * maxItemsPerPage
+              )
+              .map((assessment: AssessmentType) => (
+                <Textbox
+                  key={assessment.assessmentId}
+                  assessment={assessment}
+                  setAssessment={setAssessment}
+                />
+              ))}
+          </div>
         </div>
       </main>
 
