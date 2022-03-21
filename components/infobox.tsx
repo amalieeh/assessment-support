@@ -102,7 +102,7 @@ const Infobox: React.FC<InfoboxProps> = (props: InfoboxProps) => {
         <CardActions disableSpacing>
           {checked ? (
             <Slider
-              sx={{ marginLeft: "0.75rem", marginRight: "2rem" }}
+              sx={{ marginLeft: "1.2rem", marginRight: "1rem" }}
               aria-label="Custom marks"
               defaultValue={10}
               getAriaValueText={valuetext}
@@ -112,7 +112,7 @@ const Infobox: React.FC<InfoboxProps> = (props: InfoboxProps) => {
             />
           ) : (
             <Slider
-              sx={{ marginLeft: "0.75rem", marginRight: "2rem" }}
+              sx={{ marginLeft: "1.2rem", marginRight: "1rem" }}
               disabled
               aria-label="Custom marks"
               defaultValue={10}
@@ -135,7 +135,7 @@ const Infobox: React.FC<InfoboxProps> = (props: InfoboxProps) => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>Velg type sjekk som ønskes:</CardContent>
           <CardActions>
-            <FormControl>
+            <FormControl sx={{ marginLeft: "0.5rem" }}>
               <RadioGroup
                 row
                 name="controlled-radio-buttons-group"
@@ -146,21 +146,25 @@ const Infobox: React.FC<InfoboxProps> = (props: InfoboxProps) => {
                   value="random"
                   control={<Radio />}
                   label="Tilfeldig"
+                  disableTypography
                 />
                 <FormControlLabel
                   value="scores_alike"
                   control={<Radio />}
                   label="Like scores"
+                  disableTypography
                 />
                 <FormControlLabel
                   value="scores_unlike"
                   control={<Radio />}
                   label="Ulike scores"
+                  disableTypography
                 />
                 <FormControlLabel
                   value="correlation"
                   control={<Radio />}
                   label="Korrelasjon"
+                  disableTypography
                 />
               </RadioGroup>
             </FormControl>
