@@ -24,6 +24,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { CgLayoutGrid } from "react-icons/cg";
 import { BiGridVertical } from "react-icons/bi";
 import { BsFillPauseFill } from "react-icons/bs";
+import { v4 as uuidv4 } from "uuid";
 
 const Assessment: NextPage = () => {
   // create router object
@@ -50,7 +51,8 @@ const Assessment: NextPage = () => {
   const markersGuideDescription: string =
     "let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.";
 
-  const answers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
+  const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
+  const answers = allAnswers.slice(0,10);
   sortAnswers(answers, "length_hl");
   const p = answers.map((answer: AnswerType) => ({ score: "", ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
@@ -79,18 +81,19 @@ const Assessment: NextPage = () => {
   };
 
   const appendReAssessments = (batch: AssessmentType[]) => {
-    const assessment = chooseCorrelatedAssessment(batch);
     // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
+    const maxReAssessmentProsentage = 0.2;
+    const assessment = chooseCorrelatedAssessment(batch);
     if (
       assessment != null &&
-      reAssessments.length < Math.floor(assessments.length * 0.2)
+      reAssessments.length < Math.floor(assessments.length * maxReAssessmentProsentage)
     ) {
       if (
-        reAssessments.filter((a) => a.assessmentId == assessment.assessmentId)
+        reAssessments.filter((a) => a.answer == assessment.answer) // kanskje sjekke på en annen måte
           .length < 1
       ) {
         const newArr: AssessmentType[] = cloneDeep(reAssessments);
-        newArr.push(assessment);
+        newArr.push({...assessment, score:"", assessmentId:uuidv4()});
         setReAssessments(newArr);
       }
     }
@@ -168,6 +171,12 @@ const Assessment: NextPage = () => {
                   setAssessment={setAssessment}
                 />
               ))}
+            {currentPage * maxItemsPerPage >= assessments.length ?
+              reAssessments.map((reAssessment: AssessmentType) =>
+                <Textbox key={reAssessment.assessmentId} assessment={reAssessment} setAssessment={setAssessment}/>
+              )
+              : null
+            }
           </div>
         </div>
       </main>
@@ -176,13 +185,13 @@ const Assessment: NextPage = () => {
         {currentPage > 1 ? (
           <div className={styles.upArrow} onClick={() => changePage("back")} />
         ) : null}
-        {answers.length - 1 >= currentPage * maxItemsPerPage ? (
+        {assessments.length + reAssessments.length - 1 >= currentPage * maxItemsPerPage ? (
           <div
             className={styles.downArrow}
             onClick={() => changePage("next")}
           />
         ) : null}
-        {currentPage * maxItemsPerPage >= answers.length - 1 ? (
+        {currentPage * maxItemsPerPage >= assessments.length + reAssessments.length - 1 ? (
           <Link
             href={{
               pathname: "/approval",
