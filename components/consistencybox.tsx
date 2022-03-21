@@ -14,11 +14,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 
-interface InfoboxProps {
-  title: string;
-  content: string;
-}
-
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -34,7 +29,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-const Infobox: React.FC<InfoboxProps> = (props: InfoboxProps) => {
+const ConsistencyBox: React.FC<{}> = () => {
   const [checked, setChecked] = useState<boolean>(true);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [radioValue, setRadioValue] = useState<string>("tilfeldig");
@@ -81,14 +76,15 @@ const Infobox: React.FC<InfoboxProps> = (props: InfoboxProps) => {
     setRadioValue((event.target as HTMLInputElement).value);
   };
 
+  const title = "Konsistenssjekk";
+  const content = "Sjekken velger ut X antall besvarelser for revurdering.";
+
   return (
     <div style={{ margin: "1rem" }}>
       <Card sx={{ maxWidth: 400 }}>
         <CardContent>
-          <div style={{ marginBottom: 10, fontWeight: "bold" }}>
-            {props.title}
-          </div>
-          <div>{props.content}</div>
+          <div style={{ marginBottom: 10, fontWeight: "bold" }}>{title}</div>
+          <div>{content}</div>
         </CardContent>
         <CardContent>Bruk konsistenssjekk:</CardContent>
         <CardActions>
@@ -175,4 +171,4 @@ const Infobox: React.FC<InfoboxProps> = (props: InfoboxProps) => {
   );
 };
 
-export default Infobox;
+export default ConsistencyBox;
