@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import data from '../data/IT2810Høst2018.json';
 import Expand from '../components/expand';
 import ConsistencyBox from '../components/consistencybox';
+import Sortingbox from '../components/sortingbox';
 import {
   chooseCorrelatedAssessment,
   insperaDataToTextboxObject,
@@ -144,6 +145,7 @@ const Assessment: NextPage = () => {
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
       <main className={mainStyles.main}>
         <div className={styles.toggleButtonGroup}>
+          <Sortingbox />
           <ToggleButtonGroup
             value={maxItemsPerPage.toString()}
             exclusive
