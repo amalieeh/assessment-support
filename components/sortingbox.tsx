@@ -1,27 +1,36 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { sortAnswers } from '../functions/sortAlgorithms';
+import { AnswerType } from '../types/Types';
 
 interface Option {
   value: string;
   label: string;
 }
 
-const Sortingbox: React.FC<{}> = () => {
-  const [sortingAlgorithm, setSortingAlgorithm] = React.useState('');
+interface Sortingboxprops {
+  answers: AnswerType[];
+  sortingAlgorithm: string;
+  setSortingAlgorithm: (algortihm: string) => void;
+}
 
+const Sortingbox: React.FC<Sortingboxprops> = (props: Sortingboxprops) => {
   const options: Option[] = [
     { value: 'random', label: 'Tilfeldige besvarelser' },
     { value: 'candidateNumber', label: 'Kandidatnummer' },
-    { value: 'similarAnswers', label: 'Liknende besvarelser' },
-    { value: 'divergentAnswers', label: 'Divergerende besvarelser' },
+    // { value: 'similarAnswers', label: 'Liknende besvarelser' },
+    // { value: 'divergentAnswers', label: 'Divergerende besvarelser' },
+    { value: 'length_hl', label: 'Lengde fra lengst til kortest' },
+    { value: 'length_lh', label: 'Lenge fra kortest til lengst' },
   ];
 
   const handleChange = (event: SelectChangeEvent) => {
-    setSortingAlgorithm(event.target.value as string);
+    props.setSortingAlgorithm(event.target.value as string);
   };
 
   return (
@@ -31,7 +40,7 @@ const Sortingbox: React.FC<{}> = () => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={sortingAlgorithm}
+          value={props.sortingAlgorithm}
           label="Sortér etter"
           onChange={handleChange}
         >

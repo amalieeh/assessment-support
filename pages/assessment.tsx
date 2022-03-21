@@ -57,6 +57,13 @@ const Assessment: NextPage = () => {
   const answers = allAnswers.slice(0, 19);
   const numberOfAnswers = answers.length;
   sortAnswers(answers, 'length_hl');
+  // noe må gjøres her, staten oppdateres, men sorteringen skjer ikke
+  const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('length_hl');
+  useEffect(() => {
+    sortAnswers(answers, sortingAlgorithm);
+    console.log('blir kalt');
+  }, [sortingAlgorithm]);
+
   const p = answers.map((answer: AnswerType) => ({ score: '', ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
@@ -140,12 +147,18 @@ const Assessment: NextPage = () => {
     }
   };
 
+  console.log('sorting algo', sortingAlgorithm);
+
   return (
     <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
       <main className={mainStyles.main}>
         <div className={styles.toggleButtonGroup}>
-          <Sortingbox />
+          <Sortingbox
+            answers={answers}
+            sortingAlgorithm={sortingAlgorithm}
+            setSortingAlgorithm={setSortingAlgorithm}
+          />
           <ToggleButtonGroup
             value={maxItemsPerPage.toString()}
             exclusive
