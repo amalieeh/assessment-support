@@ -1,8 +1,8 @@
-import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
+import * as React from 'react';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 
 interface Expandprop {
   DescriptionTitle: string;
@@ -11,11 +11,10 @@ interface Expandprop {
 
 const Expand: React.FC<Expandprop> = (props: Expandprop) => {
   return (
-    <div style={{ margin: "1rem" }}>
+    <div style={{ margin: '1rem' }}>
       <Accordion
         sx={{
           width: 400,
-          boxShadow: "none",
         }}
       >
         <AccordionSummary

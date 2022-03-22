@@ -5,6 +5,7 @@ import Textbox from "../components/textbox";
 import { useEffect, useState } from "react";
 import data from "../data/IT2810Høst2018.json";
 import Expand from "../components/expand";
+import Consistencybox from "../components/consistencybox";
 import {
   chooseCorrelatedAssessment,
   insperaDataToTextboxObject,
@@ -162,6 +163,7 @@ const Assessment: NextPage = () => {
               DescriptionTitle="Sensorveiledning"
               Description={markersGuideDescription}
             />
+            <Consistencybox />
           </div>
           <div className={styles.grid}>
             {assessments
