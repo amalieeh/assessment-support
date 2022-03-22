@@ -52,11 +52,11 @@ const Assessment: NextPage = () => {
     "let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.";
 
   const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
-  const answers = allAnswers.slice(0,10);
+  const answers = allAnswers.slice(0,19);
+  const numberOfAnswers = answers.length;
   sortAnswers(answers, "length_hl");
   const p = answers.map((answer: AnswerType) => ({ score: "", ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
-  const [reAssessments, setReAssessments] = useState<AssessmentType[]>([]);
 
   const maxItemsPerPage = parseInt(max);
 
@@ -82,19 +82,24 @@ const Assessment: NextPage = () => {
 
   const appendReAssessments = (batch: AssessmentType[]) => {
     // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
-    const maxReAssessmentProsentage = 0.2;
-    const assessment = chooseCorrelatedAssessment(batch);
+    const maxReAssessmentPercentage = 0.2;
     if (
-      assessment != null &&
-      reAssessments.length < Math.floor(assessments.length * maxReAssessmentProsentage)
+      // not currently assessing a reAssessment
+      currentPage * (maxItemsPerPage-1) < numberOfAnswers
     ) {
+      const assessment = chooseCorrelatedAssessment(batch);
       if (
-        reAssessments.filter((a) => a.answer == assessment.answer) // kanskje sjekke på en annen måte
-          .length < 1
+        // chooseCorrelatedAssessment actually found an assessment
+        assessment != null
+        // there is not more reAssessments than the threashold
+        && (assessments.length-numberOfAnswers) < Math.floor(numberOfAnswers * maxReAssessmentPercentage)
+        // the assessments is not already in the "re-part" of assessments
+        && assessments.filter((a) => a.answer == assessment.answer)
+          .length <= 1
       ) {
-        const newArr: AssessmentType[] = cloneDeep(reAssessments);
+        const newArr: AssessmentType[] = cloneDeep(assessments);
         newArr.push({...assessment, score:"", assessmentId:uuidv4()});
-        setReAssessments(newArr);
+        setAssessments(newArr);
       }
     }
   };
@@ -171,12 +176,6 @@ const Assessment: NextPage = () => {
                   setAssessment={setAssessment}
                 />
               ))}
-            {currentPage * maxItemsPerPage >= assessments.length ?
-              reAssessments.map((reAssessment: AssessmentType) =>
-                <Textbox key={reAssessment.assessmentId} assessment={reAssessment} setAssessment={setAssessment}/>
-              )
-              : null
-            }
           </div>
         </div>
       </main>
@@ -185,13 +184,13 @@ const Assessment: NextPage = () => {
         {currentPage > 1 ? (
           <div className={styles.upArrow} onClick={() => changePage("back")} />
         ) : null}
-        {assessments.length + reAssessments.length - 1 >= currentPage * maxItemsPerPage ? (
+        {assessments.length - 1 >= currentPage * maxItemsPerPage ? (
           <div
             className={styles.downArrow}
             onClick={() => changePage("next")}
           />
         ) : null}
-        {currentPage * maxItemsPerPage >= assessments.length + reAssessments.length - 1 ? (
+        {currentPage * maxItemsPerPage >= assessments.length ? (
           <Link
             href={{
               pathname: "/approval",
