@@ -24,6 +24,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { CgLayoutGrid } from "react-icons/cg";
 import { BiGridVertical } from "react-icons/bi";
 import { BsFillPauseFill } from "react-icons/bs";
+import { v4 as uuidv4 } from "uuid";
 
 const Assessment: NextPage = () => {
   // create router object
@@ -50,11 +51,12 @@ const Assessment: NextPage = () => {
   const markersGuideDescription: string =
     "let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.";
 
-  const answers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
+  const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
+  const answers = allAnswers.slice(0,19);
+  const numberOfAnswers = answers.length;
   sortAnswers(answers, "length_hl");
   const p = answers.map((answer: AnswerType) => ({ score: "", ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
-  const [reAssessments, setReAssessments] = useState<AssessmentType[]>([]);
 
   const maxItemsPerPage = parseInt(max);
 
@@ -79,19 +81,25 @@ const Assessment: NextPage = () => {
   };
 
   const appendReAssessments = (batch: AssessmentType[]) => {
-    const assessment = chooseCorrelatedAssessment(batch);
     // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
+    const maxReAssessmentPercentage = 0.2;
     if (
-      assessment != null &&
-      reAssessments.length < Math.floor(assessments.length * 0.2)
+      // not currently assessing a reAssessment
+      currentPage * (maxItemsPerPage-1) < numberOfAnswers
     ) {
+      const assessment = chooseCorrelatedAssessment(batch);
       if (
-        reAssessments.filter((a) => a.assessmentId == assessment.assessmentId)
-          .length < 1
+        // chooseCorrelatedAssessment actually found an assessment
+        assessment != null
+        // there is not more reAssessments than the threashold
+        && (assessments.length-numberOfAnswers) < Math.floor(numberOfAnswers * maxReAssessmentPercentage)
+        // the assessments is not already in the "re-part" of assessments
+        && assessments.filter((a) => a.answer == assessment.answer)
+          .length <= 1
       ) {
-        const newArr: AssessmentType[] = cloneDeep(reAssessments);
-        newArr.push(assessment);
-        setReAssessments(newArr);
+        const newArr: AssessmentType[] = cloneDeep(assessments);
+        newArr.push({...assessment, score:"", assessmentId:uuidv4()});
+        setAssessments(newArr);
       }
     }
   };
@@ -176,13 +184,13 @@ const Assessment: NextPage = () => {
         {currentPage > 1 ? (
           <div className={styles.upArrow} onClick={() => changePage("back")} />
         ) : null}
-        {answers.length - 1 >= currentPage * maxItemsPerPage ? (
+        {assessments.length - 1 >= currentPage * maxItemsPerPage ? (
           <div
             className={styles.downArrow}
             onClick={() => changePage("next")}
           />
         ) : null}
-        {currentPage * maxItemsPerPage >= answers.length - 1 ? (
+        {currentPage * maxItemsPerPage >= assessments.length ? (
           <Link
             href={{
               pathname: "/approval",
