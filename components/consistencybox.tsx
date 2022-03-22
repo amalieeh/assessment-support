@@ -114,6 +114,7 @@ const ConsistencyBox: React.FC<{}> = () => {
             />
           )}
           <ExpandMore
+            sx={{ marginLeft: '3rem' }}
             expand={expanded}
             onClick={handleExpandClick}
             aria-expanded={expanded}
