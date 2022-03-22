@@ -1,31 +1,30 @@
-import { NextPage } from "next";
-import styles from "../styles/Assessment.module.css";
-import mainStyles from "../styles/Main.module.css";
-import Textbox from "../components/textbox";
-import { useEffect, useState } from "react";
-import data from "../data/IT2810Høst2018.json";
-import Expand from "../components/expand";
-import Consistencybox from "../components/consistencybox";
+import { NextPage } from 'next';
+import styles from '../styles/Assessment.module.css';
+import mainStyles from '../styles/Main.module.css';
+import Textbox from '../components/textbox';
+import { useEffect, useState } from 'react';
+import data from '../data/IT2810Høst2018.json';
+import Expand from '../components/expand';
 import {
   chooseCorrelatedAssessment,
   insperaDataToTextboxObject,
   saveAssessments,
   saveBatch,
-} from "../functions/helpFunctions";
-import { sortAnswers } from "../functions/sortAlgorithms";
-import { AnswerType, AssessmentType } from "../types/Types";
-import Link from "next/link";
-import { Button } from "@mui/material";
-import Header from "../components/header";
-import findIndex from "lodash/findIndex";
-import cloneDeep from "lodash/cloneDeep";
-import { useRouter } from "next/router";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { CgLayoutGrid } from "react-icons/cg";
-import { BiGridVertical } from "react-icons/bi";
-import { BsFillPauseFill } from "react-icons/bs";
-import { v4 as uuidv4 } from "uuid";
+} from '../functions/helpFunctions';
+import { sortAnswers } from '../functions/sortAlgorithms';
+import { AnswerType, AssessmentType } from '../types/Types';
+import Link from 'next/link';
+import { Button } from '@mui/material';
+import Header from '../components/header';
+import findIndex from 'lodash/findIndex';
+import cloneDeep from 'lodash/cloneDeep';
+import { useRouter } from 'next/router';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { CgLayoutGrid } from 'react-icons/cg';
+import { BiGridVertical } from 'react-icons/bi';
+import { BsFillPauseFill } from 'react-icons/bs';
+import { v4 as uuidv4 } from 'uuid';
 
 const Assessment: NextPage = () => {
   // create router object
@@ -37,29 +36,29 @@ const Assessment: NextPage = () => {
     setTaskNumber(router.query.task);
     setTaskTitle(
       data.ext_inspera_candidates[0].result.ext_inspera_questions[
-      router.query.task - 1
-        ].ext_inspera_questionTitle
+        router.query.task - 1
+      ].ext_inspera_questionTitle
     );
   }, [router.isReady, router.query.task]);
 
-  const [taskNumber, setTaskNumber] = useState<any>("");
-  const [taskTitle, setTaskTitle] = useState<string>("");
+  const [taskNumber, setTaskNumber] = useState<any>('');
+  const [taskTitle, setTaskTitle] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [max, setMaxItemsPerPage] = useState<string>("4"); //max items set to 4 as default
+  const [maxItems, setMaxItems] = useState<string>('4'); //max items set to 4 as default
 
   const taskDescription: string =
-    "Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.";
+    'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.';
   const markersGuideDescription: string =
-    "let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.";
+    'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.';
 
   const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
-  const answers = allAnswers.slice(0,19);
+  const answers = allAnswers.slice(0, 19);
   const numberOfAnswers = answers.length;
-  sortAnswers(answers, "length_hl");
-  const p = answers.map((answer: AnswerType) => ({ score: "", ...answer }));
+  sortAnswers(answers, 'length_hl');
+  const p = answers.map((answer: AnswerType) => ({ score: '', ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
-  const maxItemsPerPage = parseInt(max);
+  const maxItemsPerPage = parseInt(maxItems);
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
@@ -72,9 +71,9 @@ const Assessment: NextPage = () => {
   }, [assessments.length, p]);
 
   const changePage = (direction: string): void => {
-    if (direction == "back") {
+    if (direction == 'back') {
       setCurrentPage(currentPage - 1);
-    } else if (direction == "next") {
+    } else if (direction == 'next') {
       appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch));
       saveBatch(assessments.slice(startIndexBatch, endIndexBatch), taskNumber);
       setCurrentPage(currentPage + 1);
@@ -86,20 +85,21 @@ const Assessment: NextPage = () => {
     const maxReAssessmentPercentage = 0.2;
     if (
       // not currently assessing a reAssessment
-      currentPage * (maxItemsPerPage-1) < numberOfAnswers
+      currentPage * (maxItemsPerPage - 1) <
+      numberOfAnswers
     ) {
       const assessment = chooseCorrelatedAssessment(batch);
       if (
         // chooseCorrelatedAssessment actually found an assessment
-        assessment != null
+        assessment != null &&
         // there is not more reAssessments than the threashold
-        && (assessments.length-numberOfAnswers) < Math.floor(numberOfAnswers * maxReAssessmentPercentage)
+        assessments.length - numberOfAnswers <
+          Math.floor(numberOfAnswers * maxReAssessmentPercentage) &&
         // the assessments is not already in the "re-part" of assessments
-        && assessments.filter((a) => a.answer == assessment.answer)
-          .length <= 1
+        assessments.filter((a) => a.answer == assessment.answer).length <= 1
       ) {
         const newArr: AssessmentType[] = cloneDeep(assessments);
-        newArr.push({...assessment, score:"", assessmentId:uuidv4()});
+        newArr.push({ ...assessment, score: '', assessmentId: uuidv4() });
         setAssessments(newArr);
       }
     }
@@ -123,12 +123,19 @@ const Assessment: NextPage = () => {
 
   const handleSetMaxItems = (
     event: React.MouseEvent<HTMLElement>,
-    value: string
+    value: string | null
   ) => {
-    setMaxItemsPerPage(value);
-    const numberOfAssessedAssessments = assessments.filter((assessment) => assessment.score !== "").length;
-    const newPageNumber = Math.ceil((numberOfAssessedAssessments / parseInt(value)) + 0.01);
-    setCurrentPage(newPageNumber);
+    if (value !== null) {
+      setMaxItems(value);
+
+      const numberOfAssessedAssessments = assessments.filter(
+        (assessment) => assessment.score !== ''
+      ).length;
+      const newPageNumber = Math.ceil(
+        numberOfAssessedAssessments / parseInt(value) + 0.01
+      );
+      setCurrentPage(newPageNumber);
+    }
   };
 
   return (
@@ -184,18 +191,18 @@ const Assessment: NextPage = () => {
 
       <div className={styles.footer}>
         {currentPage > 1 ? (
-          <div className={styles.upArrow} onClick={() => changePage("back")} />
+          <div className={styles.upArrow} onClick={() => changePage('back')} />
         ) : null}
         {assessments.length - 1 >= currentPage * maxItemsPerPage ? (
           <div
             className={styles.downArrow}
-            onClick={() => changePage("next")}
+            onClick={() => changePage('next')}
           />
         ) : null}
         {currentPage * maxItemsPerPage >= assessments.length ? (
           <Link
             href={{
-              pathname: "/approval",
+              pathname: '/approval',
               query: { task: taskNumber },
             }}
             passHref
@@ -205,7 +212,7 @@ const Assessment: NextPage = () => {
               onClick={() => saveAssessments(assessments, 0)}
             >
               {/*need to figure out a key, currently set to 0*/}
-              Finish
+              Fullfør
             </Button>
           </Link>
         ) : null}
