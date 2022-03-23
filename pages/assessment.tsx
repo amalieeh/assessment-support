@@ -155,29 +155,6 @@ const Assessment: NextPage = () => {
     <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
       <main className={mainStyles.main}>
-        <Sortingbox
-          answers={answers}
-          sortingAlgorithm={sortingAlgorithm}
-          setSortingAlgorithm={setSortingAlgorithm}
-        />
-        <div className={styles.toggleButtonGroup}>
-          <ToggleButtonGroup
-            value={maxItemsPerPage.toString()}
-            exclusive
-            onChange={handleSetMaxItems}
-          >
-            <ToggleButton key="2" value="2" sx={{ padding: 1.8 }}>
-              <BsFillPauseFill size={15} />
-            </ToggleButton>
-            <ToggleButton key="4" value="4">
-              <CgLayoutGrid size={22} />
-            </ToggleButton>
-            <ToggleButton key="6" value="6">
-              <BiGridVertical size={22} />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-
         <div className={styles.alignInfo}>
           <div className={styles.expandInfo}>
             <Expand
@@ -191,6 +168,30 @@ const Assessment: NextPage = () => {
             <ConsistencyBox />
           </div>
           <div className={styles.grid}>
+            <div className={styles.sortAndToggle}>
+              <Sortingbox
+                answers={answers}
+                sortingAlgorithm={sortingAlgorithm}
+                setSortingAlgorithm={setSortingAlgorithm}
+              />
+
+              <ToggleButtonGroup
+                sx={{ display: 'block', maxWidth: '250px', marginRight: '4px' }}
+                value={maxItemsPerPage.toString()}
+                exclusive
+                onChange={handleSetMaxItems}
+              >
+                <ToggleButton key="2" value="2" sx={{ padding: 1.8 }}>
+                  <BsFillPauseFill size={15} />
+                </ToggleButton>
+                <ToggleButton key="4" value="4">
+                  <CgLayoutGrid size={22} />
+                </ToggleButton>
+                <ToggleButton key="6" value="6">
+                  <BiGridVertical size={22} />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
             {assessments
               .slice(
                 currentPage * maxItemsPerPage - maxItemsPerPage,

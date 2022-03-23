@@ -32,7 +32,7 @@ const Sortingbox: React.FC<Sortingboxprops> = (props: Sortingboxprops) => {
   };
 
   return (
-    <Box sx={{ minWidth: 250 }}>
+    <Box sx={{ minWidth: 250, display: 'block' }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Sortér etter</InputLabel>
         <Select
