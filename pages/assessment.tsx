@@ -47,6 +47,7 @@ const Assessment: NextPage = () => {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItems, setMaxItems] = useState<string>('4'); //max items set to 4 as default
+  const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('random');
 
   const taskDescription: string =
     'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.';
@@ -56,13 +57,6 @@ const Assessment: NextPage = () => {
   const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
   const answers = allAnswers.slice(0, 19);
   const numberOfAnswers = answers.length;
-  sortAnswers(answers, 'length_hl');
-  // noe må gjøres her, staten oppdateres, men sorteringen skjer ikke
-  const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('length_hl');
-  useEffect(() => {
-    sortAnswers(answers, sortingAlgorithm);
-    console.log('blir kalt');
-  }, [sortingAlgorithm]);
 
   const p = answers.map((answer: AnswerType) => ({ score: '', ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
@@ -71,6 +65,16 @@ const Assessment: NextPage = () => {
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
+
+  // currently works in one case: when the data is loaded and no assessments have been made
+  // needs to be updated to only sort the rest of the assessments that have not been assessed
+  // in relation to data retrieval for textboxes
+  useEffect(() => {
+    sortAnswers(answers, sortingAlgorithm);
+    setAssessments(
+      answers.map((answer: AnswerType) => ({ score: '', ...answer }))
+    );
+  }, [sortingAlgorithm]);
 
   // to make sure setAssessments is being set, otherwise it is empty
   useEffect(() => {
@@ -147,18 +151,16 @@ const Assessment: NextPage = () => {
     }
   };
 
-  console.log('sorting algo', sortingAlgorithm);
-
   return (
     <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
       <main className={mainStyles.main}>
+        <Sortingbox
+          answers={answers}
+          sortingAlgorithm={sortingAlgorithm}
+          setSortingAlgorithm={setSortingAlgorithm}
+        />
         <div className={styles.toggleButtonGroup}>
-          <Sortingbox
-            answers={answers}
-            sortingAlgorithm={sortingAlgorithm}
-            setSortingAlgorithm={setSortingAlgorithm}
-          />
           <ToggleButtonGroup
             value={maxItemsPerPage.toString()}
             exclusive

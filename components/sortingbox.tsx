@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { sortAnswers } from '../functions/sortAlgorithms';
 import { AnswerType } from '../types/Types';
 
 interface Option {
@@ -22,7 +20,7 @@ interface Sortingboxprops {
 const Sortingbox: React.FC<Sortingboxprops> = (props: Sortingboxprops) => {
   const options: Option[] = [
     { value: 'random', label: 'Tilfeldige besvarelser' },
-    { value: 'candidateNumber', label: 'Kandidatnummer' },
+    { value: 'candidate', label: 'Kandidatnummer' },
     // { value: 'similarAnswers', label: 'Liknende besvarelser' },
     // { value: 'divergentAnswers', label: 'Divergerende besvarelser' },
     { value: 'length_hl', label: 'Lengde fra lengst til kortest' },
@@ -34,7 +32,7 @@ const Sortingbox: React.FC<Sortingboxprops> = (props: Sortingboxprops) => {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 250 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Sortér etter</InputLabel>
         <Select
