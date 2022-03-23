@@ -9,7 +9,6 @@ import ConsistencyBox from '../components/consistencybox';
 import {
   chooseCorrelatedAssessment,
   insperaDataToTextboxObject,
-  saveAssessments,
   saveBatch,
 } from '../functions/helpFunctions';
 import { sortAnswers } from '../functions/sortAlgorithms';
@@ -53,7 +52,7 @@ const Assessment: NextPage = () => {
     'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.';
 
   const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
-  const answers = allAnswers.slice(0, 19);
+  const answers = allAnswers.slice(0,10);
   const numberOfAnswers = answers.length;
   sortAnswers(answers, 'length_hl');
   const p = answers.map((answer: AnswerType) => ({ score: '', ...answer }));
@@ -210,7 +209,7 @@ const Assessment: NextPage = () => {
           >
             <Button
               variant="contained"
-              onClick={() => saveAssessments(assessments, 0)}
+              onClick={() => saveBatch(assessments.slice(startIndexBatch, endIndexBatch), taskNumber)}
             >
               {/*need to figure out a key, currently set to 0*/}
               Fullfør

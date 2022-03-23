@@ -5,14 +5,15 @@ import Link from 'next/link';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import ApprovalTextbox from '../components/approvalTextbox';
-import { AssessmentType } from '../types/Types';
+import { ApprovalType, AssessmentType } from '../types/Types';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { v4 as uuidv4 } from 'uuid';
 
-const getAssessments = (taskNumber: number) => {
-  const key = taskNumber.toString() + '_assessments';
-  if (typeof window !== 'undefined') {
+const getAllAssessments = (taskNumber: number) => {
+  const key = taskNumber.toString() + "_assessments";
+  if (typeof window !== "undefined") {
     var assessments: AssessmentType[] =
       JSON.parse(localStorage.getItem(key) as string) || [];
     assessments.sort(function (a, b) {
@@ -22,6 +23,50 @@ const getAssessments = (taskNumber: number) => {
   } else {
     return [];
   }
+};
+
+const convertToNumber = (n: string | number) => {
+  return parseInt(n);
+};
+
+// returns the each answer with assessment and potentially inconsistent values
+function filterAssessments(assessments: AssessmentType[]) {
+
+  const filteredAssessments = assessments.map((assessment: AssessmentType) => {
+    const listOfUniqueAnswers:AssessmentType[] = assessments.filter((a) => a.answer == assessment.answer);
+    console.log('list of unique answers', listOfUniqueAnswers);
+    if (listOfUniqueAnswers.length > 1){
+      // Hvis current assessment er den første av de to
+      if (listOfUniqueAnswers.find(a => a.answer == assessment.answer) == assessment){
+        let newAss: ApprovalType;
+        if (listOfUniqueAnswers[0].score != listOfUniqueAnswers[1].score){
+          console.log('1');
+          const inconsistentValues: number[] = listOfUniqueAnswers.map(a => {return convertToNumber(a.score) });
+          newAss = {...assessment, score:"-", assessmentId:uuidv4(), inconsistentScores: inconsistentValues};
+        } else {
+          console.log('2');
+          newAss = {...assessment, score:"-", assessmentId:uuidv4()};
+        }
+        return newAss;
+        //...
+      } else {
+        // only add if not there fra før
+        return;
+      }
+    }
+    return assessment;
+  });
+  // all assessments
+  // if (two of same)
+  //   create new assessment of type approval
+  //   set new uuidv4()
+  //  if (the two assessments has different scores)
+  //    set empty score, set inconsistentScores
+
+  // else: keep
+  return filteredAssessments.filter(a => a != undefined)
+
+
 };
 
 const Approval: NextPage = () => {
@@ -34,8 +79,9 @@ const Approval: NextPage = () => {
     setTaskNumber(router.query.task);
   }, [router.isReady, router.query.task]);
 
-  const [taskNumber, setTaskNumber] = useState<any>('');
-  const assessments: AssessmentType[] = getAssessments(taskNumber);
+  const [taskNumber, setTaskNumber] = useState<any>("");
+  const assessments: AssessmentType[] = getAllAssessments(taskNumber);
+  const filteredAssessments = filterAssessments(assessments);
 
   return (
     <div className={styles.container}>
@@ -44,20 +90,14 @@ const Approval: NextPage = () => {
         <Grid container gap={2} xs={5} item={true}>
           {assessments.length <= 0
             ? null
-            : assessments.map((assessment: AssessmentType) => (
-                <ApprovalTextbox
-                  key={assessment.assessmentId}
-                  assessmentId={assessment.assessmentId}
-                  answer={assessment.answer}
-                  candidateId={assessment.candidateId}
-                  taskNumber={assessment.taskNumber}
-                  maxPoints={assessment.maxPoints}
-                  score={assessment.score}
-                  //inconsistentScores={[3, 4]}
-                />
-              ))}
+            : filteredAssessments.map((assessment: ApprovalType) => (
+              <ApprovalTextbox
+                key={assessment.assessmentId}
+                assessment = {assessment}
+              />
+            ))}
         </Grid>
-        <div style={{ padding: 20 }}>
+        <div style={{padding: 20}}>
           <Link
             href={{
               pathname: '/assessment',
@@ -66,6 +106,9 @@ const Approval: NextPage = () => {
             passHref
           >
             <Button variant="contained">Tilbake</Button>
+          </Link>
+          <Link href="/task" passHref >
+            <Button style={{marginLeft: 10}} variant="contained">Fullfør</Button>
           </Link>
         </div>
       </main>

@@ -1,18 +1,22 @@
 import * as React from "react";
-import {Approvaltextboxprop} from "../types/Types";
+import {ApprovalType} from "../types/Types";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import parse from "html-react-parser";
 
-const ApprovalTextbox: React.FC<Approvaltextboxprop> = (
-  assessment: Approvaltextboxprop,
+interface approvalTexboxProp {
+  assessment: ApprovalType
+}
+
+const ApprovalTextbox: React.FC<approvalTexboxProp> = (
+  props: approvalTexboxProp,
 ) => {
 
   let inconsistentScoresString = "";
-  if (assessment.inconsistentScores) {
-    assessment.inconsistentScores.length == 2 ?
-      inconsistentScoresString += assessment.inconsistentScores[0].toString() + " og " + assessment.inconsistentScores[1].toString()
+  if (props.assessment.inconsistentScores) {
+    props.assessment.inconsistentScores.length == 2 ?
+      inconsistentScoresString += props.assessment.inconsistentScores[0].toString() + " og " + props.assessment.inconsistentScores[1].toString()
       : null;
   }
   // As of now it only supports 2 inconsistent assessments
@@ -22,7 +26,9 @@ const ApprovalTextbox: React.FC<Approvaltextboxprop> = (
     <div>
       {showConflictError ?
         <Typography variant="body1">Konflikt! Det er blitt satt
-          scorene: {inconsistentScoresString} </Typography> : null}
+          scorene: {inconsistentScoresString}
+        </Typography>
+        : null}
       <Paper
         sx={{
           p: 3,
@@ -34,15 +40,15 @@ const ApprovalTextbox: React.FC<Approvaltextboxprop> = (
         <Grid container spacing={2}>
           <Grid item>
             <Typography variant="subtitle1">
-              {assessment.candidateId}
+              {props.assessment.candidateId}
             </Typography>
             <Typography variant="subtitle1" align="left">
-              {assessment.score} p
+              {props.assessment.score} p
             </Typography>
           </Grid>
           <Grid item xs={12} sm container sx={{mt: 0.5}}>
             <Typography variant="body2" gutterBottom>
-              {parse(assessment.answer)}
+              {parse(props.assessment.answer)}
             </Typography>
           </Grid>
         </Grid>
