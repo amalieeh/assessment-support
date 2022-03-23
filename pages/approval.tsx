@@ -1,18 +1,18 @@
-import { NextPage } from "next";
-import styles from "../styles/Main.module.css";
-import data from "../data/IT2810Høst2018.json";
-import Link from "next/link";
-import {Button} from "@mui/material";
-import Grid from "@mui/material/Grid";
-import ApprovalTextbox from "../components/approvalTextbox";
-import {AssessmentType} from "../types/Types";
-import * as React from "react";
-import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
+import { NextPage } from 'next';
+import styles from '../styles/Main.module.css';
+import data from '../data/IT2810Høst2018.json';
+import Link from 'next/link';
+import { Button } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import ApprovalTextbox from '../components/approvalTextbox';
+import { AssessmentType } from '../types/Types';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const getAssessments = (taskNumber: number) => {
-  const key = taskNumber.toString() + "_assessments";
-  if (typeof window !== "undefined") {
+  const key = taskNumber.toString() + '_assessments';
+  if (typeof window !== 'undefined') {
     var assessments: AssessmentType[] =
       JSON.parse(localStorage.getItem(key) as string) || [];
     assessments.sort(function (a, b) {
@@ -34,7 +34,7 @@ const Approval: NextPage = () => {
     setTaskNumber(router.query.task);
   }, [router.isReady, router.query.task]);
 
-  const [taskNumber, setTaskNumber] = useState<any>("");
+  const [taskNumber, setTaskNumber] = useState<any>('');
   const assessments: AssessmentType[] = getAssessments(taskNumber);
 
   return (
@@ -60,12 +60,12 @@ const Approval: NextPage = () => {
         <div style={{ padding: 20 }}>
           <Link
             href={{
-              pathname: "/assessment",
+              pathname: '/assessment',
               query: { task: taskNumber },
             }}
             passHref
           >
-            <Button variant="contained">Back</Button>
+            <Button variant="contained">Tilbake</Button>
           </Link>
         </div>
       </main>
