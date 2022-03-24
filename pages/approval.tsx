@@ -10,10 +10,11 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
+import { saveAssessments } from '../functions/helpFunctions';
 
-const getAllAssessments = (taskNumber: number) : AssessmentType[] => {
-  const key = taskNumber.toString() + "_assessments";
-  if (typeof window !== "undefined") {
+const getAllAssessments = (taskNumber: number): AssessmentType[] => {
+  const key = taskNumber.toString() + '_assessments';
+  if (typeof window !== 'undefined') {
     var assessments: AssessmentType[] =
       JSON.parse(localStorage.getItem(key) as string) || [];
     return assessments;
@@ -23,7 +24,7 @@ const getAllAssessments = (taskNumber: number) : AssessmentType[] => {
 };
 
 const convertToNumber = (n: string | number) => {
-  if ( typeof n == "number") {
+  if (typeof n == 'number') {
     return n;
   }
   return parseInt(n);
@@ -46,17 +47,12 @@ function filterAssessments(assessments: AssessmentType[]): ApprovalType[] {
         const inconsistentValues: number[] = listOfAssessmentsFromSameCandidate.map(a => {return convertToNumber(a.score) });
         newAss = {...assessment, score:"-", assessmentId:uuidv4(), inconsistentScores: inconsistentValues};
       } else {
-        newAss = {...assessment, score:"-", assessmentId:uuidv4()};
+        return assessment;
       }
-      return newAss;
-    } else {
-      return assessment
     }
-  });
+  );
   return approvalAssessments;
-
-
-};
+}
 
 const Approval: NextPage = () => {
   // create router object
@@ -68,9 +64,11 @@ const Approval: NextPage = () => {
     setTaskNumber(router.query.task);
   }, [router.isReady, router.query.task]);
 
-  const [taskNumber, setTaskNumber] = useState<any>("");
+  const [taskNumber, setTaskNumber] = useState<any>('');
   const assessments = getAllAssessments(taskNumber);
   const filteredAssessments = filterAssessments(assessments);
+
+  const key = taskNumber.toString() + '_approved';
 
   return (
     <div className={styles.container}>
@@ -80,13 +78,13 @@ const Approval: NextPage = () => {
           {assessments.length <= 0
             ? null
             : filteredAssessments.map((assessment: ApprovalType) => (
-              <ApprovalTextbox
-                key={assessment.assessmentId}
-                assessment = {assessment}
-              />
-            ))}
+                <ApprovalTextbox
+                  key={assessment.assessmentId}
+                  assessment={assessment}
+                />
+              ))}
         </Grid>
-        <div style={{padding: 20}}>
+        <div style={{ padding: 20 }}>
           <Link
             href={{
               pathname: '/assessment',
@@ -96,8 +94,14 @@ const Approval: NextPage = () => {
           >
             <Button variant="contained">Tilbake</Button>
           </Link>
-          <Link href="/task" passHref >
-            <Button style={{marginLeft: 10}} variant="contained">Fullfør</Button>
+          <Link href="/task" passHref>
+            <Button
+              style={{ marginLeft: 10 }}
+              variant="contained"
+              onClick={() => saveAssessments(filteredAssessments, key)}
+            >
+              Fullfør
+            </Button>
           </Link>
         </div>
       </main>
