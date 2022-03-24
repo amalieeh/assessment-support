@@ -39,15 +39,15 @@ const ApprovalTextbox: React.FC<approvalTexboxProp> = (
         }}>
         <Grid container spacing={2}>
           <Grid item>
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" component="div">
               {props.assessment.candidateId}
             </Typography>
-            <Typography variant="subtitle1" align="left">
+            <Typography variant="subtitle1" align="left" component="div">
               {props.assessment.score} p
             </Typography>
           </Grid>
           <Grid item xs={12} sm container sx={{mt: 0.5}}>
-            <Typography variant="body2" gutterBottom>
+            <Typography variant="body2" gutterBottom component="div">
               {parse(props.assessment.answer)}
             </Typography>
           </Grid>

@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
-const getAllAssessments = (taskNumber: number) => {
+const getAllAssessments = (taskNumber: number) : AssessmentType[] => {
   const key = taskNumber.toString() + "_assessments";
   if (typeof window !== "undefined") {
     var assessments: AssessmentType[] =
@@ -26,45 +26,37 @@ const getAllAssessments = (taskNumber: number) => {
 };
 
 const convertToNumber = (n: string | number) => {
+  if ( typeof n == "number") {
+    return n;
+  }
   return parseInt(n);
 };
 
-// returns the each answer with assessment and potentially inconsistent values
-function filterAssessments(assessments: AssessmentType[]) {
-
-  const filteredAssessments = assessments.map((assessment: AssessmentType) => {
-    const listOfUniqueAnswers:AssessmentType[] = assessments.filter((a) => a.answer == assessment.answer);
-    console.log('list of unique answers', listOfUniqueAnswers);
-    if (listOfUniqueAnswers.length > 1){
-      // Hvis current assessment er den første av de to
-      if (listOfUniqueAnswers.find(a => a.answer == assessment.answer) == assessment){
-        let newAss: ApprovalType;
-        if (listOfUniqueAnswers[0].score != listOfUniqueAnswers[1].score){
-          console.log('1');
-          const inconsistentValues: number[] = listOfUniqueAnswers.map(a => {return convertToNumber(a.score) });
-          newAss = {...assessment, score:"-", assessmentId:uuidv4(), inconsistentScores: inconsistentValues};
-        } else {
-          console.log('2');
-          newAss = {...assessment, score:"-", assessmentId:uuidv4()};
-        }
-        return newAss;
-        //...
-      } else {
-        // only add if not there fra før
-        return;
-      }
-    }
-    return assessment;
+// returns the each assessment with potentially inconsistent values
+function filterAssessments(assessments: AssessmentType[]): ApprovalType[] {
+  const uniqueAssessments: AssessmentType[] = assessments.sort((a:AssessmentType, b:AssessmentType) => {
+    return b.candidateId - a.candidateId
+  })
+    .filter((assessment, index, array) => { return !index || assessment.candidateId != array[index - 1].candidateId;
   });
-  // all assessments
-  // if (two of same)
-  //   create new assessment of type approval
-  //   set new uuidv4()
-  //  if (the two assessments has different scores)
-  //    set empty score, set inconsistentScores
-
-  // else: keep
-  return filteredAssessments.filter(a => a != undefined)
+  const approvalAssessments: ApprovalType[] = uniqueAssessments.map((assessment: AssessmentType) => {
+    const listOfAssessmentsFromSameCandidate = assessments.filter((a) => a.candidateId == assessment.candidateId);
+    // If the assessment has been reassessed
+    if (listOfAssessmentsFromSameCandidate.length > 1) {
+      let newAss: ApprovalType;
+      // If the scores are inconsistent
+      if (listOfAssessmentsFromSameCandidate[0].score != listOfAssessmentsFromSameCandidate[1].score){
+        const inconsistentValues: number[] = listOfAssessmentsFromSameCandidate.map(a => {return convertToNumber(a.score) });
+        newAss = {...assessment, score:"-", assessmentId:uuidv4(), inconsistentScores: inconsistentValues};
+      } else {
+        newAss = {...assessment, score:"-", assessmentId:uuidv4()};
+      }
+      return newAss;
+    } else {
+      return assessment
+    }
+  });
+  return approvalAssessments;
 
 
 };
@@ -80,7 +72,7 @@ const Approval: NextPage = () => {
   }, [router.isReady, router.query.task]);
 
   const [taskNumber, setTaskNumber] = useState<any>("");
-  const assessments: AssessmentType[] = getAllAssessments(taskNumber);
+  const assessments = getAllAssessments(taskNumber);
   const filteredAssessments = filterAssessments(assessments);
 
   return (
