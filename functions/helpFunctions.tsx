@@ -57,6 +57,23 @@ export function saveAssessments(
   }
 }
 
+export function getApprovedAssessments(taskNumbers: number[]): number[] {
+  //convert tasknumbers to string
+  const tasks = taskNumbers.map(String);
+  let approvedAssessments: number[] = [];
+
+  // check if task is approved by looking up in localStorage
+  if (typeof window !== 'undefined') {
+    tasks.map((taskNumber: string) => {
+      const key = taskNumber + '_approved';
+      if (key in localStorage) {
+        approvedAssessments.push(parseInt(taskNumber) - 1);
+      }
+    });
+  }
+  return approvedAssessments;
+}
+
 export function saveBatch(batch: AssessmentType[], taskNumber: number) {
   const key = taskNumber.toString() + '_assessments';
   if (typeof window !== 'undefined') {

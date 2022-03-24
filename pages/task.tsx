@@ -4,13 +4,14 @@ import data from '../data/IT2810Høst2018.json';
 import Header from '../components/header';
 import { Button, Grid } from '@mui/material';
 import Link from 'next/link';
+import { getApprovedAssessments } from '../functions/helpFunctions';
 
 const Task: NextPage = () => {
   const totalTasks: number =
     data.ext_inspera_candidates[0].result.ext_inspera_questions.length;
   const taskNumbers: number[] = Array.from(Array(totalTasks).keys());
 
-  const disabledTasks: number[] = [0, 1, 2];
+  const approvedAssessments: number[] = getApprovedAssessments(taskNumbers);
 
   return (
     <div className={mainStyles.container}>
@@ -18,15 +19,24 @@ const Task: NextPage = () => {
       <main style={{ display: 'flex', justifyContent: 'center' }}>
         <Grid container gap={4} sx={{ maxWidth: 1230 }}>
           {taskNumbers.map((taskNum: number) =>
-            disabledTasks.includes(taskNum) ? (
-              <Button
-                disabled
+            approvedAssessments.includes(taskNum) ? (
+              <Link
                 key={taskNum + 1}
-                variant="contained"
-                sx={{ width: 73, height: 73, fontSize: 25 }}
+                href={{
+                  pathname: '/assessment',
+                  query: { task: taskNum + 1 },
+                }}
+                passHref
               >
-                {taskNum + 1}
-              </Button>
+                <Button
+                  color="success"
+                  key={taskNum + 1}
+                  variant="contained"
+                  sx={{ width: 73, height: 73, fontSize: 25 }}
+                >
+                  {taskNum + 1}
+                </Button>
+              </Link>
             ) : (
               <Link
                 key={taskNum + 1}
