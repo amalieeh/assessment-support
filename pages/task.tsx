@@ -4,58 +4,98 @@ import data from '../data/IT2810Høst2018.json';
 import Header from '../components/header';
 import { Button, Grid } from '@mui/material';
 import Link from 'next/link';
-import { getApprovedAssessments } from '../functions/helpFunctions';
+import { getAssessments } from '../functions/helpFunctions';
+import { useEffect, useState } from 'react';
 
 const Task: NextPage = () => {
   const totalTasks: number =
     data.ext_inspera_candidates[0].result.ext_inspera_questions.length;
   const taskNumbers: number[] = Array.from(Array(totalTasks).keys());
 
-  const approvedAssessments: number[] = getApprovedAssessments(taskNumbers);
+  const [approvedAssessments, setApprovedAssessments] = useState<number[]>();
+  const [startedAssessments, setStartedAssessments] = useState<number[]>();
+
+  useEffect(() => {
+    const assessments = getAssessments(taskNumbers); // [[1,2,3],[4,5,6]]
+    const approvedAss = assessments[0];
+    const startedAss = assessments[1];
+    setApprovedAssessments(approvedAss);
+    setStartedAssessments(startedAss);
+  }, []);
 
   return (
     <div className={mainStyles.container}>
       <Header data={data} description={'Oversikt over alle oppgavene'} />
       <main style={{ display: 'flex', justifyContent: 'center' }}>
         <Grid container gap={4} sx={{ maxWidth: 1230 }}>
-          {taskNumbers.map((taskNum: number) =>
-            approvedAssessments.includes(taskNum) ? (
-              <Link
-                key={taskNum + 1}
-                href={{
-                  pathname: '/assessment',
-                  query: { task: taskNum + 1 },
-                }}
-                passHref
-              >
-                <Button
-                  color="success"
+          {taskNumbers.map((taskNum: number) => {
+            if (
+              approvedAssessments != undefined &&
+              approvedAssessments.includes(taskNum)
+            ) {
+              return (
+                <Link
                   key={taskNum + 1}
-                  variant="contained"
-                  sx={{ width: 73, height: 73, fontSize: 25 }}
+                  href={{
+                    pathname: '/assessment',
+                    query: { task: taskNum + 1 },
+                  }}
+                  passHref
                 >
-                  {taskNum + 1}
-                </Button>
-              </Link>
-            ) : (
-              <Link
-                key={taskNum + 1}
-                href={{
-                  pathname: '/assessment',
-                  query: { task: taskNum + 1 },
-                }}
-                passHref
-              >
-                <Button
+                  <Button
+                    color="success"
+                    key={taskNum + 1}
+                    variant="contained"
+                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                  >
+                    {taskNum + 1}
+                  </Button>
+                </Link>
+              );
+            } else if (
+              startedAssessments != undefined &&
+              startedAssessments.includes(taskNum)
+            ) {
+              return (
+                <Link
                   key={taskNum + 1}
-                  variant="contained"
-                  sx={{ width: 73, height: 73, fontSize: 25 }}
+                  href={{
+                    pathname: '/assessment',
+                    query: { task: taskNum + 1 },
+                  }}
+                  passHref
                 >
-                  {taskNum + 1}
-                </Button>
-              </Link>
-            )
-          )}
+                  <Button
+                    disabled
+                    key={taskNum + 1}
+                    variant="contained"
+                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                  >
+                    {taskNum + 1}
+                  </Button>
+                </Link>
+              );
+            } else {
+              return (
+                <Link
+                  key={taskNum + 1}
+                  href={{
+                    pathname: '/assessment',
+                    query: { task: taskNum + 1 },
+                  }}
+                  passHref
+                >
+                  <Button
+                    key={taskNum + 1}
+                    variant="contained"
+                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                  >
+                    {taskNum + 1}
+                  </Button>
+                </Link>
+              );
+            }
+          })}
         </Grid>
       </main>
     </div>

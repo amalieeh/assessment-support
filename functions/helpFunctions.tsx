@@ -57,22 +57,31 @@ export function saveAssessments(
   }
 }
 
-export function getApprovedAssessments(taskNumbers: number[]): number[] {
+export function getAssessments(taskNumbers: number[]): number[][] {
   //convert tasknumbers to string
   const tasks = taskNumbers.map(String);
   let approvedAssessments: number[] = [];
+  let startedAssessments: number[] = [];
 
   // check if task is approved by looking up in localStorage
   if (typeof window !== 'undefined') {
     tasks.map((taskNumber: string) => {
-      const key = taskNumber + '_approved';
-      if (key in localStorage) {
+      const approvedKey = taskNumber + '_approved';
+      const startedKey = taskNumber + '_assessments';
+      if (approvedKey in localStorage) {
         approvedAssessments.push(parseInt(taskNumber) - 1);
+      } else if (startedKey in localStorage) {
+        startedAssessments.push(parseInt(taskNumber) - 1);
       }
     });
   }
-  return approvedAssessments;
+  return [approvedAssessments, startedAssessments];
 }
+
+// export function getStartedAssessments(taskNumbers: number[]): number[] {
+//   const tasks = taskNumbers.map(String);
+
+// }
 
 export function saveBatch(batch: AssessmentType[], taskNumber: number) {
   const key = taskNumber.toString() + '_assessments';
