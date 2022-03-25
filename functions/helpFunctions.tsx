@@ -78,11 +78,6 @@ export function getAssessments(taskNumbers: number[]): number[][] {
   return [approvedAssessments, startedAssessments];
 }
 
-// export function getStartedAssessments(taskNumbers: number[]): number[] {
-//   const tasks = taskNumbers.map(String);
-
-// }
-
 export function saveBatch(batch: AssessmentType[], taskNumber: number) {
   const key = taskNumber.toString() + '_assessments';
   if (typeof window !== 'undefined') {

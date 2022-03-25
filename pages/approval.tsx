@@ -32,20 +32,40 @@ const convertToNumber = (n: string | number) => {
 
 // returns the each assessment with potentially inconsistent values
 function filterAssessments(assessments: AssessmentType[]): ApprovalType[] {
-  const uniqueAssessments: AssessmentType[] = assessments.sort((a:AssessmentType, b:AssessmentType) => {
-    return a.candidateId - b.candidateId
-  })
-    .filter((assessment, index, array) => { return !index || assessment.candidateId != array[index - 1].candidateId;
-  });
-  const approvalAssessments: ApprovalType[] = uniqueAssessments.map((assessment: AssessmentType) => {
-    const listOfAssessmentsFromSameCandidate = assessments.filter((a) => a.candidateId == assessment.candidateId);
-    // If the assessment has been reassessed
-    if (listOfAssessmentsFromSameCandidate.length > 1) {
-      let newAss: ApprovalType;
-      // If the scores are inconsistent
-      if (listOfAssessmentsFromSameCandidate[0].score != listOfAssessmentsFromSameCandidate[1].score){
-        const inconsistentValues: number[] = listOfAssessmentsFromSameCandidate.map(a => {return convertToNumber(a.score) });
-        newAss = {...assessment, score:"-", assessmentId:uuidv4(), inconsistentScores: inconsistentValues};
+  const uniqueAssessments: AssessmentType[] = assessments
+    .sort((a: AssessmentType, b: AssessmentType) => {
+      return a.candidateId - b.candidateId;
+    })
+    .filter((assessment, index, array) => {
+      return !index || assessment.candidateId != array[index - 1].candidateId;
+    });
+  const approvalAssessments: ApprovalType[] = uniqueAssessments.map(
+    (assessment: AssessmentType) => {
+      const listOfAssessmentsFromSameCandidate = assessments.filter(
+        (a) => a.candidateId == assessment.candidateId
+      );
+      // If the assessment has been reassessed
+      if (listOfAssessmentsFromSameCandidate.length > 1) {
+        let newAss: ApprovalType;
+        // If the scores are inconsistent
+        if (
+          listOfAssessmentsFromSameCandidate[0].score !=
+          listOfAssessmentsFromSameCandidate[1].score
+        ) {
+          const inconsistentValues: number[] =
+            listOfAssessmentsFromSameCandidate.map((a) => {
+              return convertToNumber(a.score);
+            });
+          newAss = {
+            ...assessment,
+            score: '-',
+            assessmentId: uuidv4(),
+            inconsistentScores: inconsistentValues,
+          };
+        } else {
+          newAss = { ...assessment, score: '-', assessmentId: uuidv4() };
+        }
+        return newAss;
       } else {
         return assessment;
       }

@@ -16,7 +16,7 @@ const Task: NextPage = () => {
   const [startedAssessments, setStartedAssessments] = useState<number[]>();
 
   useEffect(() => {
-    const assessments = getAssessments(taskNumbers); // [[1,2,3],[4,5,6]]
+    const assessments = getAssessments(taskNumbers);
     const approvedAss = assessments[0];
     const startedAss = assessments[1];
     setApprovedAssessments(approvedAss);
@@ -66,7 +66,7 @@ const Task: NextPage = () => {
                   passHref
                 >
                   <Button
-                    disabled
+                    color="warning"
                     key={taskNum + 1}
                     variant="contained"
                     sx={{ width: 73, height: 73, fontSize: 25 }}
