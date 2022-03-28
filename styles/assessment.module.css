@@ -29,6 +29,7 @@
 }
 
 .expandInfo {
+  margin-top: 57px;
   display: flex;
   flex-direction: column;
   padding-left: 2em;

@@ -32,7 +32,7 @@ const Sortingbox: React.FC<Sortingboxprops> = (props: Sortingboxprops) => {
   };
 
   return (
-    <Box sx={{ minWidth: 250, display: 'block' }}>
+    <Box sx={{ minWidth: 230, display: 'block' }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Sortér etter</InputLabel>
         <Select
@@ -41,9 +41,14 @@ const Sortingbox: React.FC<Sortingboxprops> = (props: Sortingboxprops) => {
           value={props.sortingAlgorithm}
           label="Sortér etter"
           onChange={handleChange}
+          sx={{ fontSize: 15 }}
         >
           {options.map((option: Option) => (
-            <MenuItem key={option.value} value={option.value}>
+            <MenuItem
+              key={option.value}
+              value={option.value}
+              sx={{ fontSize: 15 }}
+            >
               {option.label}
             </MenuItem>
           ))}
