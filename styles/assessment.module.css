@@ -1,7 +1,10 @@
-.toggleButtonGroup {
+.sortAndToggle {
   display: flex;
-  align-self: flex-end;
-  margin-right: 1.3rem;
+  width: 100% !important;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 1rem 0;
+  align-items: center;
 }
 
 .footer {
@@ -26,6 +29,7 @@
 }
 
 .expandInfo {
+  margin-top: 57px;
   display: flex;
   flex-direction: column;
   padding-left: 2em;

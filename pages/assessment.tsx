@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import data from '../data/IT2810Høst2018.json';
 import Expand from '../components/expand';
 import ConsistencyBox from '../components/consistencybox';
+import Sortingbox from '../components/sortingbox';
 import {
   chooseCorrelatedAssessment,
   insperaDataToTextboxObject,
@@ -45,6 +46,7 @@ const Assessment: NextPage = () => {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItems, setMaxItems] = useState<string>('4'); //max items set to 4 as default
+  const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('random');
 
   const taskDescription: string =
     'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.';
@@ -54,7 +56,7 @@ const Assessment: NextPage = () => {
   const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
   const answers = allAnswers.slice(0,10);
   const numberOfAnswers = answers.length;
-  sortAnswers(answers, 'length_hl');
+
   const p = answers.map((answer: AnswerType) => ({ score: '', ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
@@ -62,6 +64,16 @@ const Assessment: NextPage = () => {
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
+
+  // currently works in one case: when the data is loaded and no assessments have been made
+  // needs to be updated to only sort the rest of the assessments that have not been assessed
+  // in relation to data retrieval for textboxes
+  useEffect(() => {
+    sortAnswers(answers, sortingAlgorithm);
+    setAssessments(
+      answers.map((answer: AnswerType) => ({ score: '', ...answer }))
+    );
+  }, [sortingAlgorithm]);
 
   // to make sure setAssessments is being set, otherwise it is empty
   useEffect(() => {
@@ -142,24 +154,6 @@ const Assessment: NextPage = () => {
     <div className={mainStyles.container}>
       <Header data={data} taskNumber={taskNumber} description={taskTitle} />
       <main className={mainStyles.main}>
-        <div className={styles.toggleButtonGroup}>
-          <ToggleButtonGroup
-            value={maxItemsPerPage.toString()}
-            exclusive
-            onChange={handleSetMaxItems}
-          >
-            <ToggleButton key="2" value="2" sx={{ padding: 1.8 }}>
-              <BsFillPauseFill size={15} />
-            </ToggleButton>
-            <ToggleButton key="4" value="4">
-              <CgLayoutGrid size={22} />
-            </ToggleButton>
-            <ToggleButton key="6" value="6">
-              <BiGridVertical size={22} />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-
         <div className={styles.alignInfo}>
           <div className={styles.expandInfo}>
             <Expand
@@ -173,6 +167,30 @@ const Assessment: NextPage = () => {
             <ConsistencyBox />
           </div>
           <div className={styles.grid}>
+            <div className={styles.sortAndToggle}>
+              <Sortingbox
+                answers={answers}
+                sortingAlgorithm={sortingAlgorithm}
+                setSortingAlgorithm={setSortingAlgorithm}
+              />
+
+              <ToggleButtonGroup
+                sx={{ display: 'block', maxWidth: '250px', marginRight: '4px' }}
+                value={maxItemsPerPage.toString()}
+                exclusive
+                onChange={handleSetMaxItems}
+              >
+                <ToggleButton key="2" value="2" sx={{ padding: 1.8 }}>
+                  <BsFillPauseFill size={15} />
+                </ToggleButton>
+                <ToggleButton key="4" value="4">
+                  <CgLayoutGrid size={22} />
+                </ToggleButton>
+                <ToggleButton key="6" value="6">
+                  <BiGridVertical size={22} />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
             {assessments
               .slice(
                 currentPage * maxItemsPerPage - maxItemsPerPage,
