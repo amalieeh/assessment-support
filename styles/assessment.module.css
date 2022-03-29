@@ -14,6 +14,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: pink;
 }
 
 .grid {
@@ -21,7 +22,8 @@
   align-items: flex-start;
   flex-wrap: wrap;
   padding-left: 3em;
-  width: 86em;
+  max-width: 86em;
+  background-color: antiquewhite;
 }
 
 .alignInfo {

@@ -1,9 +1,11 @@
 .container {
+  min-width: 100vh;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--main-color);
+  /* background-color: var(--main-color); */
+  background-color: rgb(190, 238, 190);
 }
 
 .main {
@@ -11,4 +13,5 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rgb(115, 106, 168);
 }
