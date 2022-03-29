@@ -16,9 +16,6 @@ const getAllAssessments = (taskNumber: number) : AssessmentType[] => {
   if (typeof window !== "undefined") {
     var assessments: AssessmentType[] =
       JSON.parse(localStorage.getItem(key) as string) || [];
-    assessments.sort(function (a, b) {
-      return a.candidateId - b.candidateId;
-    });
     return assessments;
   } else {
     return [];
@@ -35,7 +32,7 @@ const convertToNumber = (n: string | number) => {
 // returns the each assessment with potentially inconsistent values
 function filterAssessments(assessments: AssessmentType[]): ApprovalType[] {
   const uniqueAssessments: AssessmentType[] = assessments.sort((a:AssessmentType, b:AssessmentType) => {
-    return b.candidateId - a.candidateId
+    return a.candidateId - b.candidateId
   })
     .filter((assessment, index, array) => { return !index || assessment.candidateId != array[index - 1].candidateId;
   });
