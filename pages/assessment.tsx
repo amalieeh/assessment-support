@@ -20,12 +20,8 @@ import Header from '../components/header';
 import findIndex from 'lodash/findIndex';
 import cloneDeep from 'lodash/cloneDeep';
 import { useRouter } from 'next/router';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { CgLayoutGrid } from 'react-icons/cg';
-import { BiGridVertical } from 'react-icons/bi';
-import { BsFillPauseFill } from 'react-icons/bs';
 import { v4 as uuidv4 } from 'uuid';
+import Togglebuttons from '../components/togglebuttons';
 
 const Assessment: NextPage = () => {
   // create router object
@@ -173,23 +169,10 @@ const Assessment: NextPage = () => {
                 sortingAlgorithm={sortingAlgorithm}
                 setSortingAlgorithm={setSortingAlgorithm}
               />
-
-              <ToggleButtonGroup
-                sx={{ display: 'block', maxWidth: '250px', marginRight: '4px' }}
-                value={maxItemsPerPage.toString()}
-                exclusive
-                onChange={handleSetMaxItems}
-              >
-                <ToggleButton key="2" value="2" sx={{ padding: 1.8 }}>
-                  <BsFillPauseFill size={15} />
-                </ToggleButton>
-                <ToggleButton key="4" value="4">
-                  <CgLayoutGrid size={22} />
-                </ToggleButton>
-                <ToggleButton key="6" value="6">
-                  <BiGridVertical size={22} />
-                </ToggleButton>
-              </ToggleButtonGroup>
+              <Togglebuttons
+                value={maxItemsPerPage}
+                handleSetMaxItems={handleSetMaxItems}
+              />
             </div>
             {assessments
               .slice(
