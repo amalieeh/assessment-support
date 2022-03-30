@@ -20,7 +20,8 @@ const Textbox: React.FC<textboxprop> = (props: textboxprop) => {
         <div className={styles.pointboxAndFlag}>
           <Pointsbox
             assessment={props.assessment}
-            setAssessment={props.setAssessmentScore}
+            setAssessmentScore={props.setAssessmentScore}
+            topMargin={"0"}
           />
           <Button onClick={() => props.toggleFlag(props.assessment)}>
             {props.assessment.isFlagged ?

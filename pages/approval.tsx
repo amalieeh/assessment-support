@@ -10,9 +10,11 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
+import findIndex from 'lodash/findIndex';
+import cloneDeep from 'lodash/cloneDeep';
 import { saveAssessments } from '../functions/helpFunctions';
 
-const getAllAssessments = (taskNumber: number): AssessmentType[] => {
+const getAllAssessedAssessments = (taskNumber: number) : AssessmentType[] => {
   const key = taskNumber.toString() + '_assessments';
   if (typeof window !== 'undefined') {
     var assessments: AssessmentType[] =
@@ -58,12 +60,12 @@ function filterAssessments(assessments: AssessmentType[]): ApprovalType[] {
             });
           newAss = {
             ...assessment,
-            score: '-',
+            score: '',
             assessmentId: uuidv4(),
             inconsistentScores: inconsistentValues,
           };
         } else {
-          newAss = { ...assessment, score: '-', assessmentId: uuidv4() };
+          newAss = { ...assessment, score: '', assessmentId: uuidv4() };
         }
         return newAss;
       } else {
@@ -78,15 +80,41 @@ const Approval: NextPage = () => {
   // create router object
   const router = useRouter();
 
+  const [taskNumber, setTaskNumber] = useState<any>('');
+  const p = getAllAssessedAssessments(taskNumber);
+  const filteredAssessments = filterAssessments(p);
+  const [assessments, setAssessments] = useState<ApprovalType[]>(filteredAssessments);
+
   // isReady: boolean - checks whether the router fields are updated client-side and ready for use.
   useEffect(() => {
     if (!router.isReady) return;
     setTaskNumber(router.query.task);
   }, [router.isReady, router.query.task]);
 
-  const [taskNumber, setTaskNumber] = useState<any>('');
-  const assessments = getAllAssessments(taskNumber);
-  const filteredAssessments = filterAssessments(assessments);
+  useEffect(() => {
+    setAssessments(filteredAssessments)
+  }, [filteredAssessments.length]);
+
+  const setAssessmentScore = (
+    assessment: AssessmentType,
+    newScore: number | string
+  ) => {
+    const newAssessment: AssessmentType = {
+      assessmentId: assessment.assessmentId,
+      answer: assessment.answer,
+      candidateId: assessment.candidateId,
+      maxPoints: assessment.maxPoints,
+      taskNumber: assessment.taskNumber,
+      score: newScore,
+      isFlagged: assessment.isFlagged,
+    };
+    const index = findIndex(assessments, {
+      assessmentId: assessment.assessmentId,
+    });
+    const newArr: AssessmentType[] = cloneDeep(assessments);
+    newArr.splice(index, 1, newAssessment);
+    setAssessments(newArr);
+  };
 
   const key = taskNumber.toString() + '_approved';
 
@@ -95,14 +123,13 @@ const Approval: NextPage = () => {
       <h1>{data.ext_inspera_assessmentRunTitle}</h1>
       <main className={styles.main}>
         <Grid container gap={2} xs={5} item={true}>
-          {assessments.length <= 0
-            ? null
-            : filteredAssessments.map((assessment: ApprovalType) => (
-                <ApprovalTextbox
-                  key={assessment.assessmentId}
-                  assessment={assessment}
-                />
-              ))}
+          {assessments.map((assessment: ApprovalType) => (
+            <ApprovalTextbox
+              key={assessment.assessmentId}
+              assessment = {assessment}
+              setAssessmentScore={setAssessmentScore}
+            />
+          ))}
         </Grid>
         <div style={{ padding: 20 }}>
           <Link

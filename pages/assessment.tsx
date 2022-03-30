@@ -67,7 +67,7 @@ const Assessment: NextPage = () => {
   useEffect(() => {
     sortAnswers(answers, sortingAlgorithm);
     setAssessments(
-      answers.map((answer: AnswerType) => ({ score: '', ...answer }))
+      answers.map((answer: AnswerType) => ({ score: '', isFlagged: false, ...answer }))
     );
   }, [sortingAlgorithm]);
 
