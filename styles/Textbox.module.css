@@ -36,3 +36,7 @@
   width: 595px;
   height: 320px;
 }
+
+.pointboxAndFlag {
+  display: flex;
+}

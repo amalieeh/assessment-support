@@ -53,7 +53,7 @@ const Assessment: NextPage = () => {
   const answers = allAnswers.slice(0,10);
   const numberOfAnswers = answers.length;
 
-  const p = answers.map((answer: AnswerType) => ({ score: '', ...answer }));
+  const p = answers.map((answer: AnswerType) => ({ score: '', isFlagged: false, ...answer }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
   const maxItemsPerPage = parseInt(maxItems);
@@ -93,8 +93,7 @@ const Assessment: NextPage = () => {
     const maxReAssessmentPercentage = 0.2;
     if (
       // not currently assessing a reAssessment
-      currentPage * (maxItemsPerPage - 1) <
-      numberOfAnswers
+      currentPage * (maxItemsPerPage - 1) < numberOfAnswers
     ) {
       const assessment = chooseCorrelatedAssessment(batch);
       if (
@@ -113,13 +112,28 @@ const Assessment: NextPage = () => {
     }
   };
 
-  const setAssessment = (
+  const setAssessmentScore = (
     assessment: AssessmentType,
     newScore: number | string
   ) => {
     const newAssessment = {
       ...assessment,
       score: newScore,
+    };
+    const index = findIndex(assessments, {
+      assessmentId: assessment.assessmentId,
+    });
+    const newArr: AssessmentType[] = cloneDeep(assessments);
+    newArr.splice(index, 1, newAssessment);
+    setAssessments(newArr);
+  };
+
+  const toggleFlag = (
+    assessment: AssessmentType,
+  ) => {
+    const newAssessment = {
+      ...assessment,
+      isFlagged: !assessment.isFlagged,
     };
     const index = findIndex(assessments, {
       assessmentId: assessment.assessmentId,
@@ -183,7 +197,8 @@ const Assessment: NextPage = () => {
                 <Textbox
                   key={assessment.assessmentId}
                   assessment={assessment}
-                  setAssessment={setAssessment}
+                  setAssessmentScore={setAssessmentScore}
+                  toggleFlag={toggleFlag}
                 />
               ))}
           </div>

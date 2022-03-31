@@ -8,6 +8,7 @@ export interface AnswerType {
 
 export interface AssessmentType extends AnswerType{
   score: number | string;
+  isFlagged: boolean;
 }
 
 export interface ApprovalType extends AssessmentType{
