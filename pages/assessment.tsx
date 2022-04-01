@@ -50,10 +50,14 @@ const Assessment: NextPage = () => {
     'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.';
 
   const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
-  const answers = allAnswers.slice(0,10);
+  const answers = allAnswers.slice(0, 10);
   const numberOfAnswers = answers.length;
 
-  const p = answers.map((answer: AnswerType) => ({ score: '', isFlagged: false, ...answer }));
+  const p = answers.map((answer: AnswerType) => ({
+    score: '',
+    isFlagged: false,
+    ...answer,
+  }));
   const [assessments, setAssessments] = useState<AssessmentType[]>(p);
 
   const maxItemsPerPage = parseInt(maxItems);
@@ -93,7 +97,8 @@ const Assessment: NextPage = () => {
     const maxReAssessmentPercentage = 0.2;
     if (
       // not currently assessing a reAssessment
-      currentPage * (maxItemsPerPage - 1) < numberOfAnswers
+      currentPage * (maxItemsPerPage - 1) <
+      numberOfAnswers
     ) {
       const assessment = chooseCorrelatedAssessment(batch);
       if (
@@ -128,9 +133,7 @@ const Assessment: NextPage = () => {
     setAssessments(newArr);
   };
 
-  const toggleFlag = (
-    assessment: AssessmentType,
-  ) => {
+  const toggleFlag = (assessment: AssessmentType) => {
     const newAssessment = {
       ...assessment,
       isFlagged: !assessment.isFlagged,
@@ -225,7 +228,12 @@ const Assessment: NextPage = () => {
           >
             <Button
               variant="contained"
-              onClick={() => saveBatch(assessments.slice(startIndexBatch, endIndexBatch), taskNumber)}
+              onClick={() =>
+                saveBatch(
+                  assessments.slice(startIndexBatch, endIndexBatch),
+                  taskNumber
+                )
+              }
             >
               {/*need to figure out a key, currently set to 0*/}
               Fullfør
