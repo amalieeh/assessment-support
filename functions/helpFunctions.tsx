@@ -1,9 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
-import { AssessmentType } from "../types/Types";
+import { v4 as uuidv4 } from 'uuid';
+import { ApprovalType, AssessmentType } from '../types/Types';
 
 function replaceUndefined(content: string) {
   if (content == undefined) {
-    return "";
+    return '';
   }
   return content;
 }
@@ -47,25 +47,46 @@ export function insperaDataToTextboxObject(
 }
 
 export function saveAssessments(
-  assessments: AssessmentType[],
-  key: number
+  assessments: ApprovalType[],
+  key: string
 ): void {
   // local storage is a property of object window. Accessing localStroage is not possible until React component has mounted
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     // store array as a string
-    localStorage.setItem(key.toString(), JSON.stringify(assessments));
+    localStorage.setItem(key, JSON.stringify(assessments));
   }
 }
 
+export function getAssessments(taskNumbers: number[]): number[][] {
+  //convert tasknumbers to string
+  const tasks = taskNumbers.map(String);
+  let approvedAssessments: number[] = [];
+  let startedAssessments: number[] = [];
+
+  // check if task is approved by looking up in localStorage
+  if (typeof window !== 'undefined') {
+    tasks.map((taskNumber: string) => {
+      const approvedKey = taskNumber + '_approved';
+      const startedKey = taskNumber + '_assessments';
+      if (approvedKey in localStorage) {
+        approvedAssessments.push(parseInt(taskNumber) - 1);
+      } else if (startedKey in localStorage) {
+        startedAssessments.push(parseInt(taskNumber) - 1);
+      }
+    });
+  }
+  return [approvedAssessments, startedAssessments];
+}
+
 export function saveBatch(batch: AssessmentType[], taskNumber: number) {
-  const key = taskNumber.toString() + "_assessments";
-  if (typeof window !== "undefined") {
+  const key = taskNumber.toString() + '_assessments';
+  if (typeof window !== 'undefined') {
     let assessments: AssessmentType[] =
       JSON.parse(localStorage.getItem(key) as string) || [];
 
     // add assessments from batch to assessments list locally
     batch.map((assessment) => {
-      if (assessment.score !== "") {
+      if (assessment.score !== '') {
         // check if the assessment is already evaluated
         if (
           assessments.filter(function (a) {
@@ -90,7 +111,7 @@ export function saveBatch(batch: AssessmentType[], taskNumber: number) {
 }
 
 export function clearLocalStorage(): void {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     localStorage.clear();
   }
 }
@@ -106,7 +127,7 @@ export function chooseFrequentAssessmentBasedOnScore(
   ); // number of times x points are given, points = index
   var hasNullScore = false;
   assessments.map((assessment) => {
-    assessment.score === ""
+    assessment.score === ''
       ? (hasNullScore = true)
       : (numberOfAGivenScore[assessment.score] += 1);
   });
