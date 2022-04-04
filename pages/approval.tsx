@@ -12,7 +12,10 @@ import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import findIndex from 'lodash/findIndex';
 import cloneDeep from 'lodash/cloneDeep';
-import { saveAssessments } from '../functions/helpFunctions';
+import {
+  saveAssessments,
+  getApprovedAssessments,
+} from '../functions/helpFunctions';
 
 const getAllAssessedAssessments = (taskNumber: number): AssessmentType[] => {
   const key = taskNumber.toString() + '_assessments';
@@ -81,6 +84,10 @@ const Approval: NextPage = () => {
   const router = useRouter();
 
   const [taskNumber, setTaskNumber] = useState<any>('');
+
+  const approvedAssessments: ApprovalType[] =
+    getApprovedAssessments(taskNumber);
+
   const p = getAllAssessedAssessments(taskNumber);
   const filteredAssessments = filterAssessments(p);
   const [assessments, setAssessments] =
@@ -93,14 +100,17 @@ const Approval: NextPage = () => {
   }, [router.isReady, router.query.task]);
 
   useEffect(() => {
-    setAssessments(filteredAssessments);
-  }, [filteredAssessments.length]);
+    if (approvedAssessments.length != 0) {
+      setAssessments(approvedAssessments);
+    } else {
+      setAssessments(filteredAssessments);
+    }
+  }, [filteredAssessments.length, approvedAssessments.length]);
 
   const setAssessmentScore = (
     assessment: AssessmentType,
     newScore: number | string
   ) => {
-    console.log('new', newScore);
     const newAssessment: AssessmentType = {
       assessmentId: assessment.assessmentId,
       answer: assessment.answer,
@@ -115,7 +125,7 @@ const Approval: NextPage = () => {
     });
     const newArr: AssessmentType[] = cloneDeep(assessments);
     newArr.splice(index, 1, newAssessment);
-    console.log('newarr', newArr);
+
     setAssessments(newArr);
   };
 
