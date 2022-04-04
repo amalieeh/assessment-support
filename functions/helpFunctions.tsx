@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ApprovalType, AssessmentType } from '../types/Types';
 import data from '../data/IT2810Høst2018.json';
+import { Assessment } from 'material-ui-icons';
 
 function replaceUndefined(content: string) {
   if (content == undefined) {
@@ -245,7 +246,9 @@ export function getRawAssessments(taskNum: string): AnswerType[] {
   const rawKey: string = taskNum + '_data';
   let rawAssessments: AnswerType[] = [];
   if (typeof window !== 'undefined') {
-    rawAssessments = JSON.parse(localStorage.getItem(rawKey) as string);
+    if (rawKey in localStorage) {
+      rawAssessments = JSON.parse(localStorage.getItem(rawKey) as string);
+    }
   }
   return rawAssessments;
 }
@@ -263,6 +266,48 @@ export function getStartedAssessments(taskNum: string): AssessmentType[] {
   return startedAssessments;
 }
 
-//hvis listene er tomme
-//denne finner ut hvilken data som er riktig og skal displayes
-export function getAssessmentData() {}
+export function getAssessmentData(taskNum: string) {
+  // get the different assessments from localstorage
+  const raw: AnswerType[] = getRawAssessments(taskNum).slice(0, 10);
+  const started: AssessmentType[] = getStartedAssessments(taskNum);
+  const approved: ApprovalType[] = getApprovedAssessments(taskNum);
+
+  // data to be returned
+  let assessmentData: AssessmentType[] = [];
+
+  // no assessments have been made for current task, use raw data
+  if (started.length == 0) {
+    // convert to AssessmentType
+    assessmentData = raw.map((answer: AnswerType) => ({
+      score: '',
+      isFlagged: false,
+      ...answer,
+    }));
+  }
+  // all answers have been assessed and approved, use approved data
+  else if (approved.length != 0) {
+    assessmentData = approved;
+  }
+  // assessments have started for this task, but there are still some remaining answers
+  // need to filter out those that have been assessed
+  // filter on candidateId
+  else {
+    const remainingAnswers = getDifference(raw, started);
+    const p = remainingAnswers.map((answer: AnswerType) => ({
+      score: '',
+      isFlagged: false,
+      ...answer,
+    }));
+    assessmentData = p;
+  }
+  return assessmentData;
+}
+
+// help function to get the remaining answers
+function getDifference(array1: AnswerType[], array2: AssessmentType[]) {
+  return array1.filter((object1) => {
+    return !array2.some((object2) => {
+      return object1.candidateId === object2.candidateId;
+    });
+  });
+}

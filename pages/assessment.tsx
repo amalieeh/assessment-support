@@ -9,10 +9,7 @@ import ConsistencyBox from '../components/consistencybox';
 import Sortingbox from '../components/sortingbox';
 import {
   chooseCorrelatedAssessment,
-  getApprovedAssessments,
-  getRawAssessments,
-  getStartedAssessments,
-  insperaDataToTextboxObject,
+  getAssessmentData,
   saveBatch,
 } from '../functions/helpFunctions';
 import { sortAnswers } from '../functions/sortAlgorithms';
@@ -52,26 +49,15 @@ const Assessment: NextPage = () => {
   const markersGuideDescription: string =
     'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.';
 
-  const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
-  const answers = allAnswers.slice(0, 10);
+  const answers = getAssessmentData(taskNumber);
   const numberOfAnswers = answers.length;
 
-  const p = answers.map((answer: AnswerType) => ({
-    score: '',
-    isFlagged: false,
-    ...answer,
-  }));
-  const [assessments, setAssessments] = useState<AssessmentType[]>(p);
+  const [assessments, setAssessments] = useState<AssessmentType[]>(answers);
 
   const maxItemsPerPage = parseInt(maxItems);
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
-
-  console.log(taskNumber);
-  getApprovedAssessments(taskNumber);
-  getRawAssessments(taskNumber);
-  getStartedAssessments(taskNumber);
 
   // currently works in one case: when the data is loaded and no assessments have been made
   // needs to be updated to only sort the rest of the assessments that have not been assessed
@@ -90,9 +76,9 @@ const Assessment: NextPage = () => {
   // to make sure setAssessments is being set, otherwise it is empty
   useEffect(() => {
     if (assessments.length == 0) {
-      setAssessments(p);
+      setAssessments(answers);
     }
-  }, [assessments.length, p]);
+  }, [assessments.length, answers]);
 
   const changePage = (direction: string): void => {
     if (direction == 'back') {

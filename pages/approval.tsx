@@ -14,7 +14,7 @@ import findIndex from 'lodash/findIndex';
 import cloneDeep from 'lodash/cloneDeep';
 import { saveAssessments } from '../functions/helpFunctions';
 
-const getAllAssessedAssessments = (taskNumber: number) : AssessmentType[] => {
+const getAllAssessedAssessments = (taskNumber: number): AssessmentType[] => {
   const key = taskNumber.toString() + '_assessments';
   if (typeof window !== 'undefined') {
     var assessments: AssessmentType[] =
@@ -83,7 +83,8 @@ const Approval: NextPage = () => {
   const [taskNumber, setTaskNumber] = useState<any>('');
   const p = getAllAssessedAssessments(taskNumber);
   const filteredAssessments = filterAssessments(p);
-  const [assessments, setAssessments] = useState<ApprovalType[]>(filteredAssessments);
+  const [assessments, setAssessments] =
+    useState<ApprovalType[]>(filteredAssessments);
 
   // isReady: boolean - checks whether the router fields are updated client-side and ready for use.
   useEffect(() => {
@@ -92,13 +93,14 @@ const Approval: NextPage = () => {
   }, [router.isReady, router.query.task]);
 
   useEffect(() => {
-    setAssessments(filteredAssessments)
+    setAssessments(filteredAssessments);
   }, [filteredAssessments.length]);
 
   const setAssessmentScore = (
     assessment: AssessmentType,
     newScore: number | string
   ) => {
+    console.log('new', newScore);
     const newAssessment: AssessmentType = {
       assessmentId: assessment.assessmentId,
       answer: assessment.answer,
@@ -113,6 +115,7 @@ const Approval: NextPage = () => {
     });
     const newArr: AssessmentType[] = cloneDeep(assessments);
     newArr.splice(index, 1, newAssessment);
+    console.log('newarr', newArr);
     setAssessments(newArr);
   };
 
@@ -126,7 +129,7 @@ const Approval: NextPage = () => {
           {assessments.map((assessment: ApprovalType) => (
             <ApprovalTextbox
               key={assessment.assessmentId}
-              assessment = {assessment}
+              assessment={assessment}
               setAssessmentScore={setAssessmentScore}
             />
           ))}
@@ -145,7 +148,7 @@ const Approval: NextPage = () => {
             <Button
               style={{ marginLeft: 10 }}
               variant="contained"
-              onClick={() => saveAssessments(filteredAssessments, key)}
+              onClick={() => saveAssessments(assessments, key)}
             >
               Fullfør
             </Button>
