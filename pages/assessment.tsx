@@ -9,6 +9,8 @@ import ConsistencyBox from '../components/consistencybox';
 import Sortingbox from '../components/sortingbox';
 import {
   chooseCorrelatedAssessment,
+  getApprovedAssessments,
+  getRawAssessments,
   insperaDataToTextboxObject,
   saveBatch,
 } from '../functions/helpFunctions';
@@ -64,6 +66,9 @@ const Assessment: NextPage = () => {
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
+
+  getApprovedAssessments(taskNumber);
+  getRawAssessments(taskNumber);
 
   // currently works in one case: when the data is loaded and no assessments have been made
   // needs to be updated to only sort the rest of the assessments that have not been assessed

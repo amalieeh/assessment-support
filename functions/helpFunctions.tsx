@@ -227,3 +227,25 @@ export function uploadDataToLocalstorage() {
     });
   }
 }
+
+export function getApprovedAssessments(taskNum: string): ApprovalType[] {
+  const approvedKey: string = taskNum + '_approved';
+  let approvedAssessments: ApprovalType[] = [];
+  if (typeof window !== 'undefined') {
+    if (approvedKey in localStorage) {
+      approvedAssessments = JSON.parse(
+        localStorage.getItem(approvedKey) as string
+      );
+    }
+  }
+  return approvedAssessments;
+}
+
+export function getRawAssessments(taskNum: string): AnswerType[] {
+  const rawKey: string = taskNum + '_data';
+  let rawAssessments: AnswerType[] = [];
+  if (typeof window !== 'undefined') {
+    rawAssessments = JSON.parse(localStorage.getItem(rawKey) as string);
+  }
+  return rawAssessments;
+}
