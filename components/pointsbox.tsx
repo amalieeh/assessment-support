@@ -1,5 +1,5 @@
 import React from "react";
-import { AssessmentType } from "../types/Types";
+import { ApprovalType, AssessmentType } from "../types/Types";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,8 +13,9 @@ interface Option {
 }
 
 interface Pointsboxprop {
-  assessment: AssessmentType;
-  setAssessment: (assessment: AssessmentType, newScore: number) => void;
+  assessment: AssessmentType | ApprovalType;
+  setAssessmentScore: (assessment: AssessmentType | ApprovalType, newScore: number) => void;
+  topMargin: string;
 }
 
 const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
@@ -27,7 +28,7 @@ const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
   }
 
   const handleChange = (selectedOption: any) => {
-    props.setAssessment(props.assessment, selectedOption.target.value);
+    props.setAssessmentScore(props.assessment, selectedOption.target.value);
   };
 
   const handleClose = () => {
@@ -39,7 +40,7 @@ const Pointsbox: React.FC<Pointsboxprop> = (props: Pointsboxprop) => {
   };
 
   return (
-    <Box>
+    <Box style={{marginTop: props.topMargin }}>
       <FormControl sx={{ minWidth: 110 }} size="small">
         <InputLabel id="demo-simple-select-label" sx={{ fontSize: 13.5 }}>
           Sett poeng
