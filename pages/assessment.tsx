@@ -11,6 +11,7 @@ import {
   chooseCorrelatedAssessment,
   getApprovedAssessments,
   getRawAssessments,
+  getStartedAssessments,
   insperaDataToTextboxObject,
   saveBatch,
 } from '../functions/helpFunctions';
@@ -67,8 +68,10 @@ const Assessment: NextPage = () => {
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
 
+  console.log(taskNumber);
   getApprovedAssessments(taskNumber);
   getRawAssessments(taskNumber);
+  getStartedAssessments(taskNumber);
 
   // currently works in one case: when the data is loaded and no assessments have been made
   // needs to be updated to only sort the rest of the assessments that have not been assessed
@@ -76,7 +79,11 @@ const Assessment: NextPage = () => {
   useEffect(() => {
     sortAnswers(answers, sortingAlgorithm);
     setAssessments(
-      answers.map((answer: AnswerType) => ({ score: '', isFlagged: false, ...answer }))
+      answers.map((answer: AnswerType) => ({
+        score: '',
+        isFlagged: false,
+        ...answer,
+      }))
     );
   }, [sortingAlgorithm]);
 

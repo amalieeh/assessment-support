@@ -249,3 +249,20 @@ export function getRawAssessments(taskNum: string): AnswerType[] {
   }
   return rawAssessments;
 }
+
+export function getStartedAssessments(taskNum: string): AssessmentType[] {
+  const startedKey: string = taskNum + '_assessments';
+  let startedAssessments: AssessmentType[] = [];
+  if (typeof window !== 'undefined') {
+    if (startedKey in localStorage) {
+      startedAssessments = JSON.parse(
+        localStorage.getItem(startedKey) as string
+      );
+    }
+  }
+  return startedAssessments;
+}
+
+//hvis listene er tomme
+//denne finner ut hvilken data som er riktig og skal displayes
+export function getAssessmentData() {}
