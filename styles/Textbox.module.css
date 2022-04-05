@@ -34,7 +34,7 @@
 .scrollable {
   overflow-y: scroll;
   max-width: 595px;
-  max-height: 260px;
+  max-height: 75%;
 }
 
 .pointboxAndFlag {
