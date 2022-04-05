@@ -9,6 +9,7 @@ import ConsistencyBox from '../components/consistencybox';
 import Sortingbox from '../components/sortingbox';
 import {
   chooseCorrelatedAssessment,
+  getApprovedAssessments,
   getAssessmentData,
   saveBatch,
 } from '../functions/helpFunctions';
@@ -91,6 +92,11 @@ const Assessment: NextPage = () => {
   };
 
   const appendReAssessments = (batch: AssessmentType[]) => {
+    // prevent the re of getting re-added and saved with a new id when it was already approved
+    const approvedAssessments = getApprovedAssessments(taskNumber);
+    if (approvedAssessments.length > 0) {
+      return;
+    }
     // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
     const maxReAssessmentPercentage = 0.2;
     if (

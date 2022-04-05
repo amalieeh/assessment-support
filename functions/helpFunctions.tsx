@@ -275,8 +275,12 @@ export function getAssessmentData(taskNum: string) {
   // data to be returned
   let assessmentData: AssessmentType[] = [];
 
+  // all answers have been assessed and approved, use approved data
+  if (approved.length != 0) {
+    assessmentData = approved;
+  }
   // no assessments have been made for current task, use raw data
-  if (started.length == 0) {
+  else if (started.length == 0) {
     // convert to AssessmentType
     assessmentData = raw.map((answer: AnswerType) => ({
       score: '',
@@ -284,21 +288,24 @@ export function getAssessmentData(taskNum: string) {
       ...answer,
     }));
   }
-  // all answers have been assessed and approved, use approved data
-  else if (approved.length != 0) {
-    assessmentData = approved;
-  }
+
   // assessments have started for this task, but there are still some remaining answers
   // need to filter out those that have been assessed
   // filter on candidateId
   else {
     const remainingAnswers = getDifference(raw, started);
-    const p = remainingAnswers.map((answer: AnswerType) => ({
-      score: '',
-      isFlagged: false,
-      ...answer,
-    }));
-    assessmentData = p;
+
+    // no remaining answers left, but not approved. This is for the back button in the approval page
+    if (remainingAnswers.length == 0 && approved.length == 0) {
+      assessmentData = started;
+    } else {
+      const p = remainingAnswers.map((answer: AnswerType) => ({
+        score: '',
+        isFlagged: false,
+        ...answer,
+      }));
+      assessmentData = p;
+    }
   }
   return assessmentData;
 }
