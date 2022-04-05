@@ -8,6 +8,7 @@ import Expand from '../components/expand';
 import ConsistencyBox from '../components/consistencybox';
 import Sortingbox from '../components/sortingbox';
 import {
+  checkScores,
   chooseCorrelatedAssessment,
   getApprovedAssessments,
   getAssessmentData,
@@ -230,18 +231,34 @@ const Assessment: NextPage = () => {
             }}
             passHref
           >
-            <Button
-              variant="contained"
-              onClick={() =>
-                saveBatch(
-                  assessments.slice(startIndexBatch, endIndexBatch),
-                  taskNumber
-                )
-              }
-            >
-              {/*need to figure out a key, currently set to 0*/}
-              Fullfør
-            </Button>
+            {checkScores(assessments) == true ? (
+              <Button
+                sx={{ textTransform: 'none' }}
+                variant="contained"
+                onClick={() =>
+                  saveBatch(
+                    assessments.slice(startIndexBatch, endIndexBatch),
+                    taskNumber
+                  )
+                }
+              >
+                Fullfør vurderingen av oppgave {taskNumber}
+              </Button>
+            ) : (
+              <Button
+                disabled
+                sx={{ textTransform: 'none' }}
+                variant="contained"
+                onClick={() =>
+                  saveBatch(
+                    assessments.slice(startIndexBatch, endIndexBatch),
+                    taskNumber
+                  )
+                }
+              >
+                Fullfør vurderingen av oppgave {taskNumber}
+              </Button>
+            )}
           </Link>
         ) : null}
       </div>
