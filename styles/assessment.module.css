@@ -3,7 +3,7 @@
   width: 100% !important;
   flex-direction: row;
   justify-content: space-between;
-  margin: 0 1rem 0;
+  margin: 0 2.3rem 0;
   align-items: center;
 }
 
@@ -19,9 +19,9 @@
 .grid {
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
-  padding-left: 3em;
-  width: 86em;
+  max-width: 86em;
 }
 
 .alignInfo {

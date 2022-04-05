@@ -18,7 +18,7 @@ const Togglebuttons: React.FC<Togglebuttonsprops> = (
 ) => {
   return (
     <ToggleButtonGroup
-      sx={{ display: 'block', maxWidth: '250px', marginRight: '4px' }}
+      sx={{ display: 'block', maxWidth: '250px' }}
       value={props.value.toString()}
       exclusive
       onChange={props.handleSetMaxItems}
