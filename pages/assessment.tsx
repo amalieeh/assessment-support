@@ -24,6 +24,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import Togglebuttons from '../components/togglebuttons';
+import Tooltip from '@mui/material/Tooltip';
 
 const Assessment: NextPage = () => {
   // create router object
@@ -245,19 +246,30 @@ const Assessment: NextPage = () => {
                 Fullfør vurderingen av oppgave {taskNumber}
               </Button>
             ) : (
-              <Button
-                disabled
-                sx={{ textTransform: 'none' }}
-                variant="contained"
-                onClick={() =>
-                  saveBatch(
-                    assessments.slice(startIndexBatch, endIndexBatch),
-                    taskNumber
-                  )
+              <Tooltip
+                title={
+                  <h3>
+                    Det må settes poeng på alle besvarelsene for å fullføre
+                    vurderingen av oppgavesettet.
+                  </h3>
                 }
               >
-                Fullfør vurderingen av oppgave {taskNumber}
-              </Button>
+                <span>
+                  <Button
+                    disabled
+                    sx={{ textTransform: 'none' }}
+                    variant="contained"
+                    onClick={() =>
+                      saveBatch(
+                        assessments.slice(startIndexBatch, endIndexBatch),
+                        taskNumber
+                      )
+                    }
+                  >
+                    Fullfør vurderingen av oppgave {taskNumber}
+                  </Button>
+                </span>
+              </Tooltip>
             )}
           </Link>
         ) : null}
