@@ -1,20 +1,24 @@
 .headerstyle {
-  width: 1230px;
-  margin: 1rem;
-  color: #191c24;
+  width: 100%;
+  margin-bottom: 20px;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  color: #191c24;
   border-bottom: 1px solid var(--dark-green);
+  align-items: center;
+}
+
+.titles {
+  margin: 0 30px 0;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  margin-left: 25px;
 }
 
 .makeClickable {
   cursor: pointer;
-}
-
-@media (max-width: 1263px) {
-  .headerstyle {
-    width: 600px;
-  }
 }
