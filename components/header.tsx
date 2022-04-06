@@ -50,7 +50,7 @@ const Header: React.FC<Headerprops> = (props: Headerprops) => {
       )}
 
       <div className={styles.titles}>
-        {props.taskNumber && props.description ? (
+        {props.taskNumber && props.description && props.goBackPage == 'task' ? (
           <h1>
             Oppgave {props.taskNumber} : {props.description}
           </h1>

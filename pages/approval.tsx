@@ -144,9 +144,9 @@ const Approval: NextPage = () => {
     <div className={styles.container}>
       <Header
         data={data}
-        taskNumber={taskNumber}
-        description={taskTitle}
+        description={'Godkjenning av oppgave ' + taskNumber + ': ' + taskTitle}
         goBackPage="assessment"
+        taskNumber={taskNumber}
       />
       <main className={styles.main}>
         <Grid container gap={2} xs={5} item={true}>
