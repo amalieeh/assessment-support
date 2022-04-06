@@ -15,7 +15,9 @@ import cloneDeep from 'lodash/cloneDeep';
 import {
   saveAssessments,
   getApprovedAssessments,
+  checkInconsistentScores,
 } from '../functions/helpFunctions';
+import Tooltip from '@mui/material/Tooltip';
 
 const getAllAssessedAssessments = (taskNumber: number): AssessmentType[] => {
   const key = taskNumber.toString() + '_assessments';
@@ -152,16 +154,37 @@ const Approval: NextPage = () => {
             }}
             passHref
           >
-            <Button variant="contained">Tilbake</Button>
+            <Button sx={{ textTransform: 'none' }} variant="contained">
+              Tilbake
+            </Button>
           </Link>
           <Link href="/task" passHref>
-            <Button
-              style={{ marginLeft: 10 }}
-              variant="contained"
-              onClick={() => saveAssessments(assessments, key)}
-            >
-              Fullfør
-            </Button>
+            {checkInconsistentScores(assessments) == true ? (
+              <Tooltip
+                title={
+                  <h3>For å godkjenne vurderingen må alle konflikter løses.</h3>
+                }
+              >
+                <span>
+                  <Button
+                    disabled
+                    sx={{ textTransform: 'none' }}
+                    variant="contained"
+                    onClick={() => saveAssessments(filteredAssessments, key)}
+                  >
+                    Godkjenn vurdering av oppgave {taskNumber}
+                  </Button>
+                </span>
+              </Tooltip>
+            ) : (
+              <Button
+                sx={{ textTransform: 'none', marginLeft: 10 }}
+                variant="contained"
+                onClick={() => saveAssessments(filteredAssessments, key)}
+              >
+                Godkjenn vurdering av oppgave {taskNumber}
+              </Button>
+            )}
           </Link>
         </div>
       </main>
