@@ -25,7 +25,11 @@ const Task: NextPage = () => {
 
   return (
     <div className={mainStyles.container}>
-      <Header data={data} description={'Oversikt over alle oppgavene'} />
+      <Header
+        data={data}
+        description={'Oversikt over alle oppgavene'}
+        page=""
+      />
       <main style={{ display: 'flex', justifyContent: 'center' }}>
         <Grid container gap={4} sx={{ maxWidth: 1230 }}>
           {taskNumbers.map((taskNum: number) => {

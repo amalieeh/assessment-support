@@ -8,13 +8,20 @@ interface Headerprops {
   data: any;
   taskNumber?: number;
   description?: string;
+  page?: string;
 }
 
 const Header: React.FC<Headerprops> = (props: Headerprops) => {
   return (
     <div className={styles.headerstyle}>
-      {props.taskNumber ? (
-        <Link href="/task" passHref>
+      {props.page == 'assessment' && props.taskNumber ? (
+        <Link
+          href={{
+            pathname: '/' + props.page,
+            query: { task: props.taskNumber },
+          }}
+          passHref
+        >
           <div className={styles.button}>
             <Button>
               <KeyboardBackspaceIcon
@@ -24,7 +31,23 @@ const Header: React.FC<Headerprops> = (props: Headerprops) => {
             </Button>
           </div>
         </Link>
-      ) : null}
+      ) : (
+        <Link
+          href={{
+            pathname: '/' + props.page,
+          }}
+          passHref
+        >
+          <div className={styles.button}>
+            <Button>
+              <KeyboardBackspaceIcon
+                fontSize="large"
+                style={{ color: '#000000' }}
+              />
+            </Button>
+          </div>
+        </Link>
+      )}
 
       <div className={styles.titles}>
         {props.taskNumber && props.description ? (

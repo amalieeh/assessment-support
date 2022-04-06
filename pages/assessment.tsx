@@ -42,7 +42,8 @@ const Assessment: NextPage = () => {
   const [taskNumber, setTaskNumber] = useState<any>('');
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [maxItems, setMaxItems] = useState<string>('4'); //max items set to 4 as default
+  const [maxItems, setMaxItems] = useState<string>('4');
+  const maxItemsPerPage = parseInt(maxItems);
   const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('length_hl');
 
   const taskDescription: string =
@@ -52,10 +53,7 @@ const Assessment: NextPage = () => {
 
   const answers = getAssessmentData(taskNumber);
   const numberOfAnswers = answers.length;
-
   const [assessments, setAssessments] = useState<AssessmentType[]>(answers);
-
-  const maxItemsPerPage = parseInt(maxItems);
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
@@ -169,7 +167,12 @@ const Assessment: NextPage = () => {
 
   return (
     <div className={mainStyles.container}>
-      <Header data={data} taskNumber={taskNumber} description={taskTitle} />
+      <Header
+        data={data}
+        taskNumber={taskNumber}
+        description={taskTitle}
+        page="task"
+      />
       <main className={mainStyles.main}>
         <div className={styles.alignInfo}>
           <div className={styles.expandInfo}>
