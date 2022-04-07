@@ -26,6 +26,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Togglebuttons from '../components/togglebuttons';
 import Tooltip from '@mui/material/Tooltip';
 import ProgressBar from '../components/progressbar';
+import Gradingbuttons from '../components/gradingbuttons';
 
 const Assessment: NextPage = () => {
   // create router object

@@ -1,14 +1,18 @@
-import * as React from "react";
-import styles from "../styles/Textbox.module.css";
-import Pointsbox from "./pointsbox";
-import { AssessmentType } from "../types/Types";
-import parse from "html-react-parser";
-import { Button } from "@mui/material";
+import * as React from 'react';
+import styles from '../styles/Textbox.module.css';
+import Pointsbox from './pointsbox';
+import { ApprovalType, AssessmentType } from '../types/Types';
+import parse from 'html-react-parser';
+import { Button } from '@mui/material';
 import FlagIcon from '@mui/icons-material/Flag';
+import Gradingbuttons from './gradingbuttons';
 
 interface textboxprop {
   assessment: AssessmentType;
-  setAssessmentScore: (assessment: AssessmentType, newScore: number) => void;
+  setAssessmentScore: (
+    assessment: AssessmentType | ApprovalType,
+    newScore: string | number
+  ) => void;
   toggleFlag: (assessment: AssessmentType) => void;
 }
 
@@ -18,15 +22,17 @@ const Textbox: React.FC<textboxprop> = (props: textboxprop) => {
       <div className={styles.alignItems}>
         Besvarelse fra kandidat: {props.assessment.candidateId}
         <div className={styles.pointboxAndFlag}>
-          <Pointsbox
+          <Gradingbuttons
             assessment={props.assessment}
+            score={props.assessment.score}
             setAssessmentScore={props.setAssessmentScore}
-            topMargin={"0"}
-          />
+          ></Gradingbuttons>
           <Button onClick={() => props.toggleFlag(props.assessment)}>
-            {props.assessment.isFlagged ?
-              <FlagIcon color="secondary"/> : <FlagIcon color="primary"/>
-            }
+            {props.assessment.isFlagged ? (
+              <FlagIcon color="secondary" />
+            ) : (
+              <FlagIcon color="primary" />
+            )}
           </Button>
         </div>
       </div>
