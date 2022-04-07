@@ -2,10 +2,11 @@ import { NextPage } from 'next';
 import mainStyles from '../styles/Main.module.css';
 import data from '../data/IT2810Høst2018.json';
 import Header from '../components/header';
-import { Button, Grid } from '@mui/material';
+import { Button } from '@mui/material';
 import Link from 'next/link';
 import { getAssessments } from '../functions/helpFunctions';
 import { useEffect, useState } from 'react';
+import Tasktitlebox from '../components/tasktitlebox';
 
 const Task: NextPage = () => {
   const totalTasks: number =
@@ -27,7 +28,8 @@ const Task: NextPage = () => {
     <div className={mainStyles.container}>
       <Header data={data} description={'Oversikt over alle oppgavene'} />
       <main style={{ display: 'flex', justifyContent: 'center' }}>
-        <Grid container gap={4} sx={{ maxWidth: 1230 }}>
+        <Tasktitlebox taskNumbers={taskNumbers} />
+        <div>
           {taskNumbers.map((taskNum: number) => {
             if (
               approvedAssessments != undefined &&
@@ -46,7 +48,7 @@ const Task: NextPage = () => {
                     color="success"
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{ width: 73, height: 73, fontSize: 25, margin: '25px' }}
                   >
                     {taskNum + 1}
                   </Button>
@@ -69,7 +71,7 @@ const Task: NextPage = () => {
                     color="warning"
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{ width: 73, height: 73, fontSize: 25, margin: '25px' }}
                   >
                     {taskNum + 1}
                   </Button>
@@ -88,7 +90,7 @@ const Task: NextPage = () => {
                   <Button
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{ width: 73, height: 73, fontSize: 25, margin: '25px' }}
                   >
                     {taskNum + 1}
                   </Button>
@@ -96,7 +98,7 @@ const Task: NextPage = () => {
               );
             }
           })}
-        </Grid>
+        </div>
       </main>
     </div>
   );
