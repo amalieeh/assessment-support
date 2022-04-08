@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ApprovalType, AssessmentType } from '../types/Types';
+import data from '../data/IT2810Høst2018.json';
 
 function replaceUndefined(content: string) {
   if (content == undefined) {
@@ -190,4 +191,39 @@ export function chooseCorrelatedAssessment(
     return correlatedAssessments[index];
   }
   return null;
+}
+
+export function uploadDataToLocalstorage() {
+  const totalTasks: number =
+    data.ext_inspera_candidates[0].result.ext_inspera_questions.length;
+  const taskNumbers: number[] = Array.from(Array(totalTasks).keys());
+
+  //check if data is already uploaded to localstorage
+  if (typeof window !== 'undefined') {
+    taskNumbers.map((taskNum: number) => {
+      const key: string = (taskNum + 1).toString() + '_data';
+      const dataToBeUploaded: AnswerType[] = [];
+      // data is not uploaded
+      if (!(key in localStorage)) {
+        data.ext_inspera_candidates.map((candidate: any) => {
+          // create answer objects and add to list
+          dataToBeUploaded.push({
+            assessmentId: uuidv4(),
+            answer: replaceUndefined(
+              candidate.result.ext_inspera_questions[taskNum]
+                .ext_inspera_candidateResponses[0].ext_inspera_response
+            ),
+            candidateId: parseInt(candidate.result.ext_inspera_candidateId),
+            maxPoints:
+              candidate.result.ext_inspera_questions[taskNum]
+                .ext_inspera_maxQuestionScore,
+            taskNumber: taskNum + 1,
+          });
+        });
+
+        //add to localstorage
+        localStorage.setItem(key, JSON.stringify(dataToBeUploaded));
+      }
+    });
+  }
 }
