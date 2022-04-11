@@ -225,14 +225,14 @@ const Assessment: NextPage = () => {
           />
         ) : null}
         {currentPage * maxItemsPerPage >= assessments.length ? (
-          <Link
-            href={{
-              pathname: '/approval',
-              query: { task: taskNumber },
-            }}
-            passHref
-          >
-            {checkScores(assessments) == true ? (
+          checkScores(assessments) == true ? (
+            <Link
+              href={{
+                pathname: '/approval',
+                query: { task: taskNumber },
+              }}
+              passHref
+            >
               <Button
                 sx={{ textTransform: 'none' }}
                 variant="contained"
@@ -245,33 +245,33 @@ const Assessment: NextPage = () => {
               >
                 Fullfør vurderingen av oppgave {taskNumber}
               </Button>
-            ) : (
-              <Tooltip
-                title={
-                  <h3>
-                    Det må settes poeng på alle besvarelsene for å fullføre
-                    vurderingen av oppgavesettet.
-                  </h3>
-                }
-              >
-                <span>
-                  <Button
-                    disabled
-                    sx={{ textTransform: 'none' }}
-                    variant="contained"
-                    onClick={() =>
-                      saveBatch(
-                        assessments.slice(startIndexBatch, endIndexBatch),
-                        taskNumber
-                      )
-                    }
-                  >
-                    Fullfør vurderingen av oppgave {taskNumber}
-                  </Button>
-                </span>
-              </Tooltip>
-            )}
-          </Link>
+            </Link>
+          ) : (
+            <Tooltip
+              title={
+                <h3>
+                  Det må settes poeng på alle besvarelsene for å fullføre
+                  vurderingen av oppgavesettet.
+                </h3>
+              }
+            >
+              <span>
+                <Button
+                  disabled
+                  sx={{ textTransform: 'none' }}
+                  variant="contained"
+                  onClick={() =>
+                    saveBatch(
+                      assessments.slice(startIndexBatch, endIndexBatch),
+                      taskNumber
+                    )
+                  }
+                >
+                  Fullfør vurderingen av oppgave {taskNumber}
+                </Button>
+              </span>
+            </Tooltip>
+          )
         ) : null}
       </div>
     </div>
