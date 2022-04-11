@@ -43,7 +43,7 @@ const Assessment: NextPage = () => {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItems, setMaxItems] = useState<string>('4'); //max items set to 4 as default
-  const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('random');
+  const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('length_hl');
 
   const taskDescription: string =
     'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.';
@@ -98,7 +98,7 @@ const Assessment: NextPage = () => {
       return;
     }
     // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
-    const maxReAssessmentPercentage = 0.2;
+    const maxReAssessmentPercentage = 0.8;
     if (
       // not currently assessing a reAssessment
       currentPage * (maxItemsPerPage - 1) <

@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ApprovalType, AssessmentType } from '../types/Types';
 import data from '../data/IT2810Høst2018.json';
-import { Assessment } from 'material-ui-icons';
 
 function replaceUndefined(content: string) {
   if (content == undefined) {
@@ -242,7 +241,7 @@ export function getApprovedAssessments(taskNum: string): ApprovalType[] {
   return approvedAssessments;
 }
 
-export function getRawAssessments(taskNum: string): AnswerType[] {
+export function getRawAnswers(taskNum: string): AnswerType[] {
   const rawKey: string = taskNum + '_data';
   let rawAssessments: AnswerType[] = [];
   if (typeof window !== 'undefined') {
@@ -268,7 +267,7 @@ export function getStartedAssessments(taskNum: string): AssessmentType[] {
 
 export function getAssessmentData(taskNum: string) {
   // get the different assessments from localstorage
-  const raw: AnswerType[] = getRawAssessments(taskNum).slice(0, 10);
+  const raw: AnswerType[] = getRawAnswers(taskNum).slice(0, 10);
   const started: AssessmentType[] = getStartedAssessments(taskNum);
   const approved: ApprovalType[] = getApprovedAssessments(taskNum);
 
@@ -293,28 +292,27 @@ export function getAssessmentData(taskNum: string) {
   // need to filter out those that have been assessed
   // filter on candidateId
   else {
-    const remainingAnswers = getDifference(raw, started);
+    const remainingAnswers = excludeArray2fromArray1(raw, started);
 
     // no remaining answers left, but not approved. This is for the back button in the approval page
-    if (remainingAnswers.length == 0 && approved.length == 0) {
+    if (remainingAnswers.length == 0) {
       assessmentData = started;
     } else {
-      const p = remainingAnswers.map((answer: AnswerType) => ({
+      assessmentData = remainingAnswers.map((answer: AnswerType) => ({
         score: '',
         isFlagged: false,
         ...answer,
       }));
-      assessmentData = p;
     }
   }
   return assessmentData;
 }
 
-// help function to get the remaining answers
-function getDifference(array1: AnswerType[], array2: AssessmentType[]) {
+// Help function to get the remaining answers
+function excludeArray2fromArray1(array1: AnswerType[], array2: AssessmentType[]) {
   return array1.filter((object1) => {
-    return !array2.some((object2) => {
-      return object1.candidateId === object2.candidateId;
-    });
+    return !array2.some((object2) =>
+      object1.candidateId === object2.candidateId
+    );
   });
 }
