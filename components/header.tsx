@@ -1,28 +1,69 @@
-import React from "react";
-import styles from "../styles/Header.module.css";
-import Link from "next/link";
+import React from 'react';
+import styles from '../styles/Header.module.css';
+import Link from 'next/link';
+import { Button } from '@mui/material';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 interface Headerprops {
   data: any;
   taskNumber?: number;
   description?: string;
+  page?: string;
 }
 
 const Header: React.FC<Headerprops> = (props: Headerprops) => {
   return (
     <div className={styles.headerstyle}>
-      {props.taskNumber && props.description ? (
-        <h1>
-          Oppgave {props.taskNumber} : {props.description}
-        </h1>
+      {props.page == 'assessment' && props.taskNumber ? (
+        <Link
+          href={{
+            pathname: '/' + props.page,
+            query: { task: props.taskNumber },
+          }}
+          passHref
+        >
+          <div className={styles.button}>
+            <Button>
+              <KeyboardBackspaceIcon
+                fontSize="large"
+                style={{ color: '#000000' }}
+              />
+            </Button>
+          </div>
+        </Link>
       ) : (
-        <h1>{props.description}</h1>
+        <Link
+          href={{
+            pathname: '/' + props.page,
+          }}
+          passHref
+        >
+          <div className={styles.button}>
+            <Button>
+              <KeyboardBackspaceIcon
+                fontSize="large"
+                style={{ color: '#000000' }}
+              />
+            </Button>
+          </div>
+        </Link>
       )}
-      <Link href="/">
-        <h2 className={styles.makeClickable}>
-          {props.data.ext_inspera_assessmentRunTitle}
-        </h2>
-      </Link>
+
+      <div className={styles.titles}>
+        {props.taskNumber && props.description ? (
+          <h1>
+            Oppgave {props.taskNumber} : {props.description}
+          </h1>
+        ) : (
+          <h1>{props.description}</h1>
+        )}
+
+        <Link href="/">
+          <h2 className={styles.makeClickable}>
+            {props.data.ext_inspera_assessmentRunTitle}
+          </h2>
+        </Link>
+      </div>
     </div>
   );
 };
