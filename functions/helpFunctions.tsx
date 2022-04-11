@@ -320,11 +320,6 @@ function excludeArray2fromArray1(array1: AnswerType[], array2: AssessmentType[])
 
 // check if all scores are set
 export function checkScores(assessments: AssessmentType[]): boolean {
-  let status: boolean = true;
-  assessments.map((assessment) => {
-    if (assessment.score === '') {
-      status = false;
-    }
-  });
+  return !assessments.some((e) => e.score === '');
   return status;
 }
