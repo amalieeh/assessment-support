@@ -12,9 +12,12 @@ import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import findIndex from 'lodash/findIndex';
 import cloneDeep from 'lodash/cloneDeep';
-import { saveAssessments } from '../functions/helpFunctions';
+import {
+  saveAssessments,
+  getApprovedAssessments,
+} from '../functions/helpFunctions';
 
-const getAllAssessedAssessments = (taskNumber: number) : AssessmentType[] => {
+const getAllAssessedAssessments = (taskNumber: number): AssessmentType[] => {
   const key = taskNumber.toString() + '_assessments';
   if (typeof window !== 'undefined') {
     var assessments: AssessmentType[] =
@@ -81,9 +84,14 @@ const Approval: NextPage = () => {
   const router = useRouter();
 
   const [taskNumber, setTaskNumber] = useState<any>('');
+
+  const approvedAssessments: ApprovalType[] =
+    getApprovedAssessments(taskNumber);
+
   const p = getAllAssessedAssessments(taskNumber);
   const filteredAssessments = filterAssessments(p);
-  const [assessments, setAssessments] = useState<ApprovalType[]>(filteredAssessments);
+  const [assessments, setAssessments] =
+    useState<ApprovalType[]>(filteredAssessments);
 
   // isReady: boolean - checks whether the router fields are updated client-side and ready for use.
   useEffect(() => {
@@ -92,8 +100,12 @@ const Approval: NextPage = () => {
   }, [router.isReady, router.query.task]);
 
   useEffect(() => {
-    setAssessments(filteredAssessments)
-  }, [filteredAssessments.length]);
+    if (approvedAssessments.length != 0) {
+      setAssessments(approvedAssessments);
+    } else {
+      setAssessments(filteredAssessments);
+    }
+  }, [filteredAssessments.length, approvedAssessments.length]);
 
   const setAssessmentScore = (
     assessment: AssessmentType,
@@ -113,6 +125,7 @@ const Approval: NextPage = () => {
     });
     const newArr: AssessmentType[] = cloneDeep(assessments);
     newArr.splice(index, 1, newAssessment);
+
     setAssessments(newArr);
   };
 
@@ -126,7 +139,7 @@ const Approval: NextPage = () => {
           {assessments.map((assessment: ApprovalType) => (
             <ApprovalTextbox
               key={assessment.assessmentId}
-              assessment = {assessment}
+              assessment={assessment}
               setAssessmentScore={setAssessmentScore}
             />
           ))}
@@ -145,7 +158,7 @@ const Approval: NextPage = () => {
             <Button
               style={{ marginLeft: 10 }}
               variant="contained"
-              onClick={() => saveAssessments(filteredAssessments, key)}
+              onClick={() => saveAssessments(assessments, key)}
             >
               Fullfør
             </Button>

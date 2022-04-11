@@ -9,7 +9,8 @@ import ConsistencyBox from '../components/consistencybox';
 import Sortingbox from '../components/sortingbox';
 import {
   chooseCorrelatedAssessment,
-  insperaDataToTextboxObject,
+  getApprovedAssessments,
+  getAssessmentData,
   saveBatch,
 } from '../functions/helpFunctions';
 import { sortAnswers } from '../functions/sortAlgorithms';
@@ -42,23 +43,17 @@ const Assessment: NextPage = () => {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxItems, setMaxItems] = useState<string>('4'); //max items set to 4 as default
-  const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('random');
+  const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('length_hl');
 
   const taskDescription: string =
     'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.';
   const markersGuideDescription: string =
     'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.';
 
-  const allAnswers: AnswerType[] = insperaDataToTextboxObject(data, taskNumber);
-  const answers = allAnswers.slice(0, 10);
+  const answers = getAssessmentData(taskNumber);
   const numberOfAnswers = answers.length;
 
-  const p = answers.map((answer: AnswerType) => ({
-    score: '',
-    isFlagged: false,
-    ...answer,
-  }));
-  const [assessments, setAssessments] = useState<AssessmentType[]>(p);
+  const [assessments, setAssessments] = useState<AssessmentType[]>(answers);
 
   const maxItemsPerPage = parseInt(maxItems);
 
@@ -71,16 +66,20 @@ const Assessment: NextPage = () => {
   useEffect(() => {
     sortAnswers(answers, sortingAlgorithm);
     setAssessments(
-      answers.map((answer: AnswerType) => ({ score: '', isFlagged: false, ...answer }))
+      answers.map((answer: AnswerType) => ({
+        score: '',
+        isFlagged: false,
+        ...answer,
+      }))
     );
   }, [sortingAlgorithm]);
 
   // to make sure setAssessments is being set, otherwise it is empty
   useEffect(() => {
     if (assessments.length == 0) {
-      setAssessments(p);
+      setAssessments(answers);
     }
-  }, [assessments.length, p]);
+  }, [assessments.length, answers]);
 
   const changePage = (direction: string): void => {
     if (direction == 'back') {
@@ -93,8 +92,13 @@ const Assessment: NextPage = () => {
   };
 
   const appendReAssessments = (batch: AssessmentType[]) => {
+    // prevent the re of getting re-added and saved with a new id when it was already approved
+    const approvedAssessments = getApprovedAssessments(taskNumber);
+    if (approvedAssessments.length > 0) {
+      return;
+    }
     // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
-    const maxReAssessmentPercentage = 0.2;
+    const maxReAssessmentPercentage = 0.8;
     if (
       // not currently assessing a reAssessment
       currentPage * (maxItemsPerPage - 1) <

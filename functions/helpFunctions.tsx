@@ -227,3 +227,92 @@ export function uploadDataToLocalstorage() {
     });
   }
 }
+
+export function getApprovedAssessments(taskNum: string): ApprovalType[] {
+  const approvedKey: string = taskNum + '_approved';
+  let approvedAssessments: ApprovalType[] = [];
+  if (typeof window !== 'undefined') {
+    if (approvedKey in localStorage) {
+      approvedAssessments = JSON.parse(
+        localStorage.getItem(approvedKey) as string
+      );
+    }
+  }
+  return approvedAssessments;
+}
+
+export function getRawAnswers(taskNum: string): AnswerType[] {
+  const rawKey: string = taskNum + '_data';
+  let rawAssessments: AnswerType[] = [];
+  if (typeof window !== 'undefined') {
+    if (rawKey in localStorage) {
+      rawAssessments = JSON.parse(localStorage.getItem(rawKey) as string);
+    }
+  }
+  return rawAssessments;
+}
+
+export function getStartedAssessments(taskNum: string): AssessmentType[] {
+  const startedKey: string = taskNum + '_assessments';
+  let startedAssessments: AssessmentType[] = [];
+  if (typeof window !== 'undefined') {
+    if (startedKey in localStorage) {
+      startedAssessments = JSON.parse(
+        localStorage.getItem(startedKey) as string
+      );
+    }
+  }
+  return startedAssessments;
+}
+
+export function getAssessmentData(taskNum: string) {
+  // get the different assessments from localstorage
+  const raw: AnswerType[] = getRawAnswers(taskNum).slice(0, 10);
+  const started: AssessmentType[] = getStartedAssessments(taskNum);
+  const approved: ApprovalType[] = getApprovedAssessments(taskNum);
+
+  // data to be returned
+  let assessmentData: AssessmentType[] = [];
+
+  // all answers have been assessed and approved, use approved data
+  if (approved.length != 0) {
+    assessmentData = approved;
+  }
+  // no assessments have been made for current task, use raw data
+  else if (started.length == 0) {
+    // convert to AssessmentType
+    assessmentData = raw.map((answer: AnswerType) => ({
+      score: '',
+      isFlagged: false,
+      ...answer,
+    }));
+  }
+
+  // assessments have started for this task, but there are still some remaining answers
+  // need to filter out those that have been assessed
+  // filter on candidateId
+  else {
+    const remainingAnswers = excludeArray2fromArray1(raw, started);
+
+    // no remaining answers left, but not approved. This is for the back button in the approval page
+    if (remainingAnswers.length == 0) {
+      assessmentData = started;
+    } else {
+      assessmentData = remainingAnswers.map((answer: AnswerType) => ({
+        score: '',
+        isFlagged: false,
+        ...answer,
+      }));
+    }
+  }
+  return assessmentData;
+}
+
+// Help function to get the remaining answers
+function excludeArray2fromArray1(array1: AnswerType[], array2: AssessmentType[]) {
+  return array1.filter((object1) => {
+    return !array2.some((object2) =>
+      object1.candidateId === object2.candidateId
+    );
+  });
+}
