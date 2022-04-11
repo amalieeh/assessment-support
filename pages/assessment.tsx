@@ -8,6 +8,7 @@ import Expand from '../components/expand';
 import ConsistencyBox from '../components/consistencybox';
 import Sortingbox from '../components/sortingbox';
 import {
+  checkScores,
   chooseCorrelatedAssessment,
   getApprovedAssessments,
   getAssessmentData,
@@ -23,6 +24,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import Togglebuttons from '../components/togglebuttons';
+import Tooltip from '@mui/material/Tooltip';
 
 const Assessment: NextPage = () => {
   // create router object
@@ -223,26 +225,53 @@ const Assessment: NextPage = () => {
           />
         ) : null}
         {currentPage * maxItemsPerPage >= assessments.length ? (
-          <Link
-            href={{
-              pathname: '/approval',
-              query: { task: taskNumber },
-            }}
-            passHref
-          >
-            <Button
-              variant="contained"
-              onClick={() =>
-                saveBatch(
-                  assessments.slice(startIndexBatch, endIndexBatch),
-                  taskNumber
-                )
+          checkScores(assessments) == true ? (
+            <Link
+              href={{
+                pathname: '/approval',
+                query: { task: taskNumber },
+              }}
+              passHref
+            >
+              <Button
+                sx={{ textTransform: 'none' }}
+                variant="contained"
+                onClick={() =>
+                  saveBatch(
+                    assessments.slice(startIndexBatch, endIndexBatch),
+                    taskNumber
+                  )
+                }
+              >
+                Fullfør vurderingen av oppgave {taskNumber}
+              </Button>
+            </Link>
+          ) : (
+            <Tooltip
+              title={
+                <h3>
+                  Det må settes poeng på alle besvarelsene for å fullføre
+                  vurderingen av oppgavesettet.
+                </h3>
               }
             >
-              {/*need to figure out a key, currently set to 0*/}
-              Fullfør
-            </Button>
-          </Link>
+              <span>
+                <Button
+                  disabled
+                  sx={{ textTransform: 'none' }}
+                  variant="contained"
+                  onClick={() =>
+                    saveBatch(
+                      assessments.slice(startIndexBatch, endIndexBatch),
+                      taskNumber
+                    )
+                  }
+                >
+                  Fullfør vurderingen av oppgave {taskNumber}
+                </Button>
+              </span>
+            </Tooltip>
+          )
         ) : null}
       </div>
     </div>

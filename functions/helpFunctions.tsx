@@ -1,3 +1,4 @@
+import { assignInWith } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { ApprovalType, AssessmentType } from '../types/Types';
 import data from '../data/IT2810Høst2018.json';
@@ -315,4 +316,10 @@ function excludeArray2fromArray1(array1: AnswerType[], array2: AssessmentType[])
       object1.candidateId === object2.candidateId
     );
   });
+}
+
+// check if all scores are set
+export function checkScores(assessments: AssessmentType[]): boolean {
+  return !assessments.some((e) => e.score === '');
+  return status;
 }
