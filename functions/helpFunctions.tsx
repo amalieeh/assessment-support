@@ -266,7 +266,7 @@ export function getStartedAssessments(taskNum: string): AssessmentType[] {
   return startedAssessments;
 }
 
-export function getAssessmentData(taskNum: string) {
+export function getAssessmentData(taskNum: string): AssessmentType[] {
   // get the different assessments from localstorage
   const raw: AnswerType[] = getRawAnswers(taskNum).slice(0, 10);
   const started: AssessmentType[] = getStartedAssessments(taskNum);

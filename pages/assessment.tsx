@@ -60,9 +60,6 @@ const Assessment: NextPage = () => {
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
 
-  // currently works in one case: when the data is loaded and no assessments have been made
-  // needs to be updated to only sort the rest of the assessments that have not been assessed
-  // in relation to data retrieval for textboxes
   useEffect(() => {
     sortAnswers(answers, sortingAlgorithm);
     setAssessments(
@@ -78,6 +75,7 @@ const Assessment: NextPage = () => {
   useEffect(() => {
     if (assessments.length == 0) {
       setAssessments(answers);
+      findAndSetCurrentPage(answers);
     }
   }, [assessments.length, answers]);
 
@@ -165,6 +163,16 @@ const Assessment: NextPage = () => {
       );
       setCurrentPage(newPageNumber);
     }
+  };
+
+  const findAndSetCurrentPage = (assessments: AssessmentType[]) => {
+    const numberOfAssessedAssessments = assessments.filter(
+      (assessment) => assessment.score !== ''
+    ).length;
+    const currentPage = Math.ceil(
+      numberOfAssessedAssessments / maxItemsPerPage + 0.01
+    );
+    setCurrentPage(currentPage);
   };
 
   return (
