@@ -16,6 +16,7 @@ import {
   saveAssessments,
   getApprovedAssessments,
   checkInconsistentScores,
+  checkScores,
 } from '../functions/helpFunctions';
 import Tooltip from '@mui/material/Tooltip';
 import Header from '../components/header';
@@ -140,6 +141,8 @@ const Approval: NextPage = () => {
 
   const key = taskNumber.toString() + '_approved';
 
+  console.log(checkScores(assessments));
+
   return (
     <div className={styles.container}>
       <Header
@@ -159,7 +162,8 @@ const Approval: NextPage = () => {
           ))}
         </Grid>
         <div style={{ padding: 20 }}>
-          {checkInconsistentScores(assessments) == true ? (
+          {checkInconsistentScores(assessments) == true ||
+          checkScores(assessments) == false ? (
             <Tooltip
               title={
                 <h3>For å godkjenne vurderingen må alle konflikter løses.</h3>
@@ -170,7 +174,7 @@ const Approval: NextPage = () => {
                   disabled
                   sx={{ textTransform: 'none' }}
                   variant="contained"
-                  onClick={() => saveAssessments(filteredAssessments, key)}
+                  onClick={() => saveAssessments(assessments, key)}
                 >
                   Godkjenn vurdering av oppgave {taskNumber}
                 </Button>
@@ -181,7 +185,7 @@ const Approval: NextPage = () => {
               <Button
                 sx={{ textTransform: 'none', marginLeft: 10 }}
                 variant="contained"
-                onClick={() => saveAssessments(filteredAssessments, key)}
+                onClick={() => saveAssessments(assessments, key)}
               >
                 Godkjenn vurdering av oppgave {taskNumber}
               </Button>
