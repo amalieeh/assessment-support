@@ -19,6 +19,23 @@ export interface AnswerType {
   taskNumber: number;
 }
 
+export const convertToNumber = (n: string | number) => {
+  if (typeof n == 'number') {
+    return n;
+  }
+  return 0;
+};
+
+export function getSumMaxScoresAllTasks(taskKeys: number[]) : number {
+  const rawdata = data; // should be a getData later
+  // could probably use a reduce() instead
+  let sum = 0;
+  for (let i = 0; i < taskKeys.length; i++ ) {
+    sum += rawdata.ext_inspera_candidates[1].result.ext_inspera_questions[taskKeys[i]-1].ext_inspera_maxQuestionScore
+  }
+  return sum;
+}
+
 export function insperaDataToTextboxObject(
   insperaData: any,
   questionNumber: number
