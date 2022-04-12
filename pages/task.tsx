@@ -17,7 +17,6 @@ const Task: NextPage = () => {
 
   useEffect(() => {
     const assessments = getAssessments(taskNumbers);
-    console.log(assessments);
     const approvedAss = assessments[0];
     const startedAss = assessments[1];
     setApprovedAssessments(approvedAss);
@@ -49,6 +48,31 @@ const Task: NextPage = () => {
                 >
                   <Button
                     color="success"
+                    key={taskNum + 1}
+                    variant="contained"
+                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                  >
+                    {taskNum + 1}
+                  </Button>
+                </Link>
+              );
+            } else if (
+              noRemainingAnswers(taskNum) &&
+              !approvedAssessments?.includes(taskNum) &&
+              startedAssessments != undefined &&
+              startedAssessments.includes(taskNum)
+            ) {
+              return (
+                <Link
+                  key={taskNum + 1}
+                  href={{
+                    pathname: '/approval',
+                    query: { task: taskNum + 1 },
+                  }}
+                  passHref
+                >
+                  <Button
+                    color="warning"
                     key={taskNum + 1}
                     variant="contained"
                     sx={{ width: 73, height: 73, fontSize: 25 }}

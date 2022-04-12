@@ -141,8 +141,6 @@ const Approval: NextPage = () => {
 
   const key = taskNumber.toString() + '_approved';
 
-  console.log(checkScores(assessments));
-
   return (
     <div className={styles.container}>
       <Header
