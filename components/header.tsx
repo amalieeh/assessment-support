@@ -8,16 +8,16 @@ interface Headerprops {
   data: any;
   taskNumber?: number;
   description?: string;
-  page?: string;
+  goBackPage?: string;
 }
 
 const Header: React.FC<Headerprops> = (props: Headerprops) => {
   return (
     <div className={styles.headerstyle}>
-      {props.page == 'assessment' && props.taskNumber ? (
+      {props.goBackPage == 'assessment' && props.taskNumber ? (
         <Link
           href={{
-            pathname: '/' + props.page,
+            pathname: '/' + props.goBackPage,
             query: { task: props.taskNumber },
           }}
           passHref
@@ -34,7 +34,7 @@ const Header: React.FC<Headerprops> = (props: Headerprops) => {
       ) : (
         <Link
           href={{
-            pathname: '/' + props.page,
+            pathname: '/' + props.goBackPage,
           }}
           passHref
         >
