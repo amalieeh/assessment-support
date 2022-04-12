@@ -53,17 +53,19 @@ const Assessment: NextPage = () => {
   const markersGuideDescription: string =
     'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.';
 
-  const answers = getAssessmentData(taskNumber);
-  const numberOfAnswers = answers.length;
-  const [assessments, setAssessments] = useState<AssessmentType[]>(answers);
+  const assessmentData = getAssessmentData(taskNumber);
+  const numberOfAnswers = assessmentData.length;
+
+  const [assessments, setAssessments] =
+    useState<AssessmentType[]>(assessmentData);
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
 
   useEffect(() => {
-    sortAnswers(answers, sortingAlgorithm);
+    sortAnswers(assessmentData, sortingAlgorithm);
     setAssessments(
-      answers.map((answer: AnswerType) => ({
+      assessmentData.map((answer: AnswerType) => ({
         score: '',
         isFlagged: false,
         ...answer,
@@ -74,10 +76,10 @@ const Assessment: NextPage = () => {
   // to make sure setAssessments is being set, otherwise it is empty
   useEffect(() => {
     if (assessments.length == 0) {
-      setAssessments(answers);
-      findAndSetCurrentPage(answers);
+      setAssessments(assessmentData);
+      findAndSetCurrentPage(assessmentData, maxItemsPerPage);
     }
-  }, [assessments.length, answers]);
+  }, [assessments.length, assessmentData]);
 
   const changePage = (direction: string): void => {
     if (direction == 'back') {
@@ -154,24 +156,18 @@ const Assessment: NextPage = () => {
   ) => {
     if (value !== null) {
       setMaxItems(value);
-
-      const numberOfAssessedAssessments = assessments.filter(
-        (assessment) => assessment.score !== ''
-      ).length;
-      const newPageNumber = Math.ceil(
-        numberOfAssessedAssessments / parseInt(value) + 0.01
-      );
-      setCurrentPage(newPageNumber);
+      findAndSetCurrentPage(assessments, parseInt(value));
     }
   };
 
-  const findAndSetCurrentPage = (assessments: AssessmentType[]) => {
+  const findAndSetCurrentPage = (
+    assessments: AssessmentType[],
+    value: number
+  ) => {
     const numberOfAssessedAssessments = assessments.filter(
       (assessment) => assessment.score !== ''
     ).length;
-    const currentPage = Math.ceil(
-      numberOfAssessedAssessments / maxItemsPerPage + 0.01
-    );
+    const currentPage = Math.ceil(numberOfAssessedAssessments / value + 0.01);
     setCurrentPage(currentPage);
   };
 
@@ -199,7 +195,7 @@ const Assessment: NextPage = () => {
           <div className={styles.grid}>
             <div className={styles.sortAndToggle}>
               <Sortingbox
-                answers={answers}
+                answers={assessmentData}
                 sortingAlgorithm={sortingAlgorithm}
                 setSortingAlgorithm={setSortingAlgorithm}
               />
