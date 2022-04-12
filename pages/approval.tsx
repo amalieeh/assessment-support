@@ -170,7 +170,7 @@ const Approval: NextPage = () => {
                   disabled
                   sx={{ textTransform: 'none' }}
                   variant="contained"
-                  onClick={() => saveAssessments(filteredAssessments, key)}
+                  onClick={() => saveAssessments(assessments, key)}
                 >
                   Godkjenn vurdering av oppgave {taskNumber}
                 </Button>
@@ -181,7 +181,7 @@ const Approval: NextPage = () => {
               <Button
                 sx={{ textTransform: 'none', marginLeft: 10 }}
                 variant="contained"
-                onClick={() => saveAssessments(filteredAssessments, key)}
+                onClick={() => saveAssessments(assessments, key)}
               >
                 Godkjenn vurdering av oppgave {taskNumber}
               </Button>
