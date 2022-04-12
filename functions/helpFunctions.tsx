@@ -107,8 +107,9 @@ export function saveBatch(batch: AssessmentType[], taskNumber: number) {
         );
       }
     });
-
-    localStorage.setItem(key, JSON.stringify(assessments));
+    if (assessments.length > 0) {
+      localStorage.setItem(key, JSON.stringify(assessments));
+    }
   }
 }
 
@@ -335,4 +336,14 @@ export function checkInconsistentScores(assessments: ApprovalType[]): boolean {
     }
   });
   return status;
+}
+
+export function noRemainingAnswers(taskNum: number) {
+  const taskNumber = taskNum.toString();
+  const raw: AnswerType[] = getRawAnswers(taskNumber).slice(0, 10);
+  const started: AssessmentType[] = getStartedAssessments(taskNumber);
+  const remainingAnswers = excludeArray2fromArray1(raw, started);
+  if (remainingAnswers.length == 0) {
+    return true;
+  }
 }

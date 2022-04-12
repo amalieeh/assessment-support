@@ -4,7 +4,7 @@ import data from '../data/IT2810Høst2018.json';
 import Header from '../components/header';
 import { Button, Grid } from '@mui/material';
 import Link from 'next/link';
-import { getAssessments } from '../functions/helpFunctions';
+import { getAssessments, noRemainingAnswers } from '../functions/helpFunctions';
 import { useEffect, useState } from 'react';
 
 const Task: NextPage = () => {
@@ -17,6 +17,7 @@ const Task: NextPage = () => {
 
   useEffect(() => {
     const assessments = getAssessments(taskNumbers);
+    console.log(assessments);
     const approvedAss = assessments[0];
     const startedAss = assessments[1];
     setApprovedAssessments(approvedAss);
