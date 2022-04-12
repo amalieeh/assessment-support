@@ -310,10 +310,13 @@ export function getAssessmentData(taskNum: string) {
 }
 
 // Help function to get the remaining answers
-function excludeArray2fromArray1(array1: AnswerType[], array2: AssessmentType[]) {
+function excludeArray2fromArray1(
+  array1: AnswerType[],
+  array2: AssessmentType[]
+) {
   return array1.filter((object1) => {
-    return !array2.some((object2) =>
-      object1.candidateId === object2.candidateId
+    return !array2.some(
+      (object2) => object1.candidateId === object2.candidateId
     );
   });
 }
@@ -321,4 +324,15 @@ function excludeArray2fromArray1(array1: AnswerType[], array2: AssessmentType[])
 // check if all scores are set
 export function checkScores(assessments: AssessmentType[]): boolean {
   return !assessments.some((e) => e.score === '');
+}
+
+// check if there are any inconsistent scores
+export function checkInconsistentScores(assessments: ApprovalType[]): boolean {
+  let status: boolean = false;
+  assessments.map((assessment) => {
+    if ('inconsistentScores' in assessment) {
+      status = true;
+    }
+  });
+  return status;
 }

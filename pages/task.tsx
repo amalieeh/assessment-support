@@ -28,7 +28,7 @@ const Task: NextPage = () => {
       <Header
         data={data}
         description={'Oversikt over alle oppgavene'}
-        page=""
+        goBackPage=""
       />
       <main style={{ display: 'flex', justifyContent: 'center' }}>
         <Grid container gap={4} sx={{ maxWidth: 1230 }}>

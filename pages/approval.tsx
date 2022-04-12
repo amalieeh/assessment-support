@@ -15,7 +15,10 @@ import cloneDeep from 'lodash/cloneDeep';
 import {
   saveAssessments,
   getApprovedAssessments,
+  checkInconsistentScores,
 } from '../functions/helpFunctions';
+import Tooltip from '@mui/material/Tooltip';
+import Header from '../components/header';
 
 const getAllAssessedAssessments = (taskNumber: number): AssessmentType[] => {
   const key = taskNumber.toString() + '_assessments';
@@ -84,6 +87,7 @@ const Approval: NextPage = () => {
   const router = useRouter();
 
   const [taskNumber, setTaskNumber] = useState<any>('');
+  const [taskTitle, setTaskTitle] = useState<string>('');
 
   const approvedAssessments: ApprovalType[] =
     getApprovedAssessments(taskNumber);
@@ -97,6 +101,11 @@ const Approval: NextPage = () => {
   useEffect(() => {
     if (!router.isReady) return;
     setTaskNumber(router.query.task);
+    setTaskTitle(
+      data.ext_inspera_candidates[0].result.ext_inspera_questions[
+        router.query.task - 1
+      ].ext_inspera_questionTitle
+    );
   }, [router.isReady, router.query.task]);
 
   useEffect(() => {
@@ -133,7 +142,12 @@ const Approval: NextPage = () => {
 
   return (
     <div className={styles.container}>
-      <h1>{data.ext_inspera_assessmentRunTitle}</h1>
+      <Header
+        data={data}
+        taskNumber={taskNumber}
+        description={taskTitle}
+        goBackPage="assessment"
+      />
       <main className={styles.main}>
         <Grid container gap={2} xs={5} item={true}>
           {assessments.map((assessment: ApprovalType) => (
@@ -145,24 +159,34 @@ const Approval: NextPage = () => {
           ))}
         </Grid>
         <div style={{ padding: 20 }}>
-          <Link
-            href={{
-              pathname: '/assessment',
-              query: { task: taskNumber },
-            }}
-            passHref
-          >
-            <Button variant="contained">Tilbake</Button>
-          </Link>
-          <Link href="/task" passHref>
-            <Button
-              style={{ marginLeft: 10 }}
-              variant="contained"
-              onClick={() => saveAssessments(assessments, key)}
+          {checkInconsistentScores(assessments) == true ? (
+            <Tooltip
+              title={
+                <h3>For å godkjenne vurderingen må alle konflikter løses.</h3>
+              }
             >
-              Fullfør
-            </Button>
-          </Link>
+              <span>
+                <Button
+                  disabled
+                  sx={{ textTransform: 'none' }}
+                  variant="contained"
+                  onClick={() => saveAssessments(assessments, key)}
+                >
+                  Godkjenn vurdering av oppgave {taskNumber}
+                </Button>
+              </span>
+            </Tooltip>
+          ) : (
+            <Link href="/task" passHref>
+              <Button
+                sx={{ textTransform: 'none', marginLeft: 10 }}
+                variant="contained"
+                onClick={() => saveAssessments(assessments, key)}
+              >
+                Godkjenn vurdering av oppgave {taskNumber}
+              </Button>
+            </Link>
+          )}
         </div>
       </main>
     </div>

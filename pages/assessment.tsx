@@ -173,7 +173,7 @@ const Assessment: NextPage = () => {
         data={data}
         taskNumber={taskNumber}
         description={taskTitle}
-        page="task"
+        goBackPage="task"
       />
       <main className={mainStyles.main}>
         <div className={styles.alignInfo}>
