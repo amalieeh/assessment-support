@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import mainStyles from '../styles/Main.module.css';
 import data from '../data/IT2810Høst2018.json';
 import Header from '../components/header';
+import TaskTable from '../components/taskTable';
 import { Button, Grid } from '@mui/material';
 import Link from 'next/link';
 import { getAssessments } from '../functions/helpFunctions';
@@ -31,7 +32,8 @@ const Task: NextPage = () => {
         goBackPage=""
       />
       <main style={{ display: 'flex', justifyContent: 'center' }}>
-        <Grid container gap={4} sx={{ maxWidth: 1230 }}>
+        <TaskTable taskNumbers={taskNumbers}></TaskTable>
+        <div style={{ maxWidth: 1230 }}>
           {taskNumbers.map((taskNum: number) => {
             if (
               approvedAssessments != undefined &&
@@ -50,7 +52,12 @@ const Task: NextPage = () => {
                     color="success"
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{
+                      width: 73,
+                      height: 73,
+                      fontSize: 25,
+                      margin: '25px',
+                    }}
                   >
                     {taskNum + 1}
                   </Button>
@@ -73,7 +80,12 @@ const Task: NextPage = () => {
                     color="warning"
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{
+                      width: 73,
+                      height: 73,
+                      fontSize: 25,
+                      margin: '25px',
+                    }}
                   >
                     {taskNum + 1}
                   </Button>
@@ -92,7 +104,12 @@ const Task: NextPage = () => {
                   <Button
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{
+                      width: 73,
+                      height: 73,
+                      fontSize: 25,
+                      margin: '25px',
+                    }}
                   >
                     {taskNum + 1}
                   </Button>
@@ -100,7 +117,7 @@ const Task: NextPage = () => {
               );
             }
           })}
-        </Grid>
+        </div>
       </main>
     </div>
   );
