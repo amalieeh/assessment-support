@@ -16,6 +16,7 @@ import {
   saveAssessments,
   getApprovedAssessments,
   checkInconsistentScores,
+  checkScores,
 } from '../functions/helpFunctions';
 import Tooltip from '@mui/material/Tooltip';
 import Header from '../components/header';
@@ -159,7 +160,8 @@ const Approval: NextPage = () => {
           ))}
         </Grid>
         <div style={{ padding: 20 }}>
-          {checkInconsistentScores(assessments) == true ? (
+          {checkInconsistentScores(assessments) == true ||
+          checkScores(assessments) == false ? (
             <Tooltip
               title={
                 <h3>For å godkjenne vurderingen må alle konflikter løses.</h3>

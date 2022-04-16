@@ -4,7 +4,7 @@ import data from '../data/IT2810Høst2018.json';
 import Header from '../components/header';
 import { Button, Grid } from '@mui/material';
 import Link from 'next/link';
-import { getAssessments } from '../functions/helpFunctions';
+import { getAssessments, noRemainingAnswers } from '../functions/helpFunctions';
 import { useEffect, useState } from 'react';
 
 const Task: NextPage = () => {
@@ -48,6 +48,31 @@ const Task: NextPage = () => {
                 >
                   <Button
                     color="success"
+                    key={taskNum + 1}
+                    variant="contained"
+                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                  >
+                    {taskNum + 1}
+                  </Button>
+                </Link>
+              );
+            } else if (
+              noRemainingAnswers(taskNum) &&
+              !approvedAssessments?.includes(taskNum) &&
+              startedAssessments != undefined &&
+              startedAssessments.includes(taskNum)
+            ) {
+              return (
+                <Link
+                  key={taskNum + 1}
+                  href={{
+                    pathname: '/approval',
+                    query: { task: taskNum + 1 },
+                  }}
+                  passHref
+                >
+                  <Button
+                    color="warning"
                     key={taskNum + 1}
                     variant="contained"
                     sx={{ width: 73, height: 73, fontSize: 25 }}
