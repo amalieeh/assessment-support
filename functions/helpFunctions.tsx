@@ -266,7 +266,7 @@ export function getStartedAssessments(taskNum: string): AssessmentType[] {
   return startedAssessments;
 }
 
-export function getAssessmentData(taskNum: string) {
+export function getAssessmentData(taskNum: string): AssessmentType[] {
   // get the different assessments from localstorage
   const raw: AnswerType[] = getRawAnswers(taskNum).slice(0, 10);
   const started: AssessmentType[] = getStartedAssessments(taskNum);
@@ -290,20 +290,22 @@ export function getAssessmentData(taskNum: string) {
   }
 
   // assessments have started for this task, but there are still some remaining answers
-  // need to filter out those that have been assessed
-  // filter on candidateId
   else {
     const remainingAnswers = excludeArray2fromArray1(raw, started);
 
     // no remaining answers left, but not approved. This is for the back button in the approval page
     if (remainingAnswers.length == 0) {
       assessmentData = started;
-    } else {
-      assessmentData = remainingAnswers.map((answer: AnswerType) => ({
+    }
+    // return all assessments, both those that are scored and those that are remaining
+    else {
+      const p = remainingAnswers.map((answer: AnswerType) => ({
         score: '',
         isFlagged: false,
         ...answer,
       }));
+
+      assessmentData = started.concat(p);
     }
   }
   return assessmentData;
