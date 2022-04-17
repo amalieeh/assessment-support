@@ -56,7 +56,8 @@ const ConsistencyBox: React.FC<{}> = () => {
   ];
 
   const title = 'Konsistenssjekk';
-  const content = 'Sjekken velger ut X antall besvarelser for revurdering.';
+  const content =
+    'Sjekken velger ut X antall av dine besvarelser som du skal revurdere.';
 
   function valuetext(value: number) {
     return `${value}%`;
@@ -81,40 +82,17 @@ const ConsistencyBox: React.FC<{}> = () => {
           <div style={{ marginBottom: 10, fontWeight: 'bold' }}>{title}</div>
           <div>{content}</div>
         </CardContent>
-        <CardContent>Bruk konsistenssjekk:</CardContent>
-        <CardActions>
-          <Switch
-            checked={checked}
-            onChange={handleCheck}
-            inputProps={{ 'aria-label': 'controlled' }}
-          />
-        </CardActions>
-        <CardContent> Andel besvarelser som skal revurderes:</CardContent>
-        <CardActions disableSpacing>
-          {checked ? (
-            <Slider
-              sx={{ marginLeft: '1.2rem', marginRight: '1rem' }}
-              aria-label="Custom marks"
-              defaultValue={10}
-              getAriaValueText={valuetext}
-              step={10}
-              valueLabelDisplay="auto"
-              marks={marks}
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <CardContent>Bruk konsistenssjekk:</CardContent>
+          <CardActions>
+            <Switch
+              checked={checked}
+              onChange={handleCheck}
+              inputProps={{ 'aria-label': 'controlled' }}
             />
-          ) : (
-            <Slider
-              sx={{ marginLeft: '1.2rem', marginRight: '1rem' }}
-              disabled
-              aria-label="Custom marks"
-              defaultValue={10}
-              getAriaValueText={valuetext}
-              step={10}
-              valueLabelDisplay="auto"
-              marks={marks}
-            />
-          )}
+          </CardActions>
           <ExpandMore
-            sx={{ marginLeft: '3rem' }}
+            sx={{ marginLeft: '3rem', marginRight: '0.5rem' }}
             expand={expanded}
             onClick={handleExpandClick}
             aria-expanded={expanded}
@@ -122,8 +100,33 @@ const ConsistencyBox: React.FC<{}> = () => {
           >
             <ExpandMoreIcon />
           </ExpandMore>
-        </CardActions>
+        </div>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent> Andel besvarelser som skal revurderes:</CardContent>
+          <CardActions disableSpacing>
+            {checked ? (
+              <Slider
+                sx={{ marginLeft: '1.2rem', marginRight: '1.9rem' }}
+                aria-label="Custom marks"
+                defaultValue={10}
+                getAriaValueText={valuetext}
+                step={10}
+                valueLabelDisplay="auto"
+                marks={marks}
+              />
+            ) : (
+              <Slider
+                sx={{ marginLeft: '1.2rem', marginRight: '1.9rem' }}
+                disabled
+                aria-label="Custom marks"
+                defaultValue={10}
+                getAriaValueText={valuetext}
+                step={10}
+                valueLabelDisplay="auto"
+                marks={marks}
+              />
+            )}
+          </CardActions>
           <CardContent>Velg type sjekk som ønskes:</CardContent>
           <CardActions>
             {checked ? (
