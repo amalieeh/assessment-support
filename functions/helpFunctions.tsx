@@ -71,9 +71,9 @@ export function getAssessments(taskNumbers: number[]): number[][] {
       const approvedKey = taskNumber + '_approved';
       const startedKey = taskNumber + '_assessments';
       if (approvedKey in localStorage) {
-        approvedAssessments.push(parseInt(taskNumber) - 1);
+        approvedAssessments.push(parseInt(taskNumber));
       } else if (startedKey in localStorage) {
-        startedAssessments.push(parseInt(taskNumber) - 1);
+        startedAssessments.push(parseInt(taskNumber));
       }
     });
   }
@@ -348,4 +348,10 @@ export function noRemainingAnswers(taskNum: number) {
   if (remainingAnswers.length == 0) {
     return true;
   }
+}
+
+export function getTaskTitle(taskNumber: number) {
+  return data.ext_inspera_candidates[0].result.ext_inspera_questions[
+    taskNumber - 1
+  ].ext_inspera_questionTitle;
 }
