@@ -2,7 +2,8 @@ import { NextPage } from 'next';
 import styles from '../styles/Completion.module.css';
 import data from '../data/IT2810Høst2018.json';
 import Link from 'next/link';
-import { Button } from '@mui/material';
+import { Button, Snackbar } from '@mui/material';
+import IconButton from "@mui/material/IconButton";
 import Grid from '@mui/material/Grid';
 import * as React from 'react';
 import Header from '../components/header';
@@ -85,6 +86,8 @@ function getCandi(): candidateAndGradeType[] {
 
 const Completion: NextPage = () => {
   const listOfCandidatesAndGrades = getCandi();
+  const [open, setOpen] = React.useState<boolean>(false);
+
   return (
     <div className={styles.container}>
       <Header
@@ -105,7 +108,8 @@ const Completion: NextPage = () => {
                 passHref
               >
                 <Card className={styles.gradeCard}>
-                  <strong>{candidateAndGrade.candidateId}</strong>
+                  <div>
+                  Kandidat <strong>{candidateAndGrade.candidateId}</strong></div>
                   <span>{candidateAndGrade.grade}</span>
                 </Card>
               </Link>
@@ -113,11 +117,19 @@ const Completion: NextPage = () => {
           )}
         </div>
         <div style={{ padding: 20 }}>
-          <Link href="/task" passHref>
-            <Button style={{ marginLeft: 10 }} variant="contained">
-              Fullfør
+            <Button onClick={() => setOpen(true)} style={{ marginLeft: 10 }} variant="contained">
+              Eksporter karakterer
             </Button>
-          </Link>
+          <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={() => setOpen(false)}
+            message="PDF lastet ned"
+          />
+          <Link href={'/'} passHref>
+          <Button style={{ marginLeft: 10 }} variant="contained">
+            Avslutt
+          </Button></Link>
         </div>
       </main>
     </div>
