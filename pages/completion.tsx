@@ -15,6 +15,8 @@ import {
 import {
   convertToNumber,
   getSumMaxScoresAllTasks,
+  isAllTasksAssessed,
+  taskNums,
 } from '../functions/helpFunctions';
 import Card from '@material-ui/core/Card';
 
@@ -40,25 +42,15 @@ function convertToGrade(sum: number, total: number): string {
 }
 
 function getCandi(): candidateAndGradeType[] {
-  if (typeof window == 'undefined') {
+  if (typeof window == 'undefined' || !isAllTasksAssessed()) {
     return [];
   }
-  /*
-  // Check that all answers have been assessed
-  for (let i = 1; i <= 16; i++ ) {
-    if (!(i.toString() + '_approved' in localStorage)) {
-      return [];
-    }
-  }
-   */
 
-  // for testing purposes. Will be changed to a getTaskNumbers()
-  const taskNumbers = [3, 4, 7, 12, 15];
   let sums: candidateAndSumType[] = [];
 
   // set first elements in sums[]
   JSON.parse(
-    localStorage.getItem(taskNumbers[0].toString() + '_approved') as string
+    localStorage.getItem(taskNums[0].toString() + '_approved') as string
   )
     .sort((a: ApprovalType, b: ApprovalType) => {
       return a.candidateId - b.candidateId;
@@ -71,10 +63,10 @@ function getCandi(): candidateAndGradeType[] {
     });
 
   // add the rest of the scores in sums[]
-  for (let i = 1; i < taskNumbers.length; i++) {
+  for (let i = 1; i < taskNums.length; i++) {
     let moreAssessments: AssessmentType[];
     moreAssessments = JSON.parse(
-      localStorage.getItem(taskNumbers[i].toString() + '_approved') as string
+      localStorage.getItem(taskNums[i].toString() + '_approved') as string
     );
     moreAssessments.map((assessment: ApprovalType) => {
       const id = sums.findIndex((e) => e.candidateId == assessment.candidateId);
@@ -82,7 +74,8 @@ function getCandi(): candidateAndGradeType[] {
     });
   }
 
-  const sumAllTasks: number = getSumMaxScoresAllTasks(taskNumbers);
+  // calculate grades
+  const sumAllTasks: number = getSumMaxScoresAllTasks(taskNums);
   const listOfCandidatesAndGrades: candidateAndGradeType[] = sums.map((e) => {
     const givenGrade = convertToGrade(e.sum, sumAllTasks);
     return { candidateId: e.candidateId, grade: givenGrade };
@@ -94,19 +87,23 @@ const Completion: NextPage = () => {
   const listOfCandidatesAndGrades = getCandi();
   return (
     <div className={styles.container}>
-      <Header data={data} description="Godkjenn alle karakterer" page="task" />
+      <Header
+        data={data}
+        description="Godkjenn alle karakterer"
+        goBackPage="task"
+      />
       <main className={styles.main}>
         <div className={styles.listOfCards}>
           {listOfCandidatesAndGrades.map(
             (candidateAndGrade: candidateAndGradeType) => (
-                <Link
-                  key={candidateAndGrade.candidateId}
-                  href={{
-                    pathname: '/candidate',
-                    query: { task: '2' },
-                  }}
-                  passHref
-                >
+              <Link
+                key={candidateAndGrade.candidateId}
+                href={{
+                  pathname: '/candidate',
+                  query: { id: candidateAndGrade.candidateId.toString() },
+                }}
+                passHref
+              >
                 <Card className={styles.gradeCard}>
                   <strong>{candidateAndGrade.candidateId}</strong>
                   <span>{candidateAndGrade.grade}</span>
