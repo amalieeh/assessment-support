@@ -1,10 +1,11 @@
 import { NextPage } from 'next';
 import mainStyles from '../styles/Main.module.css';
+import styles from '../styles/Task.module.css';
 import data from '../data/IT2810Høst2018.json';
 import Header from '../components/header';
-import { Button, Grid } from '@mui/material';
+import { Button } from '@mui/material';
 import Link from 'next/link';
-import { getAssessments, noRemainingAnswers } from '../functions/helpFunctions';
+import { getAssessments, getTaskTitle, noRemainingAnswers } from '../functions/helpFunctions';
 import { useEffect, useState } from 'react';
 
 const Task: NextPage = () => {
@@ -30,8 +31,7 @@ const Task: NextPage = () => {
         description={'Oversikt over alle oppgavene'}
         goBackPage=""
       />
-      <main style={{ display: 'flex', justifyContent: 'center' }}>
-        <Grid container gap={4} sx={{ maxWidth: 1230 }}>
+      <main className={styles.grid}>
           {taskNumbers.map((taskNum: number) => {
             if (
               approvedAssessments != undefined &&
@@ -50,9 +50,9 @@ const Task: NextPage = () => {
                     color="success"
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{ height: 56, fontSize: 15, margin: 1 }}
                   >
-                    {taskNum + 1}
+                    {taskNum + 1}: {getTaskTitle(taskNum +1)}
                   </Button>
                 </Link>
               );
@@ -75,9 +75,9 @@ const Task: NextPage = () => {
                     color="warning"
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{ height: 56, fontSize: 15, margin: 1 }}
                   >
-                    {taskNum + 1}
+                    {taskNum + 1}: {getTaskTitle(taskNum +1)}
                   </Button>
                 </Link>
               );
@@ -98,9 +98,9 @@ const Task: NextPage = () => {
                     color="warning"
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{ height: 56, fontSize: 15, margin: 1 }}
                   >
-                    {taskNum + 1}
+                    {taskNum + 1}: {getTaskTitle(taskNum +1)}
                   </Button>
                 </Link>
               );
@@ -117,15 +117,14 @@ const Task: NextPage = () => {
                   <Button
                     key={taskNum + 1}
                     variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
+                    sx={{ height: 56, fontSize: 15, margin: 1 }}
                   >
-                    {taskNum + 1}
+                    {taskNum + 1}: {getTaskTitle(taskNum +1)}
                   </Button>
                 </Link>
               );
             }
           })}
-        </Grid>
       </main>
     </div>
   );

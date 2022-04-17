@@ -349,3 +349,9 @@ export function noRemainingAnswers(taskNum: number) {
     return true;
   }
 }
+
+export function getTaskTitle(taskNumber: number) {
+  return data.ext_inspera_candidates[0].result.ext_inspera_questions[
+  taskNumber - 1
+    ].ext_inspera_questionTitle;
+}
