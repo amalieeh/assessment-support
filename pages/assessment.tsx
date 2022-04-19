@@ -25,6 +25,7 @@ import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import Togglebuttons from '../components/togglebuttons';
 import Tooltip from '@mui/material/Tooltip';
+import ProgressBar from '../components/progressbar';
 
 const Assessment: NextPage = () => {
   // create router object
@@ -52,12 +53,14 @@ const Assessment: NextPage = () => {
     'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.';
   const markersGuideDescription: string =
     'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.';
+  const maxReAssessmentPercentage = 0.2;
 
   const assessmentData = getAssessmentData(taskNumber);
   const numberOfAnswers = assessmentData.length;
 
   const [assessments, setAssessments] =
     useState<AssessmentType[]>(assessmentData);
+  const [progressPercentage, setProgressPercentage] = useState<number>(0);
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;
@@ -85,20 +88,20 @@ const Assessment: NextPage = () => {
     if (direction == 'back') {
       setCurrentPage(currentPage - 1);
     } else if (direction == 'next') {
-      appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch));
+      appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch), maxReAssessmentPercentage);
       saveBatch(assessments.slice(startIndexBatch, endIndexBatch), taskNumber);
       setCurrentPage(currentPage + 1);
+      setProgressPercentage(endIndexBatch / (numberOfAnswers * (1 + maxReAssessmentPercentage)));
     }
   };
 
-  const appendReAssessments = (batch: AssessmentType[]) => {
+  const appendReAssessments = (batch: AssessmentType[], maxReAssessmentPercentage: number) => {
     // prevent the re of getting re-added and saved with a new id when it was already approved
     const approvedAssessments = getApprovedAssessments(taskNumber);
     if (approvedAssessments.length > 0) {
       return;
     }
     // if an outlier was returned and the reAssessment-list is not full (over 20%), then append (if it is not there already)
-    const maxReAssessmentPercentage = 0.8;
     if (
       // not currently assessing a reAssessment
       currentPage * (maxItemsPerPage - 1) <
@@ -281,6 +284,7 @@ const Assessment: NextPage = () => {
           )
         ) : null}
       </div>
+      <ProgressBar percentage={progressPercentage} />
     </div>
   );
 };
