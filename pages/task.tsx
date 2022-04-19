@@ -2,15 +2,24 @@ import { NextPage } from 'next';
 import mainStyles from '../styles/Main.module.css';
 import data from '../data/IT2810Høst2018.json';
 import Header from '../components/header';
-import { Button, Grid } from '@mui/material';
+import { Button, Paper } from '@mui/material';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
 import Link from 'next/link';
-import { getAssessments, noRemainingAnswers } from '../functions/helpFunctions';
+import { getAssessments, noRemainingAnswers, getTaskTitle } from '../functions/helpFunctions';
 import { useEffect, useState } from 'react';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import * as React from 'react';
 
 const Task: NextPage = () => {
   const totalTasks: number =
     data.ext_inspera_candidates[0].result.ext_inspera_questions.length;
-  const taskNumbers: number[] = Array.from(Array(totalTasks).keys());
+  const taskNumbers: number[] = Array.from(Array(totalTasks).keys()).map(
+    (i) => i + 1
+  );
 
   const [approvedAssessments, setApprovedAssessments] = useState<number[]>();
   const [startedAssessments, setStartedAssessments] = useState<number[]>();
@@ -31,101 +40,75 @@ const Task: NextPage = () => {
         goBackPage=""
       />
       <main style={{ display: 'flex', justifyContent: 'center' }}>
-        <Grid container gap={4} sx={{ maxWidth: 1230 }}>
-          {taskNumbers.map((taskNum: number) => {
-            if (
-              approvedAssessments != undefined &&
-              approvedAssessments.includes(taskNum)
-            ) {
-              return (
-                <Link
-                  key={taskNum + 1}
-                  href={{
-                    pathname: '/approval',
-                    query: { task: taskNum + 1 },
-                  }}
-                  passHref
-                >
-                  <Button
-                    color="success"
-                    key={taskNum + 1}
-                    variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
-                  >
-                    {taskNum + 1}
-                  </Button>
-                </Link>
-              );
-            } else if (
-              noRemainingAnswers(taskNum) &&
-              !approvedAssessments?.includes(taskNum) &&
-              startedAssessments != undefined &&
-              startedAssessments.includes(taskNum)
-            ) {
-              return (
-                <Link
-                  key={taskNum + 1}
-                  href={{
-                    pathname: '/approval',
-                    query: { task: taskNum + 1 },
-                  }}
-                  passHref
-                >
-                  <Button
-                    color="warning"
-                    key={taskNum + 1}
-                    variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
-                  >
-                    {taskNum + 1}
-                  </Button>
-                </Link>
-              );
-            } else if (
-              startedAssessments != undefined &&
-              startedAssessments.includes(taskNum)
-            ) {
-              return (
-                <Link
-                  key={taskNum + 1}
-                  href={{
-                    pathname: '/assessment',
-                    query: { task: taskNum + 1 },
-                  }}
-                  passHref
-                >
-                  <Button
-                    color="warning"
-                    key={taskNum + 1}
-                    variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
-                  >
-                    {taskNum + 1}
-                  </Button>
-                </Link>
-              );
-            } else {
-              return (
-                <Link
-                  key={taskNum + 1}
-                  href={{
-                    pathname: '/assessment',
-                    query: { task: taskNum + 1 },
-                  }}
-                  passHref
-                >
-                  <Button
-                    key={taskNum + 1}
-                    variant="contained"
-                    sx={{ width: 73, height: 73, fontSize: 25 }}
-                  >
-                    {taskNum + 1}
-                  </Button>
-                </Link>
-              );
-            }
-          })}
-        </Grid>
+        <div>
+          <Paper sx={{ margin: '25px', marginLeft: '80px' }}>
+            <MenuList>
+              {taskNumbers.map((taskNum: number) => {
+                if (
+                  approvedAssessments != undefined &&
+                  approvedAssessments.includes(taskNum)
+                ) {
+                  return (
+                    <Link
+                      key={taskNum}
+                      href={{
+                        pathname: '/assessment',
+                        query: { task: taskNum },
+                      }}
+                      passHref
+                    >
+                      <MenuItem>
+                        <ListItemIcon>
+                          <CheckCircleOutlineOutlinedIcon color="success" />
+                        </ListItemIcon>
+                        Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                      </MenuItem>
+                    </Link>
+                  );
+                } else if (
+                  startedAssessments != undefined &&
+                  startedAssessments.includes(taskNum)
+                ) {
+                  return (
+                    <Link
+                      key={taskNum}
+                      href={{
+                        pathname: '/assessment',
+                        query: { task: taskNum },
+                      }}
+                      passHref
+                    >
+                      <MenuItem>
+                        <ListItemIcon>
+                          <AdjustOutlinedIcon color="warning" />
+                        </ListItemIcon>
+                        Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                      </MenuItem>
+                    </Link>
+                  );
+                } else {
+                  return (
+                    <Link
+                      key={taskNum}
+                      href={{
+                        pathname: '/assessment',
+                        query: { task: taskNum },
+                      }}
+                      passHref
+                    >
+                      <MenuItem>
+                        <ListItemIcon>
+                          <CircleOutlinedIcon />
+                        </ListItemIcon>
+                        Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                      </MenuItem>
+                    </Link>
+                  );
+                }
+              })}
+            </MenuList>
+          </Paper>
+        </div>
       </main>
     </div>
   );
