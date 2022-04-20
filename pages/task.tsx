@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import mainStyles from '../styles/Main.module.css';
 import data from '../data/IT2810Høst2019.json';
 import Header from '../components/header';
-import { Button, Paper } from '@mui/material';
+import { ListItemText, Paper } from '@mui/material';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
@@ -65,7 +65,9 @@ const Task: NextPage = () => {
                         <ListItemIcon>
                           <CheckCircleOutlineOutlinedIcon color="success" />
                         </ListItemIcon>
-                        Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                        <ListItemText primaryTypographyProps={{fontSize: '24px'}}>
+                          Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                        </ListItemText>
                       </MenuItem>
                     </Link>
                   );
@@ -86,7 +88,9 @@ const Task: NextPage = () => {
                         <ListItemIcon>
                           <AdjustOutlinedIcon color="warning" />
                         </ListItemIcon>
-                        Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                        <ListItemText primaryTypographyProps={{fontSize: '24px'}}>
+                          Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                        </ListItemText>
                       </MenuItem>
                     </Link>
                   );
@@ -104,7 +108,9 @@ const Task: NextPage = () => {
                         <ListItemIcon>
                           <CircleOutlinedIcon />
                         </ListItemIcon>
-                        Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                        <ListItemText primaryTypographyProps={{fontSize: '24px'}}>
+                          Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                        </ListItemText>
                       </MenuItem>
                     </Link>
                   );

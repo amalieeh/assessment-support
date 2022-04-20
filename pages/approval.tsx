@@ -72,7 +72,7 @@ function filterAssessments(assessments: AssessmentType[]): ApprovalType[] {
             inconsistentScores: inconsistentValues,
           };
         } else {
-          newAss = { ...assessment, score: '', assessmentId: uuidv4() };
+          newAss = { ...assessment, assessmentId: uuidv4() };
         }
         return newAss;
       } else {
@@ -160,8 +160,8 @@ const Approval: NextPage = () => {
           ))}
         </Grid>
         <div style={{ padding: 20 }}>
-          {checkInconsistentScores(assessments) == true ||
-          checkScores(assessments) == false ? (
+          {checkInconsistentScores(assessments) ||
+          !checkScores(assessments) ? (
             <Tooltip
               title={
                 <h3>For å godkjenne vurderingen må alle konflikter løses.</h3>
