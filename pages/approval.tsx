@@ -119,8 +119,12 @@ const Approval: NextPage = () => {
 
   const setAssessmentScore = (
     assessment: AssessmentType,
-    newScore: number | string
+    percentage: number | string
   ) => {
+    let newScore: number | string = percentage;
+    typeof percentage == 'number'
+      ? (newScore = percentage * assessment.maxPoints)
+      : null;
     const newAssessment: AssessmentType = {
       assessmentId: assessment.assessmentId,
       answer: assessment.answer,
@@ -136,6 +140,19 @@ const Approval: NextPage = () => {
     const newArr: AssessmentType[] = cloneDeep(assessments);
     newArr.splice(index, 1, newAssessment);
 
+    setAssessments(newArr);
+  };
+
+  const toggleFlag = (assessment: ApprovalType) => {
+    const newAssessment = {
+      ...assessment,
+      isFlagged: !assessment.isFlagged,
+    };
+    const index = findIndex(assessments, {
+      assessmentId: assessment.assessmentId,
+    });
+    const newArr: AssessmentType[] = cloneDeep(assessments);
+    newArr.splice(index, 1, newAssessment);
     setAssessments(newArr);
   };
 
@@ -156,6 +173,7 @@ const Approval: NextPage = () => {
               key={assessment.assessmentId}
               assessment={assessment}
               setAssessmentScore={setAssessmentScore}
+              toggleFlag={toggleFlag}
             />
           ))}
         </Grid>

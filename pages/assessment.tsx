@@ -138,8 +138,12 @@ const Assessment: NextPage = () => {
 
   const setAssessmentScore = (
     assessment: AssessmentType,
-    newScore: number | string
+    percentage: number | string
   ) => {
+    let newScore: number | string = percentage;
+    typeof percentage == 'number'
+      ? (newScore = percentage * assessment.maxPoints)
+      : null;
     const newAssessment = {
       ...assessment,
       score: newScore,
