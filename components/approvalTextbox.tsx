@@ -19,14 +19,15 @@ interface approvalTexboxProp {
 const ApprovalTextbox: React.FC<approvalTexboxProp> = (
   props: approvalTexboxProp
 ) => {
+  const grades = ['F', 'E', 'D', 'C', 'B', 'A']
   let inconsistentScoresString = '';
   if (props.assessment.inconsistentScores) {
     props.assessment.inconsistentScores.length == 2
       ? (inconsistentScoresString +=
-          props.assessment.inconsistentScores[0].toString() +
+          grades[Math.round((props.assessment.inconsistentScores[0] * props.assessment.maxPoints) * 5)] +
           ' og ' +
-          props.assessment.inconsistentScores[1].toString())
-      : null;
+          grades[Math.round((props.assessment.inconsistentScores[1] * props.assessment.maxPoints) * 5)])
+  : null;
   }
   // As of now it only supports 2 inconsistent assessments
   const showConflictError = inconsistentScoresString.length > 0;
@@ -35,7 +36,7 @@ const ApprovalTextbox: React.FC<approvalTexboxProp> = (
     <div>
       {showConflictError ? (
         <div>
-          Konflikt! Det er blitt satt scorene: {inconsistentScoresString}
+          Konflikt! Det er blitt satt karakterene: {inconsistentScoresString}
         </div>
       ) : null}
       <Paper

@@ -125,7 +125,6 @@ const Approval: NextPage = () => {
     typeof percentage == 'number'
       ? (newScore = percentage * assessment.maxPoints)
       : null;
-    console.log('points: ', newScore, ' of ', assessment.maxPoints);
     const newAssessment: AssessmentType = {
       assessmentId: assessment.assessmentId,
       answer: assessment.answer,

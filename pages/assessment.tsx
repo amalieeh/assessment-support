@@ -132,7 +132,6 @@ const Assessment: NextPage = () => {
     typeof percentage == 'number'
       ? (newScore = percentage * assessment.maxPoints)
       : null;
-    console.log('points: ', newScore, ' of ', assessment.maxPoints);
     const newAssessment = {
       ...assessment,
       score: newScore,
