@@ -1,13 +1,19 @@
 import * as React from 'react';
+import styles from '../styles/Textbox.module.css';
 import { ApprovalType, AssessmentType } from '../types/Types';
-import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import parse from 'html-react-parser';
-import Pointsbox from "./pointsbox";
+import Gradingbuttons from './gradingbuttons';
+import { Button } from '@mui/material';
+import FlagIcon from '@mui/icons-material/Flag';
 
 interface approvalTexboxProp {
   assessment: ApprovalType;
-  setAssessmentScore: (assessment: AssessmentType, newScore: number) => void;
+  setAssessmentScore: (
+    assessment: AssessmentType,
+    newScore: number | string
+  ) => void;
+  toggleFlag: (assessment: ApprovalType) => void;
 }
 
 const ApprovalTextbox: React.FC<approvalTexboxProp> = (
@@ -37,23 +43,36 @@ const ApprovalTextbox: React.FC<approvalTexboxProp> = (
           p: 3,
           margin: 'auto',
           width: 800,
-          border: showConflictError || typeof props.assessment.score == "string" ? 3 : null,
+          border:
+            showConflictError || typeof props.assessment.score == 'string'
+              ? 3
+              : null,
           borderColor: '#ce4d5f',
         }}
       >
-        <Grid container spacing={2}>
-          <Grid item>
+        <div className={styles.approvalTextboxCard}>
+          <div className={styles.approvalTextboxContent}>
             <strong>{props.assessment.candidateId}</strong>
-            <Pointsbox
-              assessment={props.assessment}
-              setAssessmentScore={props.setAssessmentScore}
-              topMargin={"1em"}
-            />
-          </Grid>
-          <Grid item xs={12} sm container sx={{ mt: -2 }}>
-            <div>{parse(props.assessment.answer)}</div>
-          </Grid>
-        </Grid>
+            <div className={styles.approvalTextboxContent}>
+              <Gradingbuttons
+                assessment={props.assessment}
+                score={props.assessment.score}
+                setAssessmentScore={props.setAssessmentScore}
+              />
+              <Button
+                style={{ marginLeft: 15 }}
+                onClick={() => props.toggleFlag(props.assessment)}
+              >
+                {props.assessment.isFlagged ? (
+                  <FlagIcon color="secondary" />
+                ) : (
+                  <FlagIcon color="primary" />
+                )}
+              </Button>
+            </div>
+          </div>
+          <div>{parse(props.assessment.answer)}</div>
+        </div>
       </Paper>
     </div>
   );

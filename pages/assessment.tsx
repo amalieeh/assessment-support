@@ -26,7 +26,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Togglebuttons from '../components/togglebuttons';
 import Tooltip from '@mui/material/Tooltip';
 import ProgressBar from '../components/progressbar';
-import Gradingbuttons from '../components/gradingbuttons';
 
 const Assessment: NextPage = () => {
   // create router object
@@ -127,8 +126,13 @@ const Assessment: NextPage = () => {
 
   const setAssessmentScore = (
     assessment: AssessmentType,
-    newScore: number | string
+    percentage: number | string
   ) => {
+    let newScore: number | string = percentage;
+    typeof percentage == 'number'
+      ? (newScore = percentage * assessment.maxPoints)
+      : null;
+    console.log('points: ', newScore, ' of ', assessment.maxPoints);
     const newAssessment = {
       ...assessment,
       score: newScore,

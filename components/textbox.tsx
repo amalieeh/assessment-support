@@ -26,7 +26,7 @@ const Textbox: React.FC<textboxprop> = (props: textboxprop) => {
             assessment={props.assessment}
             score={props.assessment.score}
             setAssessmentScore={props.setAssessmentScore}
-          ></Gradingbuttons>
+          />
           <Button onClick={() => props.toggleFlag(props.assessment)}>
             {props.assessment.isFlagged ? (
               <FlagIcon color="secondary" />

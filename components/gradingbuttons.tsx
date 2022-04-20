@@ -15,25 +15,22 @@ interface Gradingbuttonprops {
 const Gradingbuttons: React.FC<Gradingbuttonprops> = (
   props: Gradingbuttonprops
 ) => {
-  const gradeScores = ['0', '1', '2', '3', '4', '5'];
   const gradeLabels = ['F', 'E', 'D', 'C', 'B', 'A'];
 
-  // for later calculation
-  const maxPoints = props.assessment.maxPoints;
-
   const handleChange = (selectedOption: any) => {
-    props.setAssessmentScore(props.assessment, selectedOption.target.value);
+    props.setAssessmentScore(props.assessment, selectedOption.target.value/5)
   };
+  const value = typeof props.assessment.score == 'number' ? (props.assessment.score/props.assessment.maxPoints) * 5 : '';
 
   return (
     <ToggleButtonGroup
-      value={props.assessment.score}
+      value={value}
       exclusive
       onChange={handleChange}
     >
-      {gradeScores.map((score: string, i: number) => (
-        <ToggleButton key={gradeLabels[i]} value={score}>
-          {gradeLabels[i]}
+      {gradeLabels.map((label: string, i: number) => (
+        <ToggleButton key={label} value={i}>
+          {label}
         </ToggleButton>
       ))}
     </ToggleButtonGroup>

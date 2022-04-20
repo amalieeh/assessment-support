@@ -40,3 +40,14 @@
 .pointboxAndFlag {
   display: flex;
 }
+
+.approvalTextboxCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.approvalTextboxContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
