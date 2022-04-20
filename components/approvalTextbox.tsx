@@ -24,9 +24,9 @@ const ApprovalTextbox: React.FC<approvalTexboxProp> = (
   if (props.assessment.inconsistentScores) {
     props.assessment.inconsistentScores.length == 2
       ? (inconsistentScoresString +=
-          grades[Math.round((props.assessment.inconsistentScores[0] * props.assessment.maxPoints) * 5)] +
+          grades[Math.round((props.assessment.inconsistentScores[0] / props.assessment.maxPoints) * 5)] +
           ' og ' +
-          grades[Math.round((props.assessment.inconsistentScores[1] * props.assessment.maxPoints) * 5)])
+          grades[Math.round((props.assessment.inconsistentScores[1] / props.assessment.maxPoints) * 5)])
   : null;
   }
   // As of now it only supports 2 inconsistent assessments
