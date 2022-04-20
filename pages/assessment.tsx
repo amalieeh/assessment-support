@@ -3,7 +3,7 @@ import styles from '../styles/Assessment.module.css';
 import mainStyles from '../styles/Main.module.css';
 import Textbox from '../components/textbox';
 import { useEffect, useState } from 'react';
-import data from '../data/IT2810Høst2018.json';
+import data from '../data/IT2810Høst2019.json';
 import Expand from '../components/expand';
 import ConsistencyBox from '../components/consistencybox';
 import Sortingbox from '../components/sortingbox';
@@ -12,6 +12,8 @@ import {
   chooseCorrelatedAssessment,
   getApprovedAssessments,
   getAssessmentData,
+  getMarkerGuideDescription,
+  getTaskDescription,
   saveBatch,
 } from '../functions/helpFunctions';
 import { sortAnswers } from '../functions/sortAlgorithms';
@@ -40,6 +42,8 @@ const Assessment: NextPage = () => {
         router.query.task - 1
       ].ext_inspera_questionTitle
     );
+    setTaskDescription(getTaskDescription(router.query.task));
+    setMarkersGuideDescription(getMarkerGuideDescription(router.query.task));
   }, [router.isReady, router.query.task]);
 
   const [taskNumber, setTaskNumber] = useState<any>('');
@@ -49,10 +53,10 @@ const Assessment: NextPage = () => {
   const maxItemsPerPage = parseInt(maxItems);
   const [sortingAlgorithm, setSortingAlgorithm] = useState<string>('length_hl');
 
-  const taskDescription: string =
-    'Variabler med nøkkelordet var er globale, mens varibler med nøkkelordet let har et local scope eller blokk scope som vil si at de kun defineres for deler av koden om de defineres inni en kodeblokk.';
-  const markersGuideDescription: string =
-    'let - block scope. Dersom variabelen blir deklarert med let i en funksjon, er den bare tilgjengelig i funksjonen. var - global scope Dersom variabelen blir deklarert med var, blir den tilgjengelig i all kode. Kan by på problemer når vi gir variabler samme navn.';
+  const [taskDescription, setTaskDescription] = useState<string>('');
+  const [markersGuideDescription, setMarkersGuideDescription] =
+    useState<string>('');
+
   const maxReAssessmentPercentage = 0.2;
 
   const assessmentData = getAssessmentData(taskNumber);
@@ -88,14 +92,22 @@ const Assessment: NextPage = () => {
     if (direction == 'back') {
       setCurrentPage(currentPage - 1);
     } else if (direction == 'next') {
-      appendReAssessments(assessments.slice(startIndexBatch, endIndexBatch), maxReAssessmentPercentage);
+      appendReAssessments(
+        assessments.slice(startIndexBatch, endIndexBatch),
+        maxReAssessmentPercentage
+      );
       saveBatch(assessments.slice(startIndexBatch, endIndexBatch), taskNumber);
       setCurrentPage(currentPage + 1);
-      setProgressPercentage(endIndexBatch / (numberOfAnswers * (1 + maxReAssessmentPercentage)));
+      setProgressPercentage(
+        endIndexBatch / (numberOfAnswers * (1 + maxReAssessmentPercentage))
+      );
     }
   };
 
-  const appendReAssessments = (batch: AssessmentType[], maxReAssessmentPercentage: number) => {
+  const appendReAssessments = (
+    batch: AssessmentType[],
+    maxReAssessmentPercentage: number
+  ) => {
     // prevent the re of getting re-added and saved with a new id when it was already approved
     const approvedAssessments = getApprovedAssessments(taskNumber);
     if (approvedAssessments.length > 0) {
