@@ -60,7 +60,7 @@ const Assessment: NextPage = () => {
 
   const [assessments, setAssessments] =
     useState<AssessmentType[]>(assessmentData);
-  const [progressPercentage, setProgressPercentage] = useState<number>(0);
+  const [progressPercentage, setProgressPercentage] = useState<number>(0.05);
 
   const startIndexBatch = currentPage * maxItemsPerPage - maxItemsPerPage;
   const endIndexBatch = currentPage * maxItemsPerPage;

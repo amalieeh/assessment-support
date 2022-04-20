@@ -24,7 +24,7 @@ const Sortingbox: React.FC<Sortingboxprops> = (props: Sortingboxprops) => {
     // { value: 'similarAnswers', label: 'Liknende besvarelser' },
     // { value: 'divergentAnswers', label: 'Divergerende besvarelser' },
     { value: 'length_hl', label: 'Lengde fra lengst til kortest' },
-    { value: 'length_lh', label: 'Lenge fra kortest til lengst' },
+    { value: 'length_lh', label: 'Lengde fra kortest til lengst' },
   ];
 
   const handleChange = (event: SelectChangeEvent) => {
