@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import styles from '../styles/Main.module.css';
-import data from '../data/IT2810Høst2018.json';
+import data from '../data/IT2810Høst2019.json';
 import Link from 'next/link';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Grid';

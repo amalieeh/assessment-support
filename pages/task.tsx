@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import mainStyles from '../styles/Main.module.css';
-import data from '../data/IT2810Høst2018.json';
+import data from '../data/IT2810Høst2019.json';
 import Header from '../components/header';
 import { Button, Paper } from '@mui/material';
 import MenuList from '@mui/material/MenuList';
@@ -9,7 +9,11 @@ import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
 import Link from 'next/link';
-import { getAssessments, noRemainingAnswers, getTaskTitle } from '../functions/helpFunctions';
+import {
+  getAssessments,
+  noRemainingAnswers,
+  getTaskTitle,
+} from '../functions/helpFunctions';
 import { useEffect, useState } from 'react';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import * as React from 'react';

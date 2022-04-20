@@ -1,7 +1,8 @@
-import { assignInWith } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { ApprovalType, AssessmentType } from '../types/Types';
-import data from '../data/IT2810Høst2018.json';
+import data from '../data/IT2810Høst2019.json';
+import taskinfo from '../data/taskinfo.json';
+import parse from 'html-react-parser';
 
 function replaceUndefined(content: string) {
   if (content == undefined) {
@@ -354,4 +355,12 @@ export function getTaskTitle(taskNumber: number) {
   return data.ext_inspera_candidates[0].result.ext_inspera_questions[
     taskNumber - 1
   ].ext_inspera_questionTitle;
+}
+
+export function getTaskDescription(taskNumber: string) {
+  return parse(taskinfo.taskDescriptions[parseInt(taskNumber) - 1]);
+}
+
+export function getMarkerGuideDescription(taskNumber: string) {
+  return parse(taskinfo.markerGuides[parseInt(taskNumber) - 1]);
 }
