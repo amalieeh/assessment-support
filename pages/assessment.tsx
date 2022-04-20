@@ -83,6 +83,7 @@ const Assessment: NextPage = () => {
   // to make sure setAssessments is being set, otherwise it is empty
   useEffect(() => {
     if (assessments.length == 0) {
+      sortAnswers(assessmentData, sortingAlgorithm);
       setAssessments(assessmentData);
       findAndSetCurrentPage(assessmentData, maxItemsPerPage);
     }
