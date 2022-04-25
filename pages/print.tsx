@@ -10,18 +10,14 @@ import {
   AssessmentType,
   candidateAndGradeType,
   candidateAndSumType,
-  candidateAndGradeAssessmentType
 } from '../types/Types';
 import {
   convertToNumber,
-  getSumMaxScoresAllTasks, gradeLabels,
+  getSumMaxScoresAllTasks,
   isAllTasksAssessed,
-  taskNums
+  taskNums,
 } from '../functions/helpFunctions';
 import Card from '@material-ui/core/Card';
-import cloneDeep from 'lodash/cloneDeep';
-import Gradingbuttons from '../components/gradingbuttons';
-import { useEffect } from 'react';
 
 function convertToGrade(sum: number, total: number): string {
   const score: number = sum / total;
@@ -86,76 +82,47 @@ function getCandi(): candidateAndGradeType[] {
   return listOfCandidatesAndGrades;
 }
 
-const Completion: NextPage = () => {
+const Print: NextPage = () => {
   const listOfCandidatesAndGrades = getCandi();
-  const [candidateGrades, setCandidateGrades] = React.useState<candidateAndGradeType[]>(listOfCandidatesAndGrades);
-
-  useEffect(() => {
-    if (candidateGrades.length == 0) {
-      setCandidateGrades(listOfCandidatesAndGrades);
-    }
-  }, [candidateGrades.length, candidateGrades]);
-
-  const setCandidateGradesScore = (assessment: candidateAndGradeAssessmentType | AssessmentType | ApprovalType, newScore: number | string) => {
-    const index = candidateGrades.findIndex((c) => c.candidateId == assessment.candidateId);
-    const newElement: candidateAndGradeType = {candidateId: assessment.candidateId, grade: gradeLabels[convertToNumber(newScore)*5]}
-    const newArr: candidateAndGradeType[] = cloneDeep(candidateGrades);
-    newArr.splice(index, 1, newElement);
-    setCandidateGrades(newArr)
-  };
-
-  function convertToCandidateAndGradeAssessmentType(grade: string, candidateId: number): candidateAndGradeAssessmentType {
-    return {candidateId: candidateId, score: convertFromGradeToScore(grade), maxPoints: 1}
-  }
-
-  function convertFromGradeToScore(grade: string): number {
-    const i = gradeLabels.findIndex((e: string) => e == grade);
-    return i/5;
-  }
+  const [open, setOpen] = React.useState<boolean>(false);
 
   return (
     <div className={styles.container}>
       <Header
         data={data}
-        description="Godkjenn karakterer"
-        goBackPage="task"
+        description="Alle karakterer"
+        goBackPage="completion"
       />
       <main className={styles.main}>
         <div className={styles.listOfCards}>
-          {candidateGrades.map(
+          {listOfCandidatesAndGrades.map(
             (candidateAndGrade: candidateAndGradeType) => (
-                <Card className={styles.gradeCard} >
-                  <Link
-                    key={candidateAndGrade.candidateId}
-                    href={{
-                      pathname: '/candidate',
-                      query: { id: candidateAndGrade.candidateId.toString() },
-                    }}
-                    passHref
-                  >
-                    <div style={{display: 'flex', alignItems: 'flex-end', cursor: 'pointer' }}>
-                      Kandidat {candidateAndGrade.candidateId}
-                    </div>
-                  </Link>
-
-                  <Gradingbuttons
-                    score={convertFromGradeToScore(candidateAndGrade.grade)}
-                    assessment={convertToCandidateAndGradeAssessmentType(candidateAndGrade.grade, candidateAndGrade.candidateId)}
-                    setAssessmentScore={setCandidateGradesScore} />
+                <Card className={styles.gradeCard}>
+                  <div>
+                    Kandidat {candidateAndGrade.candidateId}</div>
+                  <span>{candidateAndGrade.grade}</span>
                 </Card>
             )
           )}
         </div>
         <div style={{ padding: 20 }}>
-          <Link href={'/print'}>
+          <Button onClick={() => setOpen(true)} style={{ marginLeft: 10 }} variant="contained">
+            Last ned karakterer
+          </Button>
+          <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={() => setOpen(false)}
+            message="PDF lastet ned"
+          />
+          <Link href={'/'} passHref>
             <Button style={{ marginLeft: 10 }} variant="contained">
-              Godkjenn alle karakterer
-            </Button>
-          </Link>
+              Avslutt
+            </Button></Link>
         </div>
       </main>
     </div>
   );
 };
 
-export default Completion;
+export default Print;

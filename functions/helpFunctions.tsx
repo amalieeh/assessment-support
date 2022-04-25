@@ -5,6 +5,7 @@ import taskinfo from '../data/taskinfo.json';
 import parse from 'html-react-parser';
 
 export const taskNums = [1, 2, 3]; // For tesing purposes
+export const gradeLabels = ['F', 'E', 'D', 'C', 'B', 'A'];
 
 function replaceUndefined(content: string) {
   if (content == undefined) {

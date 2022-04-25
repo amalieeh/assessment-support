@@ -1,13 +1,14 @@
 import React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { ApprovalType, AssessmentType } from '../types/Types';
+import { ApprovalType, AssessmentType, candidateAndGradeAssessmentType } from '../types/Types';
+import { gradeLabels } from '../functions/helpFunctions';
 
 interface Gradingbuttonprops {
   score: string | number;
-  assessment: AssessmentType | ApprovalType;
+  assessment: AssessmentType | ApprovalType | candidateAndGradeAssessmentType;
   setAssessmentScore: (
-    assessment: AssessmentType | ApprovalType,
+    assessment: AssessmentType | ApprovalType | candidateAndGradeAssessmentType,
     newScore: string | number
   ) => void;
 }
@@ -15,7 +16,6 @@ interface Gradingbuttonprops {
 const Gradingbuttons: React.FC<Gradingbuttonprops> = (
   props: Gradingbuttonprops
 ) => {
-  const gradeLabels = ['F', 'E', 'D', 'C', 'B', 'A'];
 
   const handleChange = (selectedOption: any) => {
     props.setAssessmentScore(props.assessment, selectedOption.target.value/5)

@@ -6,6 +6,7 @@ import parse from 'html-react-parser';
 import Gradingbuttons from './gradingbuttons';
 import { Button } from '@mui/material';
 import FlagIcon from '@mui/icons-material/Flag';
+import { gradeLabels } from '../functions/helpFunctions';
 
 interface approvalTexboxProp {
   assessment: ApprovalType;
@@ -19,14 +20,13 @@ interface approvalTexboxProp {
 const ApprovalTextbox: React.FC<approvalTexboxProp> = (
   props: approvalTexboxProp
 ) => {
-  const grades = ['F', 'E', 'D', 'C', 'B', 'A']
   let inconsistentScoresString = '';
   if (props.assessment.inconsistentScores) {
     props.assessment.inconsistentScores.length == 2
       ? (inconsistentScoresString +=
-          grades[Math.round((props.assessment.inconsistentScores[0] / props.assessment.maxPoints) * 5)] +
+          gradeLabels[Math.round((props.assessment.inconsistentScores[0] / props.assessment.maxPoints) * 5)] +
           ' og ' +
-          grades[Math.round((props.assessment.inconsistentScores[1] / props.assessment.maxPoints) * 5)])
+          gradeLabels[Math.round((props.assessment.inconsistentScores[1] / props.assessment.maxPoints) * 5)])
   : null;
   }
   // As of now it only supports 2 inconsistent assessments

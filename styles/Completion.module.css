@@ -15,12 +15,12 @@
 }
 
 .gradeCard {
-    width: 30rem;
+    width: 40rem;
     padding: 2rem;
     margin-bottom: 2rem;
     color: inherit;
     display: flex;
     justify-content: space-between;
-    cursor: pointer;
+    font-size: x-large;
 }
 

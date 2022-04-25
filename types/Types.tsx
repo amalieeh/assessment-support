@@ -20,6 +20,12 @@ export interface candidateAndGradeType {
   grade: string;
 }
 
+export interface candidateAndGradeAssessmentType {
+  candidateId: number;
+  score: number;
+  maxPoints: number;
+}
+
 export interface candidateAndSumType {
   candidateId: number;
   sum: number;
