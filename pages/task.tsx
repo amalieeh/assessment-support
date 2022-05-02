@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import mainStyles from '../styles/Main.module.css';
 import data from '../data/IT2810Høst2019.json';
 import Header from '../components/header';
-import { ListItemText, Paper } from '@mui/material';
+import { Button, ListItemText, Paper } from '@mui/material';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
@@ -13,6 +13,7 @@ import {
   getAssessments,
   noRemainingAnswers,
   getTaskTitle,
+  isAllTasksAssessed,
 } from '../functions/helpFunctions';
 import { useEffect, useState } from 'react';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -47,20 +48,20 @@ const Task: NextPage = () => {
         <div>
           <Paper sx={{ margin: '25px', marginLeft: '80px' }}>
             <MenuList>
-              {taskNumbers.map((taskNum: number) => {
-                if (
-                  approvedAssessments != undefined &&
-                  approvedAssessments.includes(taskNum)
-                ) {
-                  return (
-                    <Link
-                      key={taskNum}
-                      href={{
-                        pathname: '/assessment',
-                        query: { task: taskNum },
-                      }}
-                      passHref
-                    >
+          {taskNumbers.map((taskNum: number) => {
+            if (
+              approvedAssessments != undefined &&
+              approvedAssessments.includes(taskNum)
+            ) {
+              return (
+                <Link
+                  key={taskNum}
+                  href={{
+                    pathname: '/approval',
+                    query: { task: taskNum },
+                  }}
+                  passHref
+                >
                       <MenuItem>
                         <ListItemIcon>
                           <CheckCircleOutlineOutlinedIcon color="success" />
@@ -69,21 +70,23 @@ const Task: NextPage = () => {
                           Oppgave {taskNum}: {getTaskTitle(taskNum)}
                         </ListItemText>
                       </MenuItem>
-                    </Link>
-                  );
-                } else if (
-                  startedAssessments != undefined &&
-                  startedAssessments.includes(taskNum)
-                ) {
-                  return (
-                    <Link
-                      key={taskNum}
-                      href={{
-                        pathname: '/assessment',
-                        query: { task: taskNum },
-                      }}
-                      passHref
-                    >
+                </Link>
+              );
+            } else if (
+              noRemainingAnswers(taskNum) &&
+              !approvedAssessments?.includes(taskNum) &&
+              startedAssessments != undefined &&
+              startedAssessments.includes(taskNum)
+            ) {
+              return (
+                <Link
+                  key={taskNum}
+                  href={{
+                    pathname: '/approval',
+                    query: { task: taskNum },
+                  }}
+                  passHref
+                >
                       <MenuItem>
                         <ListItemIcon>
                           <AdjustOutlinedIcon color="warning" />
@@ -92,18 +95,41 @@ const Task: NextPage = () => {
                           Oppgave {taskNum}: {getTaskTitle(taskNum)}
                         </ListItemText>
                       </MenuItem>
-                    </Link>
-                  );
-                } else {
-                  return (
-                    <Link
-                      key={taskNum}
-                      href={{
-                        pathname: '/assessment',
-                        query: { task: taskNum },
-                      }}
-                      passHref
-                    >
+                </Link>
+              );
+            } else if (
+              startedAssessments != undefined &&
+              startedAssessments.includes(taskNum)
+            ) {
+              return (
+                <Link
+                  key={taskNum}
+                  href={{
+                    pathname: '/assessment',
+                    query: { task: taskNum },
+                  }}
+                  passHref
+                >
+                      <MenuItem>
+                        <ListItemIcon>
+                          <AdjustOutlinedIcon color="warning" />
+                        </ListItemIcon>
+                        <ListItemText primaryTypographyProps={{fontSize: '24px'}}>
+                          Oppgave {taskNum}: {getTaskTitle(taskNum)}
+                        </ListItemText>
+                      </MenuItem>
+                </Link>
+              );
+            } else {
+              return (
+                <Link
+                  key={taskNum}
+                  href={{
+                    pathname: '/assessment',
+                    query: { task: taskNum },
+                  }}
+                  passHref
+                >
                       <MenuItem>
                         <ListItemIcon>
                           <CircleOutlinedIcon />
@@ -112,14 +138,29 @@ const Task: NextPage = () => {
                           Oppgave {taskNum}: {getTaskTitle(taskNum)}
                         </ListItemText>
                       </MenuItem>
-                    </Link>
-                  );
-                }
-              })}
+                </Link>
+              );
+            }
+          })}
             </MenuList>
           </Paper>
         </div>
       </main>
+      {isAllTasksAssessed() ? (
+        <Link href={'/completion'} passHref>
+          <Button sx={{ textTransform: 'none', margin: 8 }} variant="contained">
+            Se karakterer og resultater
+          </Button>
+        </Link>
+      ) : (
+        <Button
+          disabled
+          sx={{ textTransform: 'none', margin: 8 }}
+          variant="contained"
+        >
+          Se karakterer og resultater
+        </Button>
+      )}
     </div>
   );
 };

@@ -17,6 +17,7 @@ import {
   getApprovedAssessments,
   checkInconsistentScores,
   checkScores,
+  convertToNumber,
 } from '../functions/helpFunctions';
 import Tooltip from '@mui/material/Tooltip';
 import Header from '../components/header';
@@ -30,13 +31,6 @@ const getAllAssessedAssessments = (taskNumber: number): AssessmentType[] => {
   } else {
     return [];
   }
-};
-
-const convertToNumber = (n: string | number) => {
-  if (typeof n == 'number') {
-    return n;
-  }
-  return parseInt(n);
 };
 
 // returns the each assessment with potentially inconsistent values

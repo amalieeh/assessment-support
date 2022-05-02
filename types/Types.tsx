@@ -14,3 +14,19 @@ export interface AssessmentType extends AnswerType{
 export interface ApprovalType extends AssessmentType{
   inconsistentScores?: number[];
 }
+
+export interface candidateAndGradeType {
+  candidateId: number;
+  grade: string;
+}
+
+export interface candidateAndGradeAssessmentType {
+  candidateId: number;
+  score: number;
+  maxPoints: number;
+}
+
+export interface candidateAndSumType {
+  candidateId: number;
+  sum: number;
+}

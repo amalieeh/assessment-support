@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styles from '../styles/Textbox.module.css';
-import Pointsbox from './pointsbox';
 import { ApprovalType, AssessmentType } from '../types/Types';
 import parse from 'html-react-parser';
 import { Button } from '@mui/material';

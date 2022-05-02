@@ -4,6 +4,9 @@ import data from '../data/IT2810Høst2019.json';
 import taskinfo from '../data/taskinfo.json';
 import parse from 'html-react-parser';
 
+export const taskNums = [1, 2, 3]; // For tesing purposes
+export const gradeLabels = ['F', 'E', 'D', 'C', 'B', 'A'];
+
 function replaceUndefined(content: string) {
   if (content == undefined) {
     return '';
@@ -19,34 +22,24 @@ export interface AnswerType {
   taskNumber: number;
 }
 
-export function insperaDataToTextboxObject(
-  insperaData: any,
-  questionNumber: number
-) {
-  const textboxData: AnswerType[] = [];
-  if (
-    questionNumber < 1 ||
-    questionNumber >
-      insperaData.ext_inspera_candidates[0].result.ext_inspera_questions.length
-  ) {
-    return textboxData;
+export const convertToNumber = (n: any) => {
+  if (typeof n == 'number') {
+    return n;
   }
-  insperaData.ext_inspera_candidates.map((candidate: any) => {
-    textboxData.push({
-      assessmentId: uuidv4(),
-      answer: replaceUndefined(
-        candidate.result.ext_inspera_questions[questionNumber - 1]
-          .ext_inspera_candidateResponses[0].ext_inspera_response
-      ),
+  return 0;
+};
 
-      candidateId: parseInt(candidate.result.ext_inspera_candidateId),
-      maxPoints:
-        candidate.result.ext_inspera_questions[questionNumber - 1]
-          .ext_inspera_maxQuestionScore,
-      taskNumber: questionNumber,
-    });
-  });
-  return textboxData;
+export function getSumMaxScoresAllTasks(taskKeys: number[]) : number {
+  const rawdata = data; // should be a getData later
+  // could probably use a reduce() instead
+  let sum = 0;
+  for (let i = 0; i < taskKeys.length; i++) {
+    sum +=
+      rawdata.ext_inspera_candidates[0].result.ext_inspera_questions[
+        taskKeys[i] - 1
+      ].ext_inspera_maxQuestionScore;
+  }
+  return sum;
 }
 
 export function saveAssessments(
@@ -349,6 +342,20 @@ export function noRemainingAnswers(taskNum: number) {
   if (remainingAnswers.length == 0) {
     return true;
   }
+  return false;
+}
+
+export function isAllTasksAssessed(): boolean {
+  if (typeof window !== 'undefined') {
+    // for (let i = 1; i <= 16; i++) {
+    for (let i = 0; i < taskNums.length; i++) {
+      if (!(taskNums[i].toString() + '_approved' in localStorage)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
 }
 
 export function getTaskTitle(taskNumber: number) {
