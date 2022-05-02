@@ -27,6 +27,7 @@ const Gradingbuttons: React.FC<Gradingbuttonprops> = (
       value={value}
       exclusive
       onChange={handleChange}
+      style={{backgroundColor: 'white'}}
     >
       {gradeLabels.map((label: string, i: number) => (
         <ToggleButton key={label} value={i}>

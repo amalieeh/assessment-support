@@ -133,7 +133,7 @@ const Completion: NextPage = () => {
                     }}
                     passHref
                   >
-                    <div style={{display: 'flex', alignItems: 'flex-end', cursor: 'pointer' }}>
+                    <div style={{display: 'flex', alignItems: 'flex-end', cursor: 'pointer', width: '360px' }}>
                       Kandidat {candidateAndGrade.candidateId}
                     </div>
                   </Link>

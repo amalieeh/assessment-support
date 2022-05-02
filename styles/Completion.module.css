@@ -24,3 +24,7 @@
     font-size: x-large;
 }
 
+.gradeCard:hover {
+    background-color: #e2e7ec;
+}
+
